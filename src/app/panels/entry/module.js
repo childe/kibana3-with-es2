@@ -41,9 +41,6 @@ function (angular, app, _, $, kbn, config) {
     $scope.init = function () {
       $scope.hits = 0;
 
-      $scope.$on('refresh',function(){
-        $scope.get_data();
-      });
       $scope.get_data();
 
     };
