@@ -159,6 +159,8 @@ function (angular, app, _, $, kbn) {
     };
 
     $scope.get_data = function() {
+      delete $scope.panel.error;
+
       // Make sure we have everything for the request to complete
       if(dashboard.indices.length === 0) {
         return;
@@ -224,28 +226,15 @@ function (angular, app, _, $, kbn) {
           .field($scope.panel.field)
           .size($scope.panel.size);
 
-          var sub_aggs = $scope.ejs.StatsAggregation('subaggs')
-            .field($scope.panel.valuefield);;
-          // switch($scope.panel.tstat) {
-          //   case 'count':
-          //   break;
-          //   case 'min':
-          //   sub_aggs = $scope.ejs.MinAggregation('subaggs')
-          //     .field($scope.panel.valuefield);
-          //   break;
-          //   case 'max':
-          //   sub_aggs = $scope.ejs.MaxAggregation('subaggs')
-          //     .field($scope.panel.valuefield);
-          //   break;
-          //   case 'total':
-          //   sub_aggs = $scope.ejs.SumAggregation('subaggs')
-          //     .field($scope.panel.valuefield);
-          //   break;
-          //   case 'mean':
-          //   sub_aggs = $scope.ejs.AvgAggregation('subaggs')
-          //     .field($scope.panel.valuefield);
-          //   break;
-          // }
+        var sub_aggs;
+
+          if ($scope.panel.tstat !== 'uniq') {
+              sub_aggs = $scope.ejs.StatsAggregation('subaggs')
+                .field($scope.panel.valuefield);
+          } else {
+              sub_aggs = $scope.ejs.CardinalityAggregation('subaggs')
+                  .field($scope.panel.valuefield);
+          }
 
           switch($scope.panel.order) {
             case 'term':
@@ -284,6 +273,12 @@ function (angular, app, _, $, kbn) {
             case 'reverse_mean':
               terms_aggs.order('subaggs.avg','asc');
               break;
+            case 'uniq':
+              terms_aggs.order('subaggs.value','desc');
+              break;
+            case 'reverse_uniq':
+              terms_aggs.order('subaggs.value','asc');
+              break;
           }
 
         request = request.query(query)
@@ -297,6 +292,9 @@ function (angular, app, _, $, kbn) {
 
       // Populate scope when we have results
       results.then(function(results) {
+        if(!(_.isUndefined(results.error))) {
+          $scope.panel.error = $scope.parse_error(results.error);
+        }
         $scope.panelMeta.loading = false;
         $scope.hits = results.hits.total;
 
@@ -398,7 +396,8 @@ function (angular, app, _, $, kbn) {
             "avg":"avg",
             "min":"min",
             "max":"max",
-            "count":"count"
+            "count":"count",
+            "uniq":"value"
           };
           var k = 0;
           scope.data = [];
