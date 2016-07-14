@@ -673,32 +673,32 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
           counters[entry.key] = (counters[entry.key] || 0) + entry.doc_count;
 
           if ($scope.panel.mode === 'count') {
-            value = (time_series._data[entry.key] || 0) + entry.doc_count;
+            value = (time_series._data[entry.key + timeshift] || 0) + entry.doc_count;
           } else if ($scope.panel.mode === 'uniq') {
-            value = (time_series._data[entry.key] || 0) + entry.subaggs.value;
+            value = (time_series._data[entry.key + timeshift] || 0) + entry.subaggs.value;
           } else if ($scope.panel.mode === 'mean') {
             // Compute the ongoing mean by
             // multiplying the existing mean by the existing hits
             // plus the new mean multiplied by the new hits
             // divided by the total hits
-            value = (((time_series._data[entry.key] || 0) * (counters[entry.key] - entry.doc_count)) +
+            value = (((time_series._data[entry.key + timeshift] || 0) * (counters[entry.key] - entry.doc_count)) +
             entry.subaggs.value * entry.doc_count) / (counters[entry.key]);
           } else if ($scope.panel.mode === 'min') {
             if (_.isUndefined(time_series._data[entry.key])) {
               value = entry.subaggs.value;
             } else {
-              value = time_series._data[entry.key] < entry.subaggs.value
-              ? time_series._data[entry.key] : entry.subaggs.value;
+              value = time_series._data[entry.key + timeshift] < entry.subaggs.value
+              ? time_series._data[entry.key + timeshift] : entry.subaggs.value;
             }
           } else if ($scope.panel.mode === 'max') {
             if (_.isUndefined(time_series._data[entry.key])) {
               value = entry.subaggs.value;
             } else {
-              value = time_series._data[entry.key] > entry.subaggs.value
+              value = time_series._data[entry.key + timeshift] > entry.subaggs.value
               ? time_series._data[entry.key] : entry.subaggs.value;
             }
           } else if ($scope.panel.mode === 'total') {
-            value = (time_series._data[entry.key] || 0) + entry.subaggs.value;
+            value = (time_series._data[entry.key + timeshift] || 0) + entry.subaggs.value;
           }
           time_series.addValue(entry.key + timeshift, value);
         });
