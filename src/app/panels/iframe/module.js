@@ -23,7 +23,7 @@ function (angular, app, _, require) {
   var module = angular.module('kibana.panels.iframe', []);
   app.useModule(module);
 
-  module.controller('iframe', function($scope) {
+  module.controller('iframe', function($scope, filterSrv) {
     $scope.panelMeta = {
       status  : "Stable",
       description : "iframe panel"
@@ -43,8 +43,14 @@ function (angular, app, _, require) {
     _.defaults($scope.panel,_d);
 
     $scope.init = function() {
-        console.log(1);
+        $scope.from = filterSrv.timeRange('last').from.getTime();
+        $scope.to = filterSrv.timeRange('last').to.getTime();
     };
 
+    $scope.render = function(url) {
+      _.templateSettings = {interpolate : /\{\{(.+?)\}\}/g};
+      var template = _.template(url);
+      return template({from:$scope.from, to:$scope.to});
+    }
   });
 });
