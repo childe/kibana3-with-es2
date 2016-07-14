@@ -136,7 +136,8 @@ function (Settings) {
       'force',
       'statisticstrend',
       'multifieldhistogram',
-      'valuehistogram'
+      'valuehistogram',
+      'uniq'
     ]
   });
 });
