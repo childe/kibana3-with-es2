@@ -4783,6 +4783,30 @@
 
         agg[name].percentiles.compression = c;
         return this;
+      },
+
+      /**
+        HDR Histogram (High Dynamic Range Histogram) is an alternative implementation 
+        that can be useful when calculating percentiles for latency measurements 
+        as it can be faster than the t-digest implementation with the trade-off of a 
+        larger memory footprint. This implementation maintains a fixed worse-case 
+        percentage error (specified as a number of significant digits). This means 
+        that if data is recorded with values from 1 microsecond up to 1 hour 
+        (3,600,000,000 microseconds) in a histogram set to 3 significant digits, 
+        it will maintain a value resolution of 1 microsecond for values up to 1 
+        millisecond and 3.6 seconds (or better) for the maximum tracked value (1 hour).
+
+      @member ejs.PercentilesAggregation
+      @param {Integer} c The compression level.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      hdr: function (c) {
+        if (c == null) {
+          return agg[name].percentiles.hdr.number_of_significant_value_digits;
+        }
+
+        agg[name].percentiles.hdr = {number_of_significant_value_digits:c};
+        return this;
       }
 
     });
