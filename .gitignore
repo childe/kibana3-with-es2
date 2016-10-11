@@ -1,6 +1,6 @@
-node_modules
-.aws-config.json
-dist
+/dist/
+/docs/
+/node_modules/
 .DS_Store
-kbnauth/kbn_auth.conf.sina
 .vscode
+.aws-config.json
