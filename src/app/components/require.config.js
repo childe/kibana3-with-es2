@@ -4,6 +4,7 @@
 require.config({
   baseUrl: 'app',
   urlArgs: 'r=@REV@',
+  //urlArgs: 'bust=' + (new Date().getTime()),
   paths: {
     config:                   '../config',
     settings:                 'components/settings',
