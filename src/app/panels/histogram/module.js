@@ -560,7 +560,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       $scope.populate_modal(request);
 
       // Then run it
-      results = $scope.ejs.doSearch(dashboard.indices[segment], request);
+      results = $scope.ejs.doSearch(dashboard.indices[segment], request, $scope.panel.annotate.enable ? $scope.panel.annotate.size : 0);
 
       // Populate scope when we have results
       return results.then(function(results) {
@@ -657,7 +657,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
     };
 
     function buildResult(query_results, hits, time_series, counters, timeshift){
-      
+
       timeshift = _.isUndefined(timeshift) ? 0 : timeshift;
 
       if($scope.panel.mode !== 'count' && $scope.panel.arithmetic !== 'none'){
