@@ -28,7 +28,6 @@ define([
     };
 
     $scope.typesSel = [];
-    $scope.add_cond = false;
     $scope.defaultValue = {
       sem        : fields.list[0],
       comp_list  : ['ne', 'eq'],
@@ -39,7 +38,6 @@ define([
     // Set and populate defaults
     var _d = {
       values  : [angular.copy($scope.defaultValue)],
-      generate: false,
       query   : "*",
       pinned  : true,
       history : [],
@@ -62,7 +60,7 @@ define([
 
     $scope.showMuSelectValues = function() {
       var queryString = createQuery();
-      var newQueryObj = _.clone($scope.dashboard.current.services.query.list[0]); 
+      var newQueryObj = _.clone($scope.dashboard.current.services.query.list[0]);
       var newId = _.max($scope.dashboard.current.services.query.ids) + 1;
       newQueryObj.color = '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6);
       newQueryObj.query = queryString;
@@ -71,7 +69,7 @@ define([
       $scope.dashboard.current.services.query.ids.push(newId);
       $scope.refresh();
     };
- 
+
     var createQuery = function() {
       var queryString = "_type:" + $scope.typesSel.join(',');
       _.each($scope.panel.values, function(value) {
@@ -85,27 +83,6 @@ define([
       });
       return queryString;
     }
-
-    $scope.selected_sem = function() {
-      var item = _.last($scope.panel.values);
-      var nodeInfo = $scope.ejs.getFieldMapping(dashboard.indices, item.sem);
-      return nodeInfo.then(function(p) {
-        var types = _.uniq(jsonPath(p, '*.*.*.*.mapping.*.type'));
-        if(_.intersection(types, ['long','float','integer','double']).length > 0) {
-          item.comp_list =  ['<', '>', '='];
-        } else {
-          item.comp_list =  ['eq', 'ne'];
-        }
-      });
-    };
- 
-    $scope.addCond = function(){
-      if ( $scope.add_cond == false ) {
-        $scope.add_cond = true;
-        return;
-      };
-      $scope.panel.values.push(angular.copy($scope.defaultValue));
-    };
 
     $scope.init = function() {
       setTimeout(function(){
