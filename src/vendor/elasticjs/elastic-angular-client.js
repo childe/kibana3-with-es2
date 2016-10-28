@@ -28,12 +28,12 @@ angular.module('elasticjs.service', ['elasticsearch'])
             requestTimeout: config.request_timeout
         };
     }
-      
+
     if(!esClient) {
         window.esClient = esFactory(ejs.config);
         esClient = window.esClient;
     }
-      
+
     ejs.getEsVersion = function() {
         if(config.api_version == '0.9') {
             return esClient.cluster.nodeInfo({all:true});
@@ -41,31 +41,23 @@ angular.module('elasticjs.service', ['elasticsearch'])
             return esClient.nodes.info();
         }
     };
-    
-    ejs.doSearch = function(indices, searchBody, size) {
-        if(size) {
-            return esClient.search({
-            index: indices,
-            body: searchBody,
-            size: size
-            });
-        } else {
-            return esClient.search({
-            index: indices,
-            searchType: "count",
-            body: searchBody
-            });
-        }
 
+    ejs.doSearch = function(indices, searchBody, size) {
+        return esClient.search({
+        index: indices,
+        body: searchBody,
+        size: size
+        });
     };
-      
+
     ejs.doCount = function(indices, searchBody) {
         return esClient.search({
           index: indices,
-          body: searchBody
+          body: searchBody,
+          size: 0
         });
     };
-      
+
     ejs.doIndex = function(index, type, id, indexBody, ttl) {
         if(ttl) {
             return esClient.index({
@@ -83,7 +75,7 @@ angular.module('elasticjs.service', ['elasticsearch'])
             body: indexBody
         });
     };
-      
+
     ejs.doDelete = function(index, type, id) {
         return esClient.delete({
             index: index,
@@ -91,14 +83,14 @@ angular.module('elasticjs.service', ['elasticsearch'])
             id: id
         });
     };
-      
+
     ejs.getAliases = function(indices) {
         return esClient.indices.getAliases({
           index: indices,
           ignoreUnavailable: true
-        });  
+        });
     };
-      
+
     ejs.getMapping = function(indices) {
         return esClient.indices.getMapping({
           index: indices,
@@ -113,7 +105,7 @@ angular.module('elasticjs.service', ['elasticsearch'])
           ignoreUnavailable: true
         });
     };
-      
+
     ejs.getSource = function(index, type, id) {
         var result = esClient.getSource({
             index: index,
