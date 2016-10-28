@@ -6035,34 +6035,28 @@
              replace all existing filters.
 
              @member ejs.BoolFilter
-             @param {(Filter|Filter[])} oFilter A valid Filter or array of
+             @param {(Filter|Filter[])} oFilterORQuery A valid Filter or array of
               Filter objects.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      must: function (oFilter) {
+      must: function (oFilterORQuery) {
         var i, len;
 
         if (filter.bool.must == null) {
           filter.bool.must = [];
         }
 
-        if (oFilter == null) {
+        if (oFilterORQuery == null) {
           return filter.bool.must;
         }
 
-        if (isFilter(oFilter)) {
-          filter.bool.must.push(oFilter.toJSON());
-        } else if (isArray(oFilter)) {
+        if (isFilter(oFilterORQuery) || isQuery(oFilterORQuery)) {
+          filter.bool.must.push(oFilterORQuery.toJSON());
+        } else if (isArray(oFilterORQuery)) {
           filter.bool.must = [];
-          for (i = 0, len = oFilter.length; i < len; i++) {
-            if (!isFilter(oFilter[i])) {
-              throw new TypeError('Argument must be an array of Filters');
-            }
-
-            filter.bool.must.push(oFilter[i].toJSON());
+          for (i = 0, len = oFilterORQuery.length; i < len; i++) {
+            filter.bool.must.push(oFilterORQuery[i].toJSON());
           }
-        } else {
-          throw new TypeError('Argument must be a Filter or array of Filters');
         }
 
         return this;
@@ -6079,30 +6073,24 @@
                Filter objects.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      mustNot: function (oFilter) {
+      mustNot: function (oFilterORQuery) {
         var i, len;
 
         if (filter.bool.must_not == null) {
           filter.bool.must_not = [];
         }
 
-        if (oFilter == null) {
+        if (oFilterORQuery == null) {
           return filter.bool.must_not;
         }
 
-        if (isFilter(oFilter)) {
-          filter.bool.must_not.push(oFilter.toJSON());
-        } else if (isArray(oFilter)) {
+        if (isFilter(oFilterORQuery) || isQuery(oFilterORQuery)) {
+          filter.bool.must_not.push(oFilterORQuery.toJSON());
+        } else if (isArray(oFilterORQuery)) {
           filter.bool.must_not = [];
-          for (i = 0, len = oFilter.length; i < len; i++) {
-            if (!isFilter(oFilter[i])) {
-              throw new TypeError('Argument must be an array of Filters');
-            }
-
-            filter.bool.must_not.push(oFilter[i].toJSON());
+          for (i = 0, len = oFilterORQuery.length; i < len; i++) {
+            filter.bool.must_not.push(oFilterORQuery[i].toJSON());
           }
-        } else {
-          throw new TypeError('Argument must be a Filter or array of Filters');
         }
 
         return this;
@@ -6119,30 +6107,24 @@
                 Filter objects.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      should: function (oFilter) {
+      should: function (oFilterORQuery) {
         var i, len;
 
         if (filter.bool.should == null) {
           filter.bool.should = [];
         }
 
-        if (oFilter == null) {
+        if (oFilterORQuery == null) {
           return filter.bool.should;
         }
 
-        if (isFilter(oFilter)) {
-          filter.bool.should.push(oFilter.toJSON());
-        } else if (isArray(oFilter)) {
+        if (isFilter(oFilterORQuery) || isQuery(oFilterORQuery)) {
+          filter.bool.should.push(oFilterORQuery.toJSON());
+        } else if (isArray(oFilterORQuery)) {
           filter.bool.should = [];
-          for (i = 0, len = oFilter.length; i < len; i++) {
-            if (!isFilter(oFilter[i])) {
-              throw new TypeError('Argument must be an array of Filters');
-            }
-
-            filter.bool.should.push(oFilter[i].toJSON());
+          for (i = 0, len = oFilterORQuery.length; i < len; i++) {
+            filter.bool.should.push(oFilterORQuery[i].toJSON());
           }
-        } else {
-          throw new TypeError('Argument must be a Filter or array of Filters');
         }
 
         return this;
