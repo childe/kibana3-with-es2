@@ -249,9 +249,9 @@ define([
           .from(filter.from)
           .to(filter.to);
       case 'querystring':
-        return ejs.QueryFilter(ejs.QueryStringQuery(filter.query).lowercaseExpandedTerms(false)).cache(true);
+        return ejs.QueryStringQuery(filter.query).lowercaseExpandedTerms(false);
       case 'field':
-        return ejs.QueryFilter(ejs.QueryStringQuery(filter.field+":("+filter.query+")")).cache(true);
+        return ejs.QueryStringQuery(filter.field+":("+filter.query+")");
       case 'terms':
         return ejs.TermsFilter(filter.field,filter.value);
       case 'exists':
