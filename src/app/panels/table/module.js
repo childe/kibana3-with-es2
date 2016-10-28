@@ -400,9 +400,9 @@ function (angular, app, _, kbn, moment) {
         return;
       }
 
-      sort = [$scope.ejs.Sort($scope.panel.sort[0]).order($scope.panel.sort[1]).ignoreUnmapped(true)];
+      sort = [$scope.ejs.Sort($scope.panel.sort[0]).order($scope.panel.sort[1])];
       if($scope.panel.localTime) {
-        sort.push($scope.ejs.Sort($scope.panel.timeField).order($scope.panel.sort[1]).ignoreUnmapped(true));
+        sort.push($scope.ejs.Sort($scope.panel.timeField).order($scope.panel.sort[1]));
       }
 
 
@@ -422,11 +422,11 @@ function (angular, app, _, kbn, moment) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
 
+      boolQuery.filter(filterSrv.getBoolFilter(filterSrv.ids()));
+
       request = request.query(
-        $scope.ejs.FilteredQuery(
-          boolQuery,
-          filterSrv.getBoolFilter(filterSrv.ids())
-        ))
+          boolQuery
+        )
         .highlight(
           $scope.ejs.Highlight($scope.panel.highlight)
           .fragmentSize(2147483647) // Max size of a 32bit unsigned int
