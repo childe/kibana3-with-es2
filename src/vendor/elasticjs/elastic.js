@@ -3787,10 +3787,6 @@
           return agg[name].filter;
         }
 
-        if (!isFilter(oFilter)) {
-          throw new TypeError('Argument must be a Filter');
-        }
-
         agg[name].filter = oFilter.toJSON();
         return this;
       }
