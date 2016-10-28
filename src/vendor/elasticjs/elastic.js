@@ -449,20 +449,20 @@
 
   /**
     @mixin
-    <p>The DirectSettingsMixin provides support for common options used across 
-    various <code>Suggester</code> implementations.  This object should not be 
+    <p>The DirectSettingsMixin provides support for common options used across
+    various <code>Suggester</code> implementations.  This object should not be
     used directly.</p>
 
     @name ejs.DirectSettingsMixin
-  
+
     @param {String} settings The object to set the options on.
     */
   ejs.DirectSettingsMixin = function (settings) {
 
     return {
-        
+
       /**
-            <p>Sets the accuracy.  How similar the suggested terms at least 
+            <p>Sets the accuracy.  How similar the suggested terms at least
             need to be compared to the original suggest text.</p>
 
             @member ejs.DirectSettingsMixin
@@ -473,18 +473,18 @@
         if (a == null) {
           return settings.accuracy;
         }
-  
+
         settings.accuracy = a;
         return this;
       },
-    
+
       /**
             <p>Sets the suggest mode.  Valid values are:</p>
 
             <dl>
               <dd><code>missing</code> - Only suggest terms in the suggest text that aren't in the index</dd>
               <dd><code>popular</code> - Only suggest suggestions that occur in more docs then the original suggest text term</dd>
-              <dd><code>always</code> - Suggest any matching suggestions based on terms in the suggest text</dd> 
+              <dd><code>always</code> - Suggest any matching suggestions based on terms in the suggest text</dd>
             </dl>
 
             @member ejs.DirectSettingsMixin
@@ -495,15 +495,15 @@
         if (m == null) {
           return settings.suggest_mode;
         }
-  
+
         m = m.toLowerCase();
         if (m === 'missing' || m === 'popular' || m === 'always') {
           settings.suggest_mode = m;
         }
-      
+
         return this;
       },
-    
+
       /**
             <p>Sets the sort mode.  Valid values are:</p>
 
@@ -520,17 +520,17 @@
         if (s == null) {
           return settings.sort;
         }
-  
+
         s = s.toLowerCase();
         if (s === 'score' || s === 'frequency') {
           settings.sort = s;
         }
-      
+
         return this;
       },
-    
+
       /**
-            <p>Sets what string distance implementation to use for comparing 
+            <p>Sets what string distance implementation to use for comparing
             how similar suggested terms are.  Valid values are:</p>
 
             <dl>
@@ -549,18 +549,18 @@
         if (s == null) {
           return settings.string_distance;
         }
-  
+
         s = s.toLowerCase();
-        if (s === 'internal' || s === 'damerau_levenshtein' || 
+        if (s === 'internal' || s === 'damerau_levenshtein' ||
             s === 'levenstein' || s === 'jarowinkler' || s === 'ngram') {
           settings.string_distance = s;
         }
-      
+
         return this;
       },
-    
+
       /**
-            <p>Sets the maximum edit distance candidate suggestions can have 
+            <p>Sets the maximum edit distance candidate suggestions can have
             in order to be considered as a suggestion.</p>
 
             @member ejs.DirectSettingsMixin
@@ -571,13 +571,13 @@
         if (max == null) {
           return settings.max_edits;
         }
-  
+
         settings.max_edits = max;
         return this;
       },
-    
+
       /**
-            <p>The factor that is used to multiply with the size in order 
+            <p>The factor that is used to multiply with the size in order
             to inspect more candidate suggestions.</p>
 
             @member ejs.DirectSettingsMixin
@@ -588,13 +588,13 @@
         if (max == null) {
           return settings.max_inspections;
         }
-  
+
         settings.max_inspections = max;
         return this;
       },
-    
+
       /**
-            <p>Sets a maximum threshold in number of documents a suggest text 
+            <p>Sets a maximum threshold in number of documents a suggest text
             token can exist in order to be corrected.</p>
 
             @member ejs.DirectSettingsMixin
@@ -605,13 +605,13 @@
         if (max == null) {
           return settings.max_term_freq;
         }
-  
+
         settings.max_term_freq = max;
         return this;
       },
-    
+
       /**
-            <p>Sets the number of minimal prefix characters that must match in 
+            <p>Sets the number of minimal prefix characters that must match in
             order be a candidate suggestion.</p>
 
             @member ejs.DirectSettingsMixin
@@ -622,13 +622,13 @@
         if (len == null) {
           return settings.prefix_len;
         }
-  
+
         settings.prefix_len = len;
         return this;
       },
-    
+
       /**
-            <p>Sets the minimum length a suggest text term must have in order 
+            <p>Sets the minimum length a suggest text term must have in order
             to be corrected.</p>
 
             @member ejs.DirectSettingsMixin
@@ -639,13 +639,13 @@
         if (len == null) {
           return settings.min_word_len;
         }
-  
+
         settings.min_word_len = len;
         return this;
       },
-    
+
       /**
-            <p>Sets a minimal threshold of the number of documents a suggested 
+            <p>Sets a minimal threshold of the number of documents a suggested
             term should appear in.</p>
 
             @member ejs.DirectSettingsMixin
@@ -656,18 +656,18 @@
         if (min == null) {
           return settings.min_doc_freq;
         }
-  
+
         settings.min_doc_freq = min;
         return this;
       }
-      
+
     };
   };
 
   /**
     @mixin
-    <p>The FacetMixin provides support for common options used across 
-    various <code>Facet</code> implementations.  This object should not be 
+    <p>The FacetMixin provides support for common options used across
+    various <code>Facet</code> implementations.  This object should not be
     used directly.</p>
 
     @name ejs.FacetMixin
@@ -676,9 +676,9 @@
 
     var facet = {};
     facet[name] = {};
-    
+
     return {
-    
+
       /**
             <p>Allows you to reduce the documents used for computing facet results.</p>
 
@@ -690,11 +690,11 @@
         if (oFilter == null) {
           return facet[name].facet_filter;
         }
-      
+
         if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter');
         }
-        
+
         facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
@@ -710,19 +710,19 @@
         if (trueFalse == null) {
           return facet[name].global;
         }
-        
+
         facet[name].global = trueFalse;
         return this;
       },
-      
+
       /**
             <p>Sets the mode the facet will use.<p>
-            
+
             <dl>
                 <dd><code>collector</code></dd>
                 <dd><code>post</code></dd>
             <dl>
-            
+
             @member ejs.FacetMixin
             @param {String} m The mode: collector or post.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -731,15 +731,15 @@
         if (m == null) {
           return facet[name].mode;
         }
-      
+
         m = m.toLowerCase();
         if (m === 'collector' || m === 'post') {
           facet[name].mode = m;
         }
-        
+
         return this;
       },
-      
+
       /**
             <p>Enables caching of the <code>facetFilter</code></p>
 
@@ -751,11 +751,11 @@
         if (trueFalse == null) {
           return facet[name].cache_filter;
         }
-        
+
         facet[name].cache_filter = trueFalse;
         return this;
       },
-      
+
       /**
             <p>Computes values across the the specified scope</p>
 
@@ -767,7 +767,7 @@
       scope: function (scope) {
         return this;
       },
-      
+
       /**
             <p>Sets the path to the nested document if faceting against a
             nested field.</p>
@@ -780,21 +780,21 @@
         if (path == null) {
           return facet[name].nested;
         }
-        
+
         facet[name].nested = path;
         return this;
       },
 
       /**
             The type of ejs object.  For internal use only.
-            
+
             @member ejs.FacetMixin
             @returns {String} the type of object
             */
       _type: function () {
         return 'facet';
       },
-      
+
       /**
             <p>Retrieves the internal <code>facet</code> object. This is typically used by
                internal API functions so use with caution.</p>
@@ -805,14 +805,14 @@
       toJSON: function () {
         return facet;
       }
-      
+
     };
   };
 
   /**
     @mixin
-    <p>The FilterMixin provides support for common options used across 
-    various <code>Filter</code> implementations.  This object should not be 
+    <p>The FilterMixin provides support for common options used across
+    various <code>Filter</code> implementations.  This object should not be
     used directly.</p>
 
     @name ejs.FilterMixin
@@ -874,14 +874,14 @@
 
       /**
             The type of ejs object.  For internal use only.
-          
+
             @member ejs.FilterMixin
             @returns {String} the type of object
             */
       _type: function () {
         return 'filter';
       },
-    
+
       /**
              Returns the filter object.
 
@@ -891,7 +891,7 @@
       toJSON: function () {
         return filter;
       }
-    
+
     };
   };
 
@@ -1025,8 +1025,8 @@
 
   /**
     @mixin
-    <p>The QueryMixin provides support for common options used across 
-    various <code>Query</code> implementations.  This object should not be 
+    <p>The QueryMixin provides support for common options used across
+    various <code>Query</code> implementations.  This object should not be
     used directly.</p>
 
     @name ejs.QueryMixin
@@ -1053,17 +1053,17 @@
         query[type].boost = boost;
         return this;
       },
-    
+
       /**
             The type of ejs object.  For internal use only.
-          
+
             @member ejs.QueryMixin
             @returns {String} the type of object
             */
       _type: function () {
         return 'query';
       },
-    
+
       /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
@@ -1074,7 +1074,7 @@
       toJSON: function () {
         return query;
       }
-  
+
     };
   };
 
@@ -1162,18 +1162,18 @@
 
   /**
     @mixin
-    <p>The SuggestContextMixin provides support for suggest context settings 
-    across various <code>Suggester</code> implementations.  This object should not be 
+    <p>The SuggestContextMixin provides support for suggest context settings
+    across various <code>Suggester</code> implementations.  This object should not be
     used directly.</p>
 
     @name ejs.SuggestContextMixin
-  
+
     @param {String} settings The object to set the options on.
     */
   ejs.SuggestContextMixin = function (settings) {
 
     return {
-    
+
       /**
             <p>Sets analyzer used to analyze the suggest text.</p>
 
@@ -1185,11 +1185,11 @@
         if (analyzer == null) {
           return settings.analyzer;
         }
-  
+
         settings.analyzer = analyzer;
         return this;
       },
-    
+
       /**
             <p>Sets the field used to generate suggestions from.</p>
 
@@ -1201,11 +1201,11 @@
         if (field == null) {
           return settings.field;
         }
-  
+
         settings.field = field;
         return this;
       },
-    
+
       /**
             <p>Sets the number of suggestions returned for each token.</p>
 
@@ -1217,13 +1217,13 @@
         if (s == null) {
           return settings.size;
         }
-  
+
         settings.size = s;
         return this;
       },
-    
+
       /**
-            <p>Sets the maximum number of suggestions to be retrieved from 
+            <p>Sets the maximum number of suggestions to be retrieved from
             each individual shard.</p>
 
             @member ejs.SuggestContextMixin
@@ -1234,30 +1234,30 @@
         if (s == null) {
           return settings.shard_size;
         }
-  
+
         settings.shard_size = s;
         return this;
       }
-      
+
     };
   };
 
   /**
     @mixin
-    <p>The SuggesterMixin provides support for the base setting of all suggesters. 
+    <p>The SuggesterMixin provides support for the base setting of all suggesters.
     This object should not be used directly.</p>
 
     @name ejs.SuggesterMixin
-  
+
     @param {String} name The name of the suggester.
     */
   ejs.SuggesterMixin = function (name) {
-  
+
     var suggest = {};
     suggest[name] = {};
 
     return {
-  
+
       /**
             <p>Sets the text to get suggestions for.  If not set, the global
             suggestion text will be used.</p>
@@ -1270,21 +1270,21 @@
         if (txt == null) {
           return suggest[name].text;
         }
-  
+
         suggest[name].text = txt;
         return this;
       },
-  
+
       /**
             The type of ejs object.  For internal use only.
-        
+
             @member ejs.SuggesterMixin
             @returns {String} the type of object
             */
       _type: function () {
         return 'suggest';
       },
-  
+
       /**
             <p>Retrieves the internal <code>suggest</code> object. This is typically used by
                internal API functions so use with caution.</p>
@@ -1295,7 +1295,7 @@
       toJSON: function () {
         return suggest;
       }
-    
+
     };
   };
 
@@ -1328,7 +1328,7 @@
     @borrows ejs.FacetMixin.nested as nested
     @borrows ejs.FacetMixin._type as _type
     @borrows ejs.FacetMixin.toJSON as toJSON
-  
+
     @desc
     <p>A facet which returns the N most frequent terms within a collection
        or set of collections.</p>
@@ -1341,7 +1341,7 @@
     */
   ejs.DateHistogramFacet = function (name) {
 
-    var  
+    var
       _common = ejs.FacetMixin(name),
       facet = _common.toJSON();
 
@@ -1360,7 +1360,7 @@
         if (fieldName == null) {
           return facet[name].date_histogram.field;
         }
-      
+
         facet[name].date_histogram.field = fieldName;
         return this;
       },
@@ -1376,11 +1376,11 @@
         if (fieldName == null) {
           return facet[name].date_histogram.key_field;
         }
-      
+
         facet[name].date_histogram.key_field = fieldName;
         return this;
       },
-      
+
       /**
             Allows you to specify a different value field to aggrerate over.
 
@@ -1392,11 +1392,11 @@
         if (fieldName == null) {
           return facet[name].date_histogram.value_field;
         }
-      
+
         facet[name].date_histogram.value_field = fieldName;
         return this;
       },
-      
+
       /**
             Sets the bucket interval used to calculate the distribution.
 
@@ -1408,19 +1408,19 @@
         if (timeInterval == null) {
           return facet[name].date_histogram.interval;
         }
-      
+
         facet[name].date_histogram.interval = timeInterval;
         return this;
       },
 
       /**
-            <p>By default, time values are stored in UTC format.<p> 
+            <p>By default, time values are stored in UTC format.<p>
 
-            <p>This method allows users to set a time zone value that is then used 
-            to compute intervals before rounding on the interval value. Equalivent to 
-            <coe>preZone</code>.  Use <code>preZone</code> if possible. The 
+            <p>This method allows users to set a time zone value that is then used
+            to compute intervals before rounding on the interval value. Equalivent to
+            <coe>preZone</code>.  Use <code>preZone</code> if possible. The
             value is an offset from UTC.<p>
-            
+
             <p>For example, to use EST you would set the value to <code>-5</code>.</p>
 
             @member ejs.DateHistogramFacet
@@ -1431,18 +1431,18 @@
         if (tz == null) {
           return facet[name].date_histogram.time_zone;
         }
-      
+
         facet[name].date_histogram.time_zone = tz;
         return this;
       },
 
       /**
-            <p>By default, time values are stored in UTC format.<p> 
+            <p>By default, time values are stored in UTC format.<p>
 
-            <p>This method allows users to set a time zone value that is then used to 
-            compute intervals before rounding on the interval value.  The value is an 
+            <p>This method allows users to set a time zone value that is then used to
+            compute intervals before rounding on the interval value.  The value is an
             offset from UTC.<p>
-            
+
             <p>For example, to use EST you would set the value to <code>-5</code>.</p>
 
             @member ejs.DateHistogramFacet
@@ -1453,17 +1453,17 @@
         if (tz == null) {
           return facet[name].date_histogram.pre_zone;
         }
-      
+
         facet[name].date_histogram.pre_zone = tz;
         return this;
       },
-      
-      /**
-            <p>Enables large date interval conversions (day and up).</p>  
 
-            <p>Set to true to enable and then set the <code>interval</code> to an 
+      /**
+            <p>Enables large date interval conversions (day and up).</p>
+
+            <p>Set to true to enable and then set the <code>interval</code> to an
             interval greater than a day.</p>
-            
+
             @member ejs.DateHistogramFacet
             @param {Boolean} trueFalse A valid boolean value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -1472,18 +1472,18 @@
         if (trueFalse == null) {
           return facet[name].date_histogram.pre_zone_adjust_large_interval;
         }
-      
+
         facet[name].date_histogram.pre_zone_adjust_large_interval = trueFalse;
         return this;
       },
-      
-      /**
-            <p>By default, time values are stored in UTC format.<p> 
 
-            <p>This method allows users to set a time zone value that is then used to compute 
-            intervals after rounding on the interval value.  The value is an offset from UTC.  
+      /**
+            <p>By default, time values are stored in UTC format.<p>
+
+            <p>This method allows users to set a time zone value that is then used to compute
+            intervals after rounding on the interval value.  The value is an offset from UTC.
             The tz offset value is simply added to the resulting bucket's date value.<p>
-            
+
             <p>For example, to use EST you would set the value to <code>-5</code>.</p>
 
             @member ejs.DateHistogramFacet
@@ -1494,7 +1494,7 @@
         if (tz == null) {
           return facet[name].date_histogram.post_zone;
         }
-      
+
         facet[name].date_histogram.post_zone = tz;
         return this;
       },
@@ -1510,11 +1510,11 @@
         if (offset == null) {
           return facet[name].date_histogram.pre_offset;
         }
-      
+
         facet[name].date_histogram.pre_offset = offset;
         return this;
       },
-      
+
       /**
             Set's a specific post-rounding offset.  Format is 1d, 1h, etc.
 
@@ -1526,21 +1526,21 @@
         if (offset == null) {
           return facet[name].date_histogram.post_offset;
         }
-      
+
         facet[name].date_histogram.post_offset = offset;
         return this;
       },
-      
-      /**
-            <p>The date histogram works on numeric values (since time is stored 
-            in milliseconds since the epoch in UTC).<p> 
 
-            <p>But, sometimes, systems will store a different resolution (like seconds since UTC) 
-            in a numeric field. The factor parameter can be used to change the value in the field 
-            to milliseconds to actual do the relevant rounding, and then be applied again to get to 
+      /**
+            <p>The date histogram works on numeric values (since time is stored
+            in milliseconds since the epoch in UTC).<p>
+
+            <p>But, sometimes, systems will store a different resolution (like seconds since UTC)
+            in a numeric field. The factor parameter can be used to change the value in the field
+            to milliseconds to actual do the relevant rounding, and then be applied again to get to
             the original unit.</p>
 
-            <p>For example, when storing in a numeric field seconds resolution, 
+            <p>For example, when storing in a numeric field seconds resolution,
             the factor can be set to 1000.<p>
 
             @member ejs.DateHistogramFacet
@@ -1551,11 +1551,11 @@
         if (f == null) {
           return facet[name].date_histogram.factor;
         }
-      
+
         facet[name].date_histogram.factor = f;
         return this;
       },
-      
+
       /**
             Allows you modify the <code>value</code> field using a script. The modified value
             is then used to compute the statistical data.
@@ -1568,7 +1568,7 @@
         if (scriptCode == null) {
           return facet[name].date_histogram.value_script;
         }
-      
+
         facet[name].date_histogram.value_script = scriptCode;
         return this;
       },
@@ -1576,13 +1576,13 @@
       /**
             <p>Sets the type of ordering that will be performed on the date
             buckets.  Valid values are:<p>
-            
+
             <dl>
                 <dd><code>time</code> - the default, sort by the buckets start time in milliseconds.</dd>
                 <dd><code>count</code> - sort by the number of items in the bucket</dd>
                 <dd><code>total</code> - sort by the sum/total of the items in the bucket</dd>
             <dl>
-            
+
             @member ejs.DateHistogramFacet
             @param {String} o The ordering method: time, count, or total.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -1591,15 +1591,15 @@
         if (o == null) {
           return facet[name].date_histogram.order;
         }
-      
+
         o = o.toLowerCase();
         if (o === 'time' || o === 'count' || o === 'total') {
           facet[name].date_histogram.order = o;
         }
-        
+
         return this;
       },
-      
+
       /**
             The script language being used. Currently supported values are
             <code>javascript</code>, <code>groovy</code>, and <code>mvel</code>.
@@ -1612,17 +1612,17 @@
         if (language == null) {
           return facet[name].date_histogram.lang;
         }
-      
+
         facet[name].date_histogram.lang = language;
         return this;
       },
 
       /**
-            Sets parameters that will be applied to the script.  Overwrites 
+            Sets parameters that will be applied to the script.  Overwrites
             any existing params.
 
             @member ejs.DateHistogramFacet
-            @param {Object} p An object where the keys are the parameter name and 
+            @param {Object} p An object where the keys are the parameter name and
               values are the parameter value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -1630,11 +1630,11 @@
         if (p == null) {
           return facet[name].date_histogram.params;
         }
-    
+
         facet[name].date_histogram.params = p;
         return this;
       }
-      
+
     });
   };
 
@@ -1695,15 +1695,15 @@
         if (oFilter == null) {
           return facet[name].filter;
         }
-      
+
         if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter');
         }
-        
+
         facet[name].filter = oFilter.toJSON();
         return this;
       }
-      
+
     });
   };
 
@@ -1762,7 +1762,7 @@
     return extend(_common, {
 
       /**
-            Sets the document field containing the geo-coordinate to be used 
+            Sets the document field containing the geo-coordinate to be used
             to calculate the distance.  Defaults to "location".
 
             @member ejs.GeoDistanceFacet
@@ -1771,7 +1771,7 @@
             */
       field: function (fieldName) {
         var oldValue = facet[name].geo_distance[field];
-        
+
         if (fieldName == null) {
           return field;
         }
@@ -1779,7 +1779,7 @@
         delete facet[name].geo_distance[field];
         field = fieldName;
         facet[name].geo_distance[fieldName] = oldValue;
-        
+
         return this;
       },
 
@@ -1794,11 +1794,11 @@
         if (p == null) {
           return point;
         }
-      
+
         if (!isGeoPoint(p)) {
           throw new TypeError('Argument must be a GeoPoint');
         }
-        
+
         point = p;
         facet[name].geo_distance[field] = p.toJSON();
         return this;
@@ -1816,12 +1816,12 @@
         if (arguments.length === 0) {
           return facet[name].geo_distance.ranges;
         }
-      
+
         facet[name].geo_distance.ranges.push({
           from: from,
           to: to
         });
-        
+
         return this;
       },
 
@@ -1836,11 +1836,11 @@
         if (from == null) {
           return facet[name].geo_distance.ranges;
         }
-      
+
         facet[name].geo_distance.ranges.push({
           from: from
         });
-        
+
         return this;
       },
 
@@ -1855,11 +1855,11 @@
         if (to == null) {
           return facet[name].geo_distance.ranges;
         }
-      
+
         facet[name].geo_distance.ranges.push({
           to: to
         });
-        
+
         return this;
       },
 
@@ -1875,21 +1875,21 @@
         if (unit == null) {
           return facet[name].geo_distance.unit;
         }
-      
+
         unit = unit.toLowerCase();
         if (unit === 'mi' || unit === 'km') {
           facet[name].geo_distance.unit = unit;
         }
-        
+
         return this;
       },
-      
+
       /**
-            How to compute the distance. Can either be arc (better precision) 
+            How to compute the distance. Can either be arc (better precision)
             or plane (faster). Defaults to arc.
 
             @member ejs.GeoDistanceFacet
-            @param {String} type The execution type as a string.  
+            @param {String} type The execution type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       distanceType: function (type) {
@@ -1901,14 +1901,14 @@
         if (type === 'arc' || type === 'plane') {
           facet[name].geo_distance.distance_type = type;
         }
-        
+
         return this;
       },
 
       /**
             If the lat/long points should be normalized to lie within their
             respective normalized ranges.
-            
+
             Normalized ranges are:
             lon = -180 (exclusive) to 180 (inclusive) range
             lat = -90 to 90 (both inclusive) range
@@ -1925,7 +1925,7 @@
         facet[name].geo_distance.normalize = trueFalse;
         return this;
       },
-      
+
       /**
             Allows you to specify a different value field to aggrerate over.
 
@@ -1937,11 +1937,11 @@
         if (fieldName == null) {
           return facet[name].geo_distance.value_field;
         }
-      
+
         facet[name].geo_distance.value_field = fieldName;
         return this;
       },
-      
+
       /**
             Allows you modify the <code>value</code> field using a script. The modified value
             is then used to compute the statistical data.
@@ -1954,11 +1954,11 @@
         if (scriptCode == null) {
           return facet[name].geo_distance.value_script;
         }
-      
+
         facet[name].geo_distance.value_script = scriptCode;
         return this;
       },
-      
+
       /**
             The script language being used. Currently supported values are
             <code>javascript</code>, <code>groovy</code>, and <code>mvel</code>.
@@ -1971,17 +1971,17 @@
         if (language == null) {
           return facet[name].geo_distance.lang;
         }
-      
+
         facet[name].geo_distance.lang = language;
         return this;
       },
-      
+
       /**
-            Sets parameters that will be applied to the script.  Overwrites 
+            Sets parameters that will be applied to the script.  Overwrites
             any existing params.
 
             @member ejs.GeoDistanceFacet
-            @param {Object} p An object where the keys are the parameter name and 
+            @param {Object} p An object where the keys are the parameter name and
               values are the parameter value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -1989,11 +1989,11 @@
         if (p == null) {
           return facet[name].geo_distance.params;
         }
-    
+
         facet[name].geo_distance.params = p;
         return this;
       }
-      
+
     });
   };
 
@@ -2039,7 +2039,7 @@
     */
   ejs.HistogramFacet = function (name) {
 
-    var 
+    var
       _common = ejs.FacetMixin(name),
       facet = _common.toJSON();
 
@@ -2058,7 +2058,7 @@
         if (fieldName == null) {
           return facet[name].histogram.field;
         }
-      
+
         facet[name].histogram.field = fieldName;
         return this;
       },
@@ -2074,7 +2074,7 @@
         if (numericInterval == null) {
           return facet[name].histogram.interval;
         }
-      
+
         facet[name].histogram.interval = numericInterval;
         return this;
       },
@@ -2091,15 +2091,15 @@
         if (timeInterval == null) {
           return facet[name].histogram.time_interval;
         }
-      
+
         facet[name].histogram.time_interval = timeInterval;
         return this;
       },
 
       /**
-            Sets the "from", "start", or lower bounds bucket.  For example if 
-            you have a value of 1023, an interval of 100, and a from value of 
-            1500, it will be placed into the 1500 bucket vs. the normal bucket 
+            Sets the "from", "start", or lower bounds bucket.  For example if
+            you have a value of 1023, an interval of 100, and a from value of
+            1500, it will be placed into the 1500 bucket vs. the normal bucket
             of 1000.
 
             @member ejs.HistogramFacet
@@ -2110,15 +2110,15 @@
         if (from == null) {
           return facet[name].histogram.from;
         }
-      
+
         facet[name].histogram.from = from;
         return this;
       },
 
       /**
-            Sets the "to", "end", or upper bounds bucket.  For example if 
-            you have a value of 1023, an interval of 100, and a to value of 
-            900, it will be placed into the 900 bucket vs. the normal bucket 
+            Sets the "to", "end", or upper bounds bucket.  For example if
+            you have a value of 1023, an interval of 100, and a to value of
+            900, it will be placed into the 900 bucket vs. the normal bucket
             of 1000.
 
             @member ejs.HistogramFacet
@@ -2129,11 +2129,11 @@
         if (to == null) {
           return facet[name].histogram.to;
         }
-      
+
         facet[name].histogram.to = to;
         return this;
       },
-                  
+
       /**
             Allows you to specify a different value field to aggrerate over.
 
@@ -2145,7 +2145,7 @@
         if (fieldName == null) {
           return facet[name].histogram.value_field;
         }
-      
+
         facet[name].histogram.value_field = fieldName;
         return this;
       },
@@ -2161,7 +2161,7 @@
         if (fieldName == null) {
           return facet[name].histogram.key_field;
         }
-      
+
         facet[name].histogram.key_field = fieldName;
         return this;
       },
@@ -2178,7 +2178,7 @@
         if (scriptCode == null) {
           return facet[name].histogram.value_script;
         }
-      
+
         facet[name].histogram.value_script = scriptCode;
         return this;
       },
@@ -2195,7 +2195,7 @@
         if (scriptCode == null) {
           return facet[name].histogram.key_script;
         }
-      
+
         facet[name].histogram.key_script = scriptCode;
         return this;
       },
@@ -2212,17 +2212,17 @@
         if (language == null) {
           return facet[name].histogram.lang;
         }
-      
+
         facet[name].histogram.lang = language;
         return this;
       },
 
       /**
-            Sets parameters that will be applied to the script.  Overwrites 
+            Sets parameters that will be applied to the script.  Overwrites
             any existing params.
 
             @member ejs.HistogramFacet
-            @param {Object} p An object where the keys are the parameter name and 
+            @param {Object} p An object where the keys are the parameter name and
               values are the parameter value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -2230,19 +2230,19 @@
         if (p == null) {
           return facet[name].histogram.params;
         }
-    
+
         facet[name].histogram.params = p;
         return this;
       },
-      
+
       /**
             Sets the type of ordering that will be performed on the date
             buckets.  Valid values are:
-            
+
             key - the default, sort by the bucket's key value
             count - sort by the number of items in the bucket
             total - sort by the sum/total of the items in the bucket
-            
+
             @member ejs.HistogramFacet
             @param {String} o The ordering method: key, count, or total.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -2251,15 +2251,15 @@
         if (o == null) {
           return facet[name].histogram.order;
         }
-      
+
         o = o.toLowerCase();
         if (o === 'key' || o === 'count' || o === 'total') {
           facet[name].histogram.order = o;
         }
-        
+
         return this;
       }
-      
+
     });
   };
 
@@ -2303,7 +2303,7 @@
     */
   ejs.QueryFacet = function (name) {
 
-    var 
+    var
       _common = ejs.FacetMixin(name),
       facet = _common.toJSON();
 
@@ -2320,15 +2320,15 @@
         if (oQuery == null) {
           return facet[name].query;
         }
-      
+
         if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         facet[name].query = oQuery.toJSON();
         return this;
       }
-      
+
     });
   };
 
@@ -2372,7 +2372,7 @@
     */
   ejs.RangeFacet = function (name) {
 
-    var 
+    var
       _common = ejs.FacetMixin(name),
       facet = _common.toJSON();
 
@@ -2393,7 +2393,7 @@
         if (fieldName == null) {
           return facet[name].range.field;
         }
-      
+
         facet[name].range.field = fieldName;
         return this;
       },
@@ -2409,7 +2409,7 @@
         if (fieldName == null) {
           return facet[name].range.key_field;
         }
-      
+
         facet[name].range.key_field = fieldName;
         return this;
       },
@@ -2425,7 +2425,7 @@
         if (fieldName == null) {
           return facet[name].range.value_field;
         }
-      
+
         facet[name].range.value_field = fieldName;
         return this;
       },
@@ -2442,7 +2442,7 @@
         if (scriptCode == null) {
           return facet[name].range.value_script;
         }
-      
+
         facet[name].range.value_script = scriptCode;
         return this;
       },
@@ -2459,7 +2459,7 @@
         if (scriptCode == null) {
           return facet[name].range.key_script;
         }
-      
+
         facet[name].range.key_script = scriptCode;
         return this;
       },
@@ -2476,17 +2476,17 @@
         if (language == null) {
           return facet[name].range.lang;
         }
-      
+
         facet[name].range.lang = language;
         return this;
       },
 
       /**
-            Sets parameters that will be applied to the script.  Overwrites 
+            Sets parameters that will be applied to the script.  Overwrites
             any existing params.
 
             @member ejs.RangeFacet
-            @param {Object} p An object where the keys are the parameter name and 
+            @param {Object} p An object where the keys are the parameter name and
               values are the parameter value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -2494,11 +2494,11 @@
         if (p == null) {
           return facet[name].range.params;
         }
-    
+
         facet[name].range.params = p;
         return this;
       },
-      
+
       /**
             Adds a new bounded range.
 
@@ -2511,12 +2511,12 @@
         if (arguments.length === 0) {
           return facet[name].range.ranges;
         }
-      
+
         facet[name].range.ranges.push({
           from: from,
           to: to
         });
-        
+
         return this;
       },
 
@@ -2531,11 +2531,11 @@
         if (from == null) {
           return facet[name].range.ranges;
         }
-      
+
         facet[name].range.ranges.push({
           from: from
         });
-        
+
         return this;
       },
 
@@ -2550,14 +2550,14 @@
         if (to == null) {
           return facet[name].range.ranges;
         }
-      
+
         facet[name].range.ranges.push({
           to: to
         });
-        
+
         return this;
       }
-      
+
     });
   };
 
@@ -2601,7 +2601,7 @@
     */
   ejs.StatisticalFacet = function (name) {
 
-    var 
+    var
       _common = ejs.FacetMixin(name),
       facet = _common.toJSON();
 
@@ -2620,7 +2620,7 @@
         if (fieldName == null) {
           return facet[name].statistical.field;
         }
-      
+
         facet[name].statistical.field = fieldName;
         return this;
       },
@@ -2636,11 +2636,11 @@
         if (fields == null) {
           return facet[name].statistical.fields;
         }
-      
+
         if (!isArray(fields)) {
           throw new TypeError('Argument must be an array');
         }
-        
+
         facet[name].statistical.fields = fields;
         return this;
       },
@@ -2657,7 +2657,7 @@
         if (code == null) {
           return facet[name].statistical.script;
         }
-      
+
         facet[name].statistical.script = code;
         return this;
       },
@@ -2674,7 +2674,7 @@
         if (language == null) {
           return facet[name].statistical.lang;
         }
-      
+
         facet[name].statistical.lang = language;
         return this;
       },
@@ -2690,11 +2690,11 @@
         if (oParams == null) {
           return facet[name].statistical.params;
         }
-      
+
         facet[name].statistical.params = oParams;
         return this;
       }
-      
+
     });
   };
 
@@ -2738,7 +2738,7 @@
     */
   ejs.TermStatsFacet = function (name) {
 
-    var 
+    var
       _common = ejs.FacetMixin(name),
       facet = _common.toJSON();
 
@@ -2757,7 +2757,7 @@
         if (fieldName == null) {
           return facet[name].terms_stats.value_field;
         }
-      
+
         facet[name].terms_stats.value_field = fieldName;
         return this;
       },
@@ -2773,7 +2773,7 @@
         if (fieldName == null) {
           return facet[name].terms_stats.key_field;
         }
-      
+
         facet[name].terms_stats.key_field = fieldName;
         return this;
       },
@@ -2789,11 +2789,11 @@
         if (script == null) {
           return facet[name].terms_stats.script_field;
         }
-      
+
         facet[name].terms_stats.script_field = script;
         return this;
       },
-      
+
       /**
             Define a script to evaluate of which the result will be used to generate
             the statistical information.
@@ -2806,7 +2806,7 @@
         if (code == null) {
           return facet[name].terms_stats.value_script;
         }
-      
+
         facet[name].terms_stats.value_script = code;
         return this;
       },
@@ -2824,11 +2824,11 @@
         if (trueFalse == null) {
           return facet[name].terms_stats.all_terms;
         }
-      
+
         facet[name].terms_stats.all_terms = trueFalse;
         return this;
       },
-      
+
       /**
             The script language being used. Currently supported values are
             <code>javascript</code>, <code>groovy</code>, and <code>mvel</code>.
@@ -2841,7 +2841,7 @@
         if (language == null) {
           return facet[name].terms_stats.lang;
         }
-      
+
         facet[name].terms_stats.lang = language;
         return this;
       },
@@ -2857,7 +2857,7 @@
         if (oParams == null) {
           return facet[name].terms_stats.params;
         }
-      
+
         facet[name].terms_stats.params = oParams;
         return this;
       },
@@ -2875,7 +2875,7 @@
         if (facetSize == null) {
           return facet[name].terms_stats.size;
         }
-      
+
         facet[name].terms_stats.size = facetSize;
         return this;
       },
@@ -2883,7 +2883,7 @@
       /**
             Sets the type of ordering that will be performed on the date
             buckets.  Valid values are:
-            
+
             count - default, sort by the number of items in the bucket
             term - sort by term value.
             reverse_count - reverse sort of the number of items in the bucket
@@ -2896,7 +2896,7 @@
             reverse_max - the reverse sort of the maximum value
             mean - the mean value of the bucket contents
             reverse_mean - the reverse sort of the mean value of bucket contents.
-            
+
             @member ejs.TermStatsFacet
             @param {String} o The ordering method
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -2905,19 +2905,19 @@
         if (o == null) {
           return facet[name].terms_stats.order;
         }
-      
+
         o = o.toLowerCase();
-        if (o === 'count' || o === 'term' || o === 'reverse_count' || 
-          o === 'reverse_term' || o === 'total' || o === 'reverse_total' || 
-          o === 'min' || o === 'reverse_min' || o === 'max' || 
+        if (o === 'count' || o === 'term' || o === 'reverse_count' ||
+          o === 'reverse_term' || o === 'total' || o === 'reverse_total' ||
+          o === 'min' || o === 'reverse_min' || o === 'max' ||
           o === 'reverse_max' || o === 'mean' || o === 'reverse_mean') {
-          
+
           facet[name].terms_stats.order = o;
         }
-        
+
         return this;
       }
-      
+
     });
   };
 
@@ -3706,7 +3706,7 @@
         agg[name].date_range.keyed = trueFalse;
         return this;
       }
-      
+
     });
   };
 
@@ -3800,8 +3800,8 @@
 
   /**
     @class
-    <p>Defines a multi bucket aggregations where each bucket is 
-    associated with a filter. Each bucket will collect all documents 
+    <p>Defines a multi bucket aggregations where each bucket is
+    associated with a filter. Each bucket will collect all documents
     that match its associated filter.</p>
 
     @name ejs.FiltersAggregation
@@ -3812,8 +3812,8 @@
     @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
-    <p>Defines a multi bucket aggregations where each bucket is 
-    associated with a filter. Each bucket will collect all documents 
+    <p>Defines a multi bucket aggregations where each bucket is
+    associated with a filter. Each bucket will collect all documents
     that match its associated filter.</p>
 
     @param {String} name The name which be used to refer to this aggregation.
@@ -3894,7 +3894,7 @@
       Optional parameter which specifies whether the bounding box should be allowed to overlap the international date line. The default value is true
 
       @member ejs.GeoBoundsAggregation
-      @param {Boolean} trueFalse to overlap the international date line. 
+      @param {Boolean} trueFalse to overlap the international date line.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       wrapLongitude: function (trueFalse) {
@@ -4786,14 +4786,14 @@
       },
 
       /**
-        HDR Histogram (High Dynamic Range Histogram) is an alternative implementation 
-        that can be useful when calculating percentiles for latency measurements 
-        as it can be faster than the t-digest implementation with the trade-off of a 
-        larger memory footprint. This implementation maintains a fixed worse-case 
-        percentage error (specified as a number of significant digits). This means 
-        that if data is recorded with values from 1 microsecond up to 1 hour 
-        (3,600,000,000 microseconds) in a histogram set to 3 significant digits, 
-        it will maintain a value resolution of 1 microsecond for values up to 1 
+        HDR Histogram (High Dynamic Range Histogram) is an alternative implementation
+        that can be useful when calculating percentiles for latency measurements
+        as it can be faster than the t-digest implementation with the trade-off of a
+        larger memory footprint. This implementation maintains a fixed worse-case
+        percentage error (specified as a number of significant digits). This means
+        that if data is recorded with values from 1 microsecond up to 1 hour
+        (3,600,000,000 microseconds) in a histogram set to 3 significant digits,
+        it will maintain a value resolution of 1 microsecond for values up to 1
         millisecond and 3.6 seconds (or better) for the maximum tracked value (1 hour).
 
       @member ejs.PercentilesAggregation
@@ -4829,7 +4829,7 @@
     @borrows ejs.BucketsAggregationMixin.scriptId as scriptId
     @borrows ejs.BucketsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.BucketsAggregationMixin.lang as lang
-    @borrows ejs.BucketsAggregationMixin.params as params    
+    @borrows ejs.BucketsAggregationMixin.params as params
     @borrows ejs.AggregationMixin.aggregation as aggregation
     @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
@@ -4928,12 +4928,12 @@
     var
       _common = ejs.MetricsAggregationMixin(name, 'scripted_metric'),
       agg = _common.toJSON();
-      
+
     delete _common.field;
     delete _common.script;
     delete _common.scriptId;
     delete _common.scriptFile;
-  
+
     return extend(_common, {
 
       /**
@@ -5028,7 +5028,7 @@
         agg[name].scripted_metric.init_script_id = init_script_id;
         return this;
       },
-        
+
       /**
       <p>Sets the map_script_file.</p>
 
@@ -5076,7 +5076,7 @@
         agg[name].scripted_metric.combine_script_file = combine_script_file;
         return this;
       },
-        
+
       /**
       <p>Sets the combine_script_id.</p>
 
@@ -5933,7 +5933,7 @@
     @desc
     A container Filter that allows Boolean AND composition of Filters.
 
-    @param {(Filter|Filter[])} f A single Filter object or an array of valid 
+    @param {(Filter|Filter[])} f A single Filter object or an array of valid
       Filter objects.
     */
   ejs.AndFilter = function (f) {
@@ -5943,9 +5943,9 @@
       len,
       _common = ejs.FilterMixin('and'),
       filter = _common.toJSON();
-    
+
     filter.and.filters = [];
-    
+
     if (isFilter(f)) {
       filter.and.filters.push(f.toJSON());
     } else if (isArray(f)) {
@@ -5953,7 +5953,7 @@
         if (!isFilter(f[i])) {
           throw new TypeError('Array must contain only Filter objects');
         }
-        
+
         filter.and.filters.push(f[i].toJSON());
       }
     } else {
@@ -5963,7 +5963,7 @@
     return extend(_common, {
 
       /**
-             Sets the filters for the filter.  If fltr is a single 
+             Sets the filters for the filter.  If fltr is a single
              Filter, it is added to the current filters.  If fltr is an array
              of Filters, then they replace all existing filters.
 
@@ -5974,11 +5974,11 @@
       filters: function (fltr) {
         var i,
           len;
-          
+
         if (fltr == null) {
           return filter.and.filters;
         }
-      
+
         if (isFilter(fltr)) {
           filter.and.filters.push(fltr.toJSON());
         } else if (isArray(fltr)) {
@@ -5987,26 +5987,26 @@
             if (!isFilter(fltr[i])) {
               throw new TypeError('Array must contain only Filter objects');
             }
-            
+
             filter.and.filters.push(fltr[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or an Array of Filters');
         }
-        
+
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
     <p>A <code>BoolFilter</code> allows you to build <em>Boolean</em> filter constructs
-    from individual filters. Similar in concept to Boolean query, except that 
-    the clauses are other filters. Can be placed within queries that accept a 
+    from individual filters. Similar in concept to Boolean query, except that
+    the clauses are other filters. Can be placed within queries that accept a
     filter.
-  
+
     @name ejs.BoolFilter
     @ejs filter
     @borrows ejs.FilterMixin.name as name
@@ -6029,7 +6029,7 @@
     return extend(_common, {
 
       /**
-             Adds filter to boolean container. Given filter "must" appear in 
+             Adds filter to boolean container. Given filter "must" appear in
              matching documents.  If passed a single Filter it is added to the
              list of existing filters.  If passed an array of Filters, they
              replace all existing filters.
@@ -6041,11 +6041,11 @@
              */
       must: function (oFilter) {
         var i, len;
-        
+
         if (filter.bool.must == null) {
           filter.bool.must = [];
         }
-    
+
         if (oFilter == null) {
           return filter.bool.must;
         }
@@ -6058,20 +6058,20 @@
             if (!isFilter(oFilter[i])) {
               throw new TypeError('Argument must be an array of Filters');
             }
-            
+
             filter.bool.must.push(oFilter[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
         }
-        
+
         return this;
       },
 
       /**
-             Adds filter to boolean container. Given filter "must not" appear 
-             in matching documents. If passed a single Filter it is added to 
-             the list of existing filters.  If passed an array of Filters, 
+             Adds filter to boolean container. Given filter "must not" appear
+             in matching documents. If passed a single Filter it is added to
+             the list of existing filters.  If passed an array of Filters,
              they replace all existing filters.
 
              @member ejs.BoolFilter
@@ -6081,7 +6081,7 @@
              */
       mustNot: function (oFilter) {
         var i, len;
-        
+
         if (filter.bool.must_not == null) {
           filter.bool.must_not = [];
         }
@@ -6089,7 +6089,7 @@
         if (oFilter == null) {
           return filter.bool.must_not;
         }
-    
+
         if (isFilter(oFilter)) {
           filter.bool.must_not.push(oFilter.toJSON());
         } else if (isArray(oFilter)) {
@@ -6098,20 +6098,20 @@
             if (!isFilter(oFilter[i])) {
               throw new TypeError('Argument must be an array of Filters');
             }
-            
+
             filter.bool.must_not.push(oFilter[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
         }
-        
+
         return this;
       },
 
       /**
-             Adds filter to boolean container. Given filter "should" appear in 
-             matching documents. If passed a single Filter it is added to 
-             the list of existing filters.  If passed an array of Filters, 
+             Adds filter to boolean container. Given filter "should" appear in
+             matching documents. If passed a single Filter it is added to
+             the list of existing filters.  If passed an array of Filters,
              they replace all existing filters.
 
              @member ejs.BoolFilter
@@ -6121,7 +6121,7 @@
              */
       should: function (oFilter) {
         var i, len;
-        
+
         if (filter.bool.should == null) {
           filter.bool.should = [];
         }
@@ -6129,7 +6129,7 @@
         if (oFilter == null) {
           return filter.bool.should;
         }
-    
+
         if (isFilter(oFilter)) {
           filter.bool.should.push(oFilter.toJSON());
         } else if (isArray(oFilter)) {
@@ -6138,16 +6138,16 @@
             if (!isFilter(oFilter[i])) {
               throw new TypeError('Argument must be an array of Filters');
             }
-            
+
             filter.bool.should.push(oFilter[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
         }
-        
+
         return this;
       }
-      
+
     });
   };
 
@@ -6171,10 +6171,10 @@
     */
   ejs.ExistsFilter = function (fieldName) {
 
-    var 
+    var
       _common = ejs.FilterMixin('exists'),
       filter = _common.toJSON();
-    
+
     filter.exists.field = fieldName;
 
     return extend(_common, {
@@ -6194,7 +6194,7 @@
         filter.exists.field = name;
         return this;
       }
-      
+
     });
   };
 
@@ -6222,7 +6222,7 @@
     var
       _common = ejs.FilterMixin('geo_bounding_box'),
       filter = _common.toJSON();
-    
+
     filter.geo_bounding_box[fieldName] = {};
 
     return extend(_common, {
@@ -6236,7 +6236,7 @@
             */
       field: function (f) {
         var oldValue = filter.geo_bounding_box[fieldName];
-    
+
         if (f == null) {
           return fieldName;
         }
@@ -6244,10 +6244,10 @@
         delete filter.geo_bounding_box[fieldName];
         fieldName = f;
         filter.geo_bounding_box[f] = oldValue;
-    
+
         return this;
       },
-      
+
       /**
              Sets the top-left coordinate of the bounding box
 
@@ -6259,13 +6259,13 @@
         if (p == null) {
           return filter.geo_bounding_box[fieldName].top_left;
         }
-      
+
         if (isGeoPoint(p)) {
           filter.geo_bounding_box[fieldName].top_left = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
-        
+
         return this;
       },
 
@@ -6280,13 +6280,13 @@
         if (p == null) {
           return filter.geo_bounding_box[fieldName].bottom_right;
         }
-      
+
         if (isGeoPoint(p)) {
           filter.geo_bounding_box[fieldName].bottom_right = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
-        
+
         return this;
       },
 
@@ -6295,7 +6295,7 @@
             "memory" and "indexed".  Default is memory.
 
             @member ejs.GeoBboxFilter
-            @param {String} type The execution type as a string.  
+            @param {String} type The execution type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       type: function (type) {
@@ -6307,14 +6307,14 @@
         if (type === 'memory' || type === 'indexed') {
           filter.geo_bounding_box.type = type;
         }
-        
+
         return this;
       },
-      
+
       /**
             If the lat/long points should be normalized to lie within their
             respective normalized ranges.
-            
+
             Normalized ranges are:
             lon = -180 (exclusive) to 180 (inclusive) range
             lat = -90 to 90 (both inclusive) range
@@ -6331,7 +6331,7 @@
         filter.geo_bounding_box.normalize = trueFalse;
         return this;
       }
-      
+
     });
   };
 
@@ -6361,7 +6361,7 @@
       filter = _common.toJSON();
 
     filter.geo_distance[fieldName] = [0, 0];
-    
+
     return extend(_common, {
 
       /**
@@ -6373,7 +6373,7 @@
             */
       field: function (f) {
         var oldValue = filter.geo_distance[fieldName];
-    
+
         if (f == null) {
           return fieldName;
         }
@@ -6381,13 +6381,13 @@
         delete filter.geo_distance[fieldName];
         fieldName = f;
         filter.geo_distance[f] = oldValue;
-    
+
         return this;
       },
-      
+
       /**
-             Sets the numeric distance to be used.  The distance can be a 
-             numeric value, and then the unit (either mi or km can be set) 
+             Sets the numeric distance to be used.  The distance can be a
+             numeric value, and then the unit (either mi or km can be set)
              controlling the unit. Or a single string with the unit as well.
 
              @member ejs.GeoDistanceFilter
@@ -6398,11 +6398,11 @@
         if (numericDistance == null) {
           return filter.geo_distance.distance;
         }
-      
+
         if (!isNumber(numericDistance)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.geo_distance.distance = numericDistance;
         return this;
       },
@@ -6419,12 +6419,12 @@
         if (unit == null) {
           return filter.geo_distance.unit;
         }
-      
+
         unit = unit.toLowerCase();
         if (unit === 'mi' || unit === 'km') {
           filter.geo_distance.unit = unit;
         }
-        
+
         return this;
       },
 
@@ -6439,23 +6439,23 @@
         if (p == null) {
           return filter.geo_distance[fieldName];
         }
-      
+
         if (isGeoPoint(p)) {
           filter.geo_distance[fieldName] = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
-        
+
         return this;
       },
 
 
       /**
-            How to compute the distance. Can either be arc (better precision) 
+            How to compute the distance. Can either be arc (better precision)
             or plane (faster). Defaults to arc.
 
             @member ejs.GeoDistanceFilter
-            @param {String} type The execution type as a string.  
+            @param {String} type The execution type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       distanceType: function (type) {
@@ -6467,14 +6467,14 @@
         if (type === 'arc' || type === 'plane') {
           filter.geo_distance.distance_type = type;
         }
-        
+
         return this;
       },
-      
+
       /**
             If the lat/long points should be normalized to lie within their
             respective normalized ranges.
-            
+
             Normalized ranges are:
             lon = -180 (exclusive) to 180 (inclusive) range
             lat = -90 to 90 (both inclusive) range
@@ -6491,11 +6491,11 @@
         filter.geo_distance.normalize = trueFalse;
         return this;
       },
-      
+
       /**
-            Will an optimization of using first a bounding box check will be 
-            used. Defaults to memory which will do in memory checks. Can also 
-            have values of indexed to use indexed value check, or none which 
+            Will an optimization of using first a bounding box check will be
+            used. Defaults to memory which will do in memory checks. Can also
+            have values of indexed to use indexed value check, or none which
             disables bounding box optimization.
 
             @member ejs.GeoDistanceFilter
@@ -6511,10 +6511,10 @@
         if (t === 'memory' || t === 'indexed' || t === 'none') {
           filter.geo_distance.optimize_bbox = t;
         }
-        
+
         return this;
       }
-      
+
     });
   };
 
@@ -6544,7 +6544,7 @@
       filter = _common.toJSON();
 
     filter.geo_distance_range[fieldName] = [0, 0];
-    
+
     return extend(_common, {
 
      /**
@@ -6567,7 +6567,7 @@
 
         return this;
       },
-      
+
       /**
              * Sets the start point of the distance range
 
@@ -6579,11 +6579,11 @@
         if (numericDistance == null) {
           return filter.geo_distance_range.from;
         }
-      
+
         if (!isNumber(numericDistance)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.geo_distance_range.from = numericDistance;
         return this;
       },
@@ -6603,17 +6603,17 @@
         if (!isNumber(numericDistance)) {
           throw new TypeError('Argument must be a numeric value');
         }
-            
+
         filter.geo_distance_range.to = numericDistance;
         return this;
       },
 
       /**
-            Should the first from (if set) be inclusive or not. 
+            Should the first from (if set) be inclusive or not.
             Defaults to true
 
             @member ejs.GeoDistanceRangeFilter
-            @param {Boolean} trueFalse true to include, false to exclude 
+            @param {Boolean} trueFalse true to include, false to exclude
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       includeLower: function (trueFalse) {
@@ -6629,7 +6629,7 @@
             Should the last to (if set) be inclusive or not. Defaults to true.
 
             @member ejs.GeoDistanceRangeFilter
-            @param {Boolean} trueFalse true to include, false to exclude 
+            @param {Boolean} trueFalse true to include, false to exclude
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       includeUpper: function (trueFalse) {
@@ -6642,7 +6642,7 @@
       },
 
       /**
-            Greater than value.  Same as setting from to the value, and 
+            Greater than value.  Same as setting from to the value, and
             include_lower to false,
 
             @member ejs.GeoDistanceRangeFilter
@@ -6657,7 +6657,7 @@
         if (!isNumber(val)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.geo_distance_range.gt = val;
         return this;
       },
@@ -6678,13 +6678,13 @@
         if (!isNumber(val)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.geo_distance_range.gte = val;
         return this;
       },
 
       /**
-            Less than value.  Same as setting to to the value, and include_upper 
+            Less than value.  Same as setting to to the value, and include_upper
             to false.
 
             @member ejs.GeoDistanceRangeFilter
@@ -6699,13 +6699,13 @@
         if (!isNumber(val)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.geo_distance_range.lt = val;
         return this;
       },
 
       /**
-            Less than or equal to value.  Same as setting to to the value, 
+            Less than or equal to value.  Same as setting to to the value,
             and include_upper to true.
 
             @member ejs.GeoDistanceRangeFilter
@@ -6720,11 +6720,11 @@
         if (!isNumber(val)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.geo_distance_range.lte = val;
         return this;
       },
-      
+
       /**
              Sets the distance unit.  Valid values are "mi" for miles or "km"
              for kilometers. Defaults to "km".
@@ -6737,12 +6737,12 @@
         if (unit == null) {
           return filter.geo_distance_range.unit;
         }
-      
+
         unit = unit.toLowerCase();
         if (unit === 'mi' || unit === 'km') {
           filter.geo_distance_range.unit = unit;
         }
-        
+
         return this;
       },
 
@@ -6757,23 +6757,23 @@
         if (p == null) {
           return filter.geo_distance_range[fieldName];
         }
-      
+
         if (isGeoPoint(p)) {
           filter.geo_distance_range[fieldName] = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
-        
+
         return this;
       },
 
 
       /**
-            How to compute the distance. Can either be arc (better precision) 
+            How to compute the distance. Can either be arc (better precision)
             or plane (faster). Defaults to arc.
 
             @member ejs.GeoDistanceRangeFilter
-            @param {String} type The execution type as a string.  
+            @param {String} type The execution type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       distanceType: function (type) {
@@ -6785,14 +6785,14 @@
         if (type === 'arc' || type === 'plane') {
           filter.geo_distance_range.distance_type = type;
         }
-        
+
         return this;
       },
-      
+
       /**
             If the lat/long points should be normalized to lie within their
             respective normalized ranges.
-            
+
             Normalized ranges are:
             lon = -180 (exclusive) to 180 (inclusive) range
             lat = -90 to 90 (both inclusive) range
@@ -6809,11 +6809,11 @@
         filter.geo_distance_range.normalize = trueFalse;
         return this;
       },
-      
+
       /**
-            Will an optimization of using first a bounding box check will be 
-            used. Defaults to memory which will do in memory checks. Can also 
-            have values of indexed to use indexed value check, or none which 
+            Will an optimization of using first a bounding box check will be
+            used. Defaults to memory which will do in memory checks. Can also
+            have values of indexed to use indexed value check, or none which
             disables bounding box optimization.
 
             @member ejs.GeoDistanceRangeFilter
@@ -6829,10 +6829,10 @@
         if (t === 'memory' || t === 'indexed' || t === 'none') {
           filter.geo_distance_range.optimize_bbox = t;
         }
-        
+
         return this;
       }
-      
+
     });
   };
 
@@ -6858,7 +6858,7 @@
 
     var
       _common = ejs.FilterMixin('geo_polygon'),
-      filter = _common.toJSON(); 
+      filter = _common.toJSON();
 
     filter.geo_polygon[fieldName] = {
       points: []
@@ -6886,12 +6886,12 @@
 
         return this;
       },
-       
+
       /**
-             Sets a series of points that represent a polygon.  If passed a 
-             single <code>GeoPoint</code> object, it is added to the current 
-             list of points.  If passed an array of <code>GeoPoint</code> 
-             objects it replaces all current values. 
+             Sets a series of points that represent a polygon.  If passed a
+             single <code>GeoPoint</code> object, it is added to the current
+             list of points.  If passed an array of <code>GeoPoint</code>
+             objects it replaces all current values.
 
              @member ejs.GeoPolygonFilter
              @param {Array} pointsArray the array of points that represent the polygon
@@ -6899,11 +6899,11 @@
              */
       points: function (p) {
         var i, len;
-        
+
         if (p == null) {
           return filter.geo_polygon[fieldName].points;
         }
-      
+
         if (isGeoPoint(p)) {
           filter.geo_polygon[fieldName].points.push(p.toJSON());
         } else if (isArray(p)) {
@@ -6912,20 +6912,20 @@
             if (!isGeoPoint(p[i])) {
               throw new TypeError('Argument must be Array of GeoPoints');
             }
-            
+
             filter.geo_polygon[fieldName].points.push(p[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a GeoPoint or Array of GeoPoints');
         }
-        
+
         return this;
       },
 
       /**
             If the lat/long points should be normalized to lie within their
             respective normalized ranges.
-            
+
             Normalized ranges are:
             lon = -180 (exclusive) to 180 (inclusive) range
             lat = -90 to 90 (both inclusive) range
@@ -6942,19 +6942,19 @@
         filter.geo_polygon.normalize = trueFalse;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>Efficient filtering of documents containing shapes indexed using the 
+    <p>Efficient filtering of documents containing shapes indexed using the
     geo_shape type.</p>
 
-    <p>Much like the geo_shape type, the geo_shape filter uses a grid square 
-    representation of the filter shape to find those documents which have shapes 
-    that relate to the filter shape in a specified way. In order to do this, the 
-    field being queried must be of geo_shape type. The filter will use the same 
+    <p>Much like the geo_shape type, the geo_shape filter uses a grid square
+    representation of the filter shape to find those documents which have shapes
+    that relate to the filter shape in a specified way. In order to do this, the
+    field being queried must be of geo_shape type. The filter will use the same
     PrefixTree configuration as defined for the field.</p>
 
     @name ejs.GeoShapeFilter
@@ -6974,7 +6974,7 @@
     var
       _common = ejs.FilterMixin('geo_shape'),
       filter = _common.toJSON();
-    
+
     filter.geo_shape[field] = {};
 
     return extend(_common, {
@@ -6988,7 +6988,7 @@
             */
       field: function (f) {
         var oldValue = filter.geo_shape[field];
-  
+
         if (f == null) {
           return field;
         }
@@ -6996,7 +6996,7 @@
         delete filter.geo_shape[field];
         field = f;
         filter.geo_shape[f] = oldValue;
-  
+
         return this;
       },
 
@@ -7015,7 +7015,7 @@
         if (filter.geo_shape[field].indexed_shape != null) {
           delete filter.geo_shape[field].indexed_shape;
         }
-      
+
         filter.geo_shape[field].shape = shape.toJSON();
         return this;
       },
@@ -7036,14 +7036,14 @@
         if (filter.geo_shape[field].shape != null) {
           delete filter.geo_shape[field].shape;
         }
-      
+
         filter.geo_shape[field].indexed_shape = indexedShape.toJSON();
         return this;
       },
 
       /**
-            Sets the shape relation type.  A relationship between a Query Shape 
-            and indexed Shapes that will be used to determine if a Document 
+            Sets the shape relation type.  A relationship between a Query Shape
+            and indexed Shapes that will be used to determine if a Document
             should be matched or not.  Valid values are:  intersects, disjoint,
             and within.
 
@@ -7060,25 +7060,25 @@
         if (relation === 'intersects' || relation === 'disjoint' || relation === 'within') {
           filter.geo_shape[field].relation = relation;
         }
-    
+
         return this;
       },
 
       /**
-            <p>Sets the spatial strategy.</p>  
+            <p>Sets the spatial strategy.</p>
             <p>Valid values are:</p>
-            
+
             <dl>
                 <dd><code>recursive</code> - default, recursively traverse nodes in
-                  the spatial prefix tree.  This strategy has support for 
+                  the spatial prefix tree.  This strategy has support for
                   searching non-point shapes.</dd>
                 <dd><code>term</code> - uses a large TermsFilter on each node
-                  in the spatial prefix tree.  It only supports the search of 
+                  in the spatial prefix tree.  It only supports the search of
                   indexed Point shapes.</dd>
             </dl>
 
             <p>This is an advanced setting, use with care.</p>
-            
+
             @since elasticsearch 0.90
             @member ejs.GeoShapeFilter
             @param {String} strategy The strategy as a string.
@@ -7093,10 +7093,10 @@
         if (strategy === 'recursive' || strategy === 'term') {
           filter.geo_shape[field].strategy = strategy;
         }
-        
+
         return this;
       }
-      
+
     });
   };
 
@@ -7240,7 +7240,7 @@
         }
 
         filter.has_child.inner_hits = i.toJSON();
-        
+
         return this;
       },
 
@@ -7412,8 +7412,8 @@
 
   /**
     @class
-    <p>Filters documents that only have the provided ids. Note, this filter 
-    does not require the _id field to be indexed since it works using the 
+    <p>Filters documents that only have the provided ids. Note, this filter
+    does not require the _id field to be indexed since it works using the
     _uid field.</p>
 
     @name ejs.IdsFilter
@@ -7433,8 +7433,8 @@
 
     var
       _common = ejs.FilterMixin('ids'),
-      filter = _common.toJSON(); 
-  
+      filter = _common.toJSON();
+
     if (isString(ids)) {
       filter.ids.values = [ids];
     } else if (isArray(ids)) {
@@ -7458,7 +7458,7 @@
         if (val == null) {
           return filter.ids.values;
         }
-  
+
         if (isString(val)) {
           filter.ids.values.push(val);
         } else if (isArray(val)) {
@@ -7466,7 +7466,7 @@
         } else {
           throw new TypeError('Argument must be a string or an array');
         }
-      
+
         return this;
       },
 
@@ -7484,11 +7484,11 @@
         if (filter.ids.type == null) {
           filter.ids.type = [];
         }
-      
+
         if (type == null) {
           return filter.ids.type;
         }
-      
+
         if (isString(type)) {
           filter.ids.type.push(type);
         } else if (isArray(type)) {
@@ -7496,18 +7496,18 @@
         } else {
           throw new TypeError('Argument must be a string or an array');
         }
-      
+
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>The indices filter can be used when executed across multiple indices, 
-    allowing to have a filter that executes only when executed on an index that 
-    matches a specific list of indices, and another filter that executes when it 
+    <p>The indices filter can be used when executed across multiple indices,
+    allowing to have a filter that executes only when executed on an index that
+    matches a specific list of indices, and another filter that executes when it
     is executed on an index that does not match the listed indices.</p>
 
     @name ejs.IndicesFilter
@@ -7522,7 +7522,7 @@
     A configurable filter that is dependent on the index name.
 
     @param {Object} fltr A valid filter object.
-    @param {(String|String[])} indices a single index name or an array of index 
+    @param {(String|String[])} indices a single index name or an array of index
       names.
     */
   ejs.IndicesFilter = function (fltr, indices) {
@@ -7530,11 +7530,11 @@
     if (!isFilter(fltr)) {
       throw new TypeError('Argument must be a Filter');
     }
-  
-    var 
+
+    var
       _common = ejs.FilterMixin('indices'),
       filter = _common.toJSON();
-    
+
     filter.indices.filter = fltr.toJSON();
 
     if (isString(indices)) {
@@ -7571,9 +7571,9 @@
 
         return this;
       },
-  
+
       /**
-            Sets the filter to be used when executing on one of the indicies 
+            Sets the filter to be used when executing on one of the indicies
             specified.
 
             @member ejs.IndicesFilter
@@ -7588,7 +7588,7 @@
         if (!isFilter(f)) {
           throw new TypeError('Argument must be a Filter');
         }
-      
+
         filter.indices.filter = f.toJSON();
         return this;
       },
@@ -7617,10 +7617,10 @@
         } else {
           throw new TypeError('Argument must be string or Filter');
         }
-    
+
         return this;
       }
-      
+
     });
   };
 
@@ -7643,10 +7643,10 @@
     */
   ejs.LimitFilter = function (limit) {
 
-    var 
+    var
       _common = ejs.FilterMixin('limit'),
       filter = _common.toJSON();
-    
+
     filter.limit.value = limit;
 
     return extend(_common, {
@@ -7666,11 +7666,11 @@
         if (!isNumber(val)) {
           throw new TypeError('Argument must be a numeric value');
         }
-            
+
         filter.limit.value = val;
         return this;
       }
-      
+
     });
   };
 
@@ -7714,11 +7714,11 @@
     */
   ejs.MissingFilter = function (fieldName) {
 
-    
-    var 
+
+    var
       _common = ejs.FilterMixin('missing'),
       filter = _common.toJSON();
-    
+
     filter.missing.field = fieldName;
 
     return extend(_common, {
@@ -7738,7 +7738,7 @@
         filter.missing.field = name;
         return this;
       },
-      
+
       /**
             Checks if the field doesn't exist.
 
@@ -7770,21 +7770,21 @@
         filter.missing.null_value = trueFalse;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
     <p>Nested filters allow you to search against content within objects that are
-       embedded inside of other objects. It is similar to <code>XPath</code> 
+       embedded inside of other objects. It is similar to <code>XPath</code>
        expressions in <code>XML</code> both conceptually and syntactically.</p>
 
     <p>
-    The filter is executed against the nested objects / docs as if they were 
-    indexed as separate docs and resulting in the root 
+    The filter is executed against the nested objects / docs as if they were
+    indexed as separate docs and resulting in the root
     parent doc (or parent nested mapping).</p>
-  
+
     @name ejs.NestedFilter
     @ejs filter
     @borrows ejs.FilterMixin.name as name
@@ -7802,14 +7802,14 @@
      */
   ejs.NestedFilter = function (path) {
 
-    var 
+    var
       _common = ejs.FilterMixin('nested'),
       filter = _common.toJSON();
-    
+
     filter.nested.path = path;
 
     return extend(_common, {
-    
+
       /**
              Sets the root context for the nested filter.
              @member ejs.NestedFilter
@@ -7820,7 +7820,7 @@
         if (p == null) {
           return filter.nested.path;
         }
-    
+
         filter.nested.path = p;
         return this;
       },
@@ -7835,11 +7835,11 @@
         if (oQuery == null) {
           return filter.nested.query;
         }
-    
+
         if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query object');
         }
-        
+
         filter.nested.query = oQuery.toJSON();
         return this;
       },
@@ -7855,11 +7855,11 @@
         if (oFilter == null) {
           return filter.nested.filter;
         }
-    
+
         if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter object');
         }
-        
+
         filter.nested.filter = oFilter.toJSON();
         return this;
       },
@@ -7879,7 +7879,7 @@
         filter.nested.boost = boost;
         return this;
       },
-    
+
       /**
             If the nested query should be "joined" with the parent document.
             Defaults to false.
@@ -7896,10 +7896,10 @@
         filter.nested.join = trueFalse;
         return this;
       },
-    
+
       /**
-            Sets the scope of the filter.  A scope allows to run facets on the 
-            same scope name that will work against the nested documents. 
+            Sets the scope of the filter.  A scope allows to run facets on the
+            same scope name that will work against the nested documents.
 
             @deprecated since elasticsearch 0.90
             @member ejs.NestedFilter
@@ -7956,11 +7956,11 @@
     if (!isFilter(oFilter)) {
       throw new TypeError('Argument must be a Filter');
     }
-    
-    var 
+
+    var
       _common = ejs.FilterMixin('not'),
       filter = _common.toJSON();
-    
+
     filter.not = oFilter.toJSON();
 
     return extend(_common, {
@@ -7976,31 +7976,31 @@
         if (fltr == null) {
           return filter.not;
         }
-      
+
         if (!isFilter(fltr)) {
           throw new TypeError('Argument must be a Filter');
         }
-        
+
         filter.not = fltr.toJSON();
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>Filters documents with fields that have values within a certain numeric 
-    range. Similar to range filter, except that it works only with numeric 
+    <p>Filters documents with fields that have values within a certain numeric
+    range. Similar to range filter, except that it works only with numeric
     values, and the filter execution works differently.</p>
-    
-    <p>The numeric range filter works by loading all the relevant field values 
-    into memory, and checking for the relevant docs if they satisfy the range 
-    requirements. This requires more memory since the numeric range data are 
-    loaded to memory, but can provide a significant increase in performance.</p> 
-    
-    <p>Note, if the relevant field values have already been loaded to memory, 
-    for example because it was used in facets or was sorted on, then this 
+
+    <p>The numeric range filter works by loading all the relevant field values
+    into memory, and checking for the relevant docs if they satisfy the range
+    requirements. This requires more memory since the numeric range data are
+    loaded to memory, but can provide a significant increase in performance.</p>
+
+    <p>Note, if the relevant field values have already been loaded to memory,
+    for example because it was used in facets or was sorted on, then this
     filter should be used.</p>
 
     @name ejs.NumericRangeFilter
@@ -8031,23 +8031,23 @@
 
              @member ejs.NumericRangeFilter
              @param {String} field the field name
-             @returns {Object} returns <code>this</code> so that calls can be 
+             @returns {Object} returns <code>this</code> so that calls can be
               chained. Returns {String}, field name when field is not specified.
              */
       field: function (field) {
         var oldValue = filter.numeric_range[fieldName];
-      
+
         if (field == null) {
           return fieldName;
         }
-      
+
         delete filter.numeric_range[fieldName];
         fieldName = field;
         filter.numeric_range[fieldName] = oldValue;
-      
+
         return this;
       },
-      
+
       /**
              Sets the endpoint for the current range.
 
@@ -8059,11 +8059,11 @@
         if (from == null) {
           return filter.numeric_range[fieldName].from;
         }
-        
+
         if (!isNumber(from)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.numeric_range[fieldName].from = from;
         return this;
       },
@@ -8083,17 +8083,17 @@
         if (!isNumber(to)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.numeric_range[fieldName].to = to;
         return this;
       },
 
       /**
-            Should the first from (if set) be inclusive or not. 
+            Should the first from (if set) be inclusive or not.
             Defaults to true
 
             @member ejs.NumericRangeFilter
-            @param {Boolean} trueFalse true to include, false to exclude 
+            @param {Boolean} trueFalse true to include, false to exclude
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       includeLower: function (trueFalse) {
@@ -8109,7 +8109,7 @@
             Should the last to (if set) be inclusive or not. Defaults to true.
 
             @member ejs.NumericRangeFilter
-            @param {Boolean} trueFalse true to include, false to exclude 
+            @param {Boolean} trueFalse true to include, false to exclude
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       includeUpper: function (trueFalse) {
@@ -8122,7 +8122,7 @@
       },
 
       /**
-            Greater than value.  Same as setting from to the value, and 
+            Greater than value.  Same as setting from to the value, and
             include_lower to false,
 
             @member ejs.NumericRangeFilter
@@ -8137,7 +8137,7 @@
         if (!isNumber(val)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.numeric_range[fieldName].gt = val;
         return this;
       },
@@ -8158,13 +8158,13 @@
         if (!isNumber(val)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.numeric_range[fieldName].gte = val;
         return this;
       },
 
       /**
-            Less than value.  Same as setting to to the value, and include_upper 
+            Less than value.  Same as setting to to the value, and include_upper
             to false.
 
             @member ejs.NumericRangeFilter
@@ -8179,13 +8179,13 @@
         if (!isNumber(val)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.numeric_range[fieldName].lt = val;
         return this;
       },
 
       /**
-            Less than or equal to value.  Same as setting to to the value, 
+            Less than or equal to value.  Same as setting to to the value,
             and include_upper to true.
 
             @member ejs.NumericRangeFilter
@@ -8200,11 +8200,11 @@
         if (!isNumber(val)) {
           throw new TypeError('Argument must be a numeric value');
         }
-        
+
         filter.numeric_range[fieldName].lte = val;
         return this;
       }
-      
+
     });
   };
 
@@ -8228,7 +8228,7 @@
   ejs.OrFilter = function (filters) {
 
     var
-      i, 
+      i,
       len,
       _common = ejs.FilterMixin('or'),
       filter = _common.toJSON();
@@ -8242,7 +8242,7 @@
         if (!isFilter(filters[i])) {
           throw new TypeError('Argument must be array of Filters');
         }
-        
+
         filter.or.filters.push(filters[i].toJSON());
       }
     } else {
@@ -8252,8 +8252,8 @@
     return extend(_common, {
 
       /**
-             Updates the filters.  If passed a single Filter it is added to 
-             the existing filters.  If passed an array of Filters, they 
+             Updates the filters.  If passed a single Filter it is added to
+             the existing filters.  If passed an array of Filters, they
              replace all existing Filters.
 
              @member ejs.OrFilter
@@ -8262,11 +8262,11 @@
              */
       filters: function (fltr) {
         var i, len;
-        
+
         if (fltr == null) {
           return filter.or.filters;
         }
-      
+
         if (isFilter(fltr)) {
           filter.or.filters.push(fltr.toJSON());
         } else if (isArray(fltr)) {
@@ -8275,16 +8275,16 @@
             if (!isFilter(fltr[i])) {
               throw new TypeError('Argument must be an array of Filters');
             }
-            
+
             filter.or.filters.push(fltr[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
         }
-        
+
         return this;
       }
-      
+
     });
   };
 
@@ -8314,7 +8314,7 @@
       filter = _common.toJSON();
 
     filter.prefix[fieldName] = prefix;
-    
+
     return extend(_common, {
 
       /**
@@ -8322,23 +8322,23 @@
 
              @member ejs.PrefixFilter
              @param {String} field the field name
-             @returns {Object} returns <code>this</code> so that calls can be 
+             @returns {Object} returns <code>this</code> so that calls can be
               chained. Returns {String}, field name when field is not specified.
              */
       field: function (field) {
         var oldValue = filter.prefix[fieldName];
-      
+
         if (field == null) {
           return fieldName;
         }
-      
+
         delete filter.prefix[fieldName];
         fieldName = field;
         filter.prefix[fieldName] = oldValue;
-      
+
         return this;
       },
-      
+
       /**
              Sets the prefix to search for.
 
@@ -8350,26 +8350,26 @@
         if (value == null) {
           return filter.prefix[fieldName];
         }
-      
+
         filter.prefix[fieldName] = value;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>Wraps any query to be used as a filter. Can be placed within queries 
+    <p>Wraps any query to be used as a filter. Can be placed within queries
     that accept a filter.</p>
 
-    <p>The result of the filter is not cached by default.  Set the cache 
-    parameter to true to cache the result of the filter. This is handy when the 
-    same query is used on several (many) other queries.</p> 
-  
-    <p>Note, the process of caching the first execution is higher when not 
+    <p>The result of the filter is not cached by default.  Set the cache
+    parameter to true to cache the result of the filter. This is handy when the
+    same query is used on several (many) other queries.</p>
+
+    <p>Note, the process of caching the first execution is higher when not
     caching (since it needs to satisfy different queries).</p>
-  
+
     @name ejs.QueryFilter
     @ejs filter
     @borrows ejs.FilterMixin.name as name
@@ -8388,11 +8388,11 @@
     if (!isQuery(qry)) {
       throw new TypeError('Argument must be a Query');
     }
-    
+
     var
       _common = ejs.FilterMixin('fquery'),
       filter = _common.toJSON();
-    
+
     filter.fquery.query = qry.toJSON();
 
     return extend(_common, {
@@ -8412,11 +8412,11 @@
         if (!isQuery(q)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         filter.fquery.query = q.toJSON();
         return this;
       }
-      
+
     });
   };
 
@@ -8501,11 +8501,11 @@
       },
 
       /**
-            Should the first from (if set) be inclusive or not. 
+            Should the first from (if set) be inclusive or not.
             Defaults to true
 
             @member ejs.RangeFilter
-            @param {Boolean} trueFalse true to include, false to exclude 
+            @param {Boolean} trueFalse true to include, false to exclude
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       includeLower: function (trueFalse) {
@@ -8521,7 +8521,7 @@
             Should the last to (if set) be inclusive or not. Defaults to true.
 
             @member ejs.RangeFilter
-            @param {Boolean} trueFalse true to include, false to exclude 
+            @param {Boolean} trueFalse true to include, false to exclude
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       includeUpper: function (trueFalse) {
@@ -8534,7 +8534,7 @@
       },
 
       /**
-            Greater than value.  Same as setting from to the value, and 
+            Greater than value.  Same as setting from to the value, and
             include_lower to false,
 
             @member ejs.RangeFilter
@@ -8568,7 +8568,7 @@
       },
 
       /**
-            Less than value.  Same as setting to to the value, and include_upper 
+            Less than value.  Same as setting to to the value, and include_upper
             to false.
 
             @member ejs.RangeFilter
@@ -8585,7 +8585,7 @@
       },
 
       /**
-            Less than or equal to value.  Same as setting to to the value, 
+            Less than or equal to value.  Same as setting to to the value,
             and include_upper to true.
 
             @member ejs.RangeFilter
@@ -8600,14 +8600,14 @@
         filter.range[field].lte = val;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>Filters documents that have a field value matching a regular expression. 
-    Based on Lucene 4.0 RegexpFilter which uses automaton to efficiently iterate 
+    <p>Filters documents that have a field value matching a regular expression.
+    Based on Lucene 4.0 RegexpFilter which uses automaton to efficiently iterate
     over index terms.</p>
 
     @name ejs.RegexpFilter
@@ -8675,7 +8675,7 @@
 
       /**
             The regex flags to use.  Valid flags are:
-        
+
             INTERSECTION - Support for intersection notation
             COMPLEMENT - Support for complement notation
             EMPTY - Support for the empty language symbol: #
@@ -8683,9 +8683,9 @@
             INTERVAL - Support for numerical interval notation: <n-m>
             NONE - Disable support for all syntax options
             ALL - Enables support for all syntax options
-        
+
             Use multiple flags by separating with a "|" character.  Example:
-        
+
             INTERSECTION|COMPLEMENT|EMPTY
 
             @member ejs.RegexpFilter
@@ -8700,11 +8700,11 @@
         filter.regexp[field].flags = f;
         return this;
       },
-  
+
       /**
             The regex flags to use as a numeric value.  Advanced use only,
             it is probably better to stick with the <code>flags</code> option.
-        
+
             @member ejs.RegexpFilter
             @param {String} v The flags as a numeric value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -8717,7 +8717,7 @@
         filter.regexp[field].flags_value = v;
         return this;
       }
-      
+
     });
   };
 
@@ -8743,7 +8743,7 @@
     var
       _common = ejs.FilterMixin('script'),
       filter = _common.toJSON();
-    
+
     filter.script.script = script;
 
     return extend(_common, {
@@ -8759,17 +8759,17 @@
         if (s == null) {
           return filter.script.script;
         }
-  
+
         filter.script.script = s;
         return this;
       },
 
       /**
-            Sets parameters that will be applied to the script.  Overwrites 
+            Sets parameters that will be applied to the script.  Overwrites
             any existing params.
 
             @member ejs.ScriptFilter
-            @param {Object} p An object where the keys are the parameter name and 
+            @param {Object} p An object where the keys are the parameter name and
               values are the parameter value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -8777,11 +8777,11 @@
         if (p == null) {
           return filter.script.params;
         }
-    
+
         filter.script.params = p;
         return this;
       },
-    
+
       /**
             Sets the script language.
 
@@ -8793,11 +8793,11 @@
         if (lang == null) {
           return filter.script.lang;
         }
-  
+
         filter.script.lang = lang;
         return this;
       }
-      
+
     });
   };
 
@@ -8832,53 +8832,53 @@
     return extend(_common, {
 
       /**
-             Provides access to the filter fieldName used to construct the 
+             Provides access to the filter fieldName used to construct the
              termFilter object.
-             
+
              @member ejs.TermFilter
              @param {String} f the fieldName term
              @returns {Object} returns <code>this</code> so that calls can be chained.
-              When k is not specified, Returns {String}, the filter fieldName used to construct 
+              When k is not specified, Returns {String}, the filter fieldName used to construct
               the termFilter object.
              */
       field: function (f) {
         var oldValue = filter.term[fieldName];
-      
+
         if (f == null) {
           return fieldName;
         }
-      
+
         delete filter.term[fieldName];
         fieldName = f;
         filter.term[fieldName] = oldValue;
-      
+
         return this;
       },
 
       /**
-             Provides access to the filter term used to construct the 
+             Provides access to the filter term used to construct the
              termFilter object.
-             
+
              @member ejs.TermFilter
              @returns {Object} returns <code>this</code> so that calls can be chained.
-              When k is not specified, Returns {String}, the filter term used 
+              When k is not specified, Returns {String}, the filter term used
               to construct the termFilter object.
              */
       term: function (v) {
         if (v == null) {
           return filter.term[fieldName];
         }
-      
+
         filter.term[fieldName] = v;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>Filters documents that have fields that match any of the provided 
+    <p>Filters documents that have fields that match any of the provided
     terms (not analyzed)</p>
 
     @name ejs.TermsFilter
@@ -8890,7 +8890,7 @@
     @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
-    A Filter that matches documents containing provided terms. 
+    A Filter that matches documents containing provided terms.
 
     @param {String} field the document field/key to filter against
     @param {(String|String[])} terms a single term or an array of terms.
@@ -8900,21 +8900,21 @@
     var
       _common = ejs.FilterMixin('terms'),
       filter = _common.toJSON(),
-    
+
       // make sure we are setup for a list of terms
       setupTerms = function () {
         if (!isArray(filter.terms[field])) {
           filter.terms[field] = [];
         }
       },
-    
+
       // make sure we are setup for a terms lookup
       setupLookup = function () {
         if (isArray(filter.terms[field])) {
           filter.terms[field] = {};
         }
       };
-   
+
     if (isArray(terms)) {
       filter.terms[field] = terms;
     } else {
@@ -8932,7 +8932,7 @@
             */
       field: function (f) {
         var oldValue = filter.terms[field];
-    
+
         if (f == null) {
           return field;
         }
@@ -8940,10 +8940,10 @@
         delete filter.terms[field];
         field = f;
         filter.terms[f] = oldValue;
-    
+
         return this;
       },
-  
+
       /**
             Sets the terms.  If t is a String, it is added to the existing
             list of terms.  If t is an array, the list of terms replaces the
@@ -8958,19 +8958,19 @@
         if (t == null) {
           return filter.terms[field];
         }
-        
+
         if (isArray(t)) {
           filter.terms[field] = t;
         } else {
           filter.terms[field].push(t);
         }
-    
+
         return this;
       },
 
       /**
-            Sets the index the document containing the terms is in when 
-            performing a terms lookup.  Defaults to the index currently 
+            Sets the index the document containing the terms is in when
+            performing a terms lookup.  Defaults to the index currently
             being searched.
 
             @since elasticsearch 0.90
@@ -8983,13 +8983,13 @@
         if (idx == null) {
           return filter.terms[field].index;
         }
-        
+
         filter.terms[field].index = idx;
         return this;
       },
 
       /**
-            Sets the type the document containing the terms when performing a 
+            Sets the type the document containing the terms when performing a
             terms lookup.
 
             @since elasticsearch 0.90
@@ -9002,7 +9002,7 @@
         if (type == null) {
           return filter.terms[field].type;
         }
-        
+
         filter.terms[field].type = type;
         return this;
       },
@@ -9022,11 +9022,11 @@
         if (id == null) {
           return filter.terms[field].id;
         }
-        
+
         filter.terms[field].id = id;
         return this;
       },
-      
+
       /**
             Sets the path/field name where the terms in the source document
             are located when performing a terms lookup.
@@ -9041,13 +9041,13 @@
         if (path == null) {
           return filter.terms[field].path;
         }
-        
+
         filter.terms[field].path = path;
         return this;
       },
-      
+
       /**
-            Sets the routing value for the source document when performing a 
+            Sets the routing value for the source document when performing a
             terms lookup.
 
             @since elasticsearch 0.90.2
@@ -9060,11 +9060,11 @@
         if (r == null) {
           return filter.terms[field].routing;
         }
-        
+
         filter.terms[field].routing = r;
         return this;
       },
-      
+
       /**
             Enable or disable caching of the lookup
 
@@ -9081,11 +9081,11 @@
         filter.terms[field].cache = trueFalse;
         return this;
       },
-      
+
       /**
-            Sets the way terms filter executes is by iterating over the terms 
-            provided and finding matches docs (loading into a bitset) and 
-            caching it.  Valid values are: plain, bool, bool_nocache, and, 
+            Sets the way terms filter executes is by iterating over the terms
+            provided and finding matches docs (loading into a bitset) and
+            caching it.  Valid values are: plain, bool, bool_nocache, and,
             and_nocache, or, or_nocache.  Defaults to plain.
 
             @member ejs.TermsFilter
@@ -9096,16 +9096,16 @@
         if (e == null) {
           return filter.terms.execution;
         }
-      
+
         e = e.toLowerCase();
-        if (e === 'plain' || e === 'bool' || e === 'bool_nocache' || 
+        if (e === 'plain' || e === 'bool' || e === 'bool_nocache' ||
           e === 'and' || e === 'and_nocache' || e === 'or' || e === 'or_nocache') {
           filter.terms.execution = e;
         }
-      
+
         return this;
       }
-      
+
     });
   };
 
@@ -9128,10 +9128,10 @@
     */
   ejs.TypeFilter = function (type) {
 
-    var 
+    var
     _common = ejs.FilterMixin('type'),
     filter = _common.toJSON();
-    
+
     filter.type.value = type;
 
     return extend(_common, {
@@ -9147,11 +9147,11 @@
         if (type == null) {
           return filter.type.value;
         }
-      
+
         filter.type.value = type;
         return this;
       }
-      
+
     });
   };
 
@@ -9181,6 +9181,31 @@
     return extend(_common, {
 
       /**
+             Adds filter to boolean container. Given query "must" appear in matching documents.
+
+             @member ejs.BoolQuery
+             @param {Object} oQuery A valid <code>Query</code> object
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      filter: function (oFilter) {
+        var i, len;
+
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+
+        if (query.bool.filter == null) {
+          query.bool.filter = oFilter;
+        }
+
+        if (oFilter == null) {
+          return query.bool.filter;
+        }
+
+        return this;
+      },
+
+      /**
              Adds query to boolean container. Given query "must" appear in matching documents.
 
              @member ejs.BoolQuery
@@ -9189,11 +9214,11 @@
              */
       must: function (oQuery) {
         var i, len;
-        
+
         if (query.bool.must == null) {
           query.bool.must = [];
         }
-    
+
         if (oQuery == null) {
           return query.bool.must;
         }
@@ -9206,13 +9231,13 @@
             if (!isQuery(oQuery[i])) {
               throw new TypeError('Argument must be an array of Queries');
             }
-            
+
             query.bool.must.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
         }
-        
+
         return this;
       },
 
@@ -9225,7 +9250,7 @@
              */
       mustNot: function (oQuery) {
         var i, len;
-        
+
         if (query.bool.must_not == null) {
           query.bool.must_not = [];
         }
@@ -9233,7 +9258,7 @@
         if (oQuery == null) {
           return query.bool.must_not;
         }
-    
+
         if (isQuery(oQuery)) {
           query.bool.must_not.push(oQuery.toJSON());
         } else if (isArray(oQuery)) {
@@ -9242,13 +9267,13 @@
             if (!isQuery(oQuery[i])) {
               throw new TypeError('Argument must be an array of Queries');
             }
-            
+
             query.bool.must_not.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
         }
-        
+
         return this;
       },
 
@@ -9261,7 +9286,7 @@
              */
       should: function (oQuery) {
         var i, len;
-        
+
         if (query.bool.should == null) {
           query.bool.should = [];
         }
@@ -9269,7 +9294,7 @@
         if (oQuery == null) {
           return query.bool.should;
         }
-    
+
         if (isQuery(oQuery)) {
           query.bool.should.push(oQuery.toJSON());
         } else if (isArray(oQuery)) {
@@ -9278,13 +9303,13 @@
             if (!isQuery(oQuery[i])) {
               throw new TypeError('Argument must be an array of Queries');
             }
-            
+
             query.bool.should.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
         }
-        
+
         return this;
       },
 
@@ -9305,7 +9330,7 @@
         query.bool.adjust_pure_negative = trueFalse;
         return this;
       },
-      
+
       /**
             Enables or disables similarity coordinate scoring of documents
             matching the <code>Query</code>. Default: false.
@@ -9325,7 +9350,7 @@
 
       /**
             <p>Sets the number of optional clauses that must match.</p>
-      
+
             <p>By default no optional clauses are necessary for a match
             (unless there are no required clauses).  If this method is used,
             then the specified number of clauses is required.</p>
@@ -9333,7 +9358,7 @@
             <p>Use of this method is totally independent of specifying that
             any specific clauses are required (or prohibited).  This number will
             only be compared against the number of matching optional clauses.</p>
-   
+
             @member ejs.BoolQuery
             @param {Integer} minMatch A positive <code>integer</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -9346,15 +9371,15 @@
         query.bool.minimum_number_should_match = minMatch;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>The boosting query can be used to effectively demote results that match 
-    a given query. Unlike the “NOT” clause in bool query, this still selects 
-    documents that contain undesirable terms, but reduces their overall 
+    <p>The boosting query can be used to effectively demote results that match
+    a given query. Unlike the “NOT” clause in bool query, this still selects
+    documents that contain undesirable terms, but reduces their overall
     score.</p>
 
     @name ejs.BoostingQuery
@@ -9367,7 +9392,7 @@
     <p>Constructs a query that can demote search results.  A negative boost.</p>
 
     @param {Object} positiveQry Valid query object used to select all matching docs.
-    @param {Object} negativeQry Valid query object to match the undesirable docs 
+    @param {Object} negativeQry Valid query object to match the undesirable docs
       returned within the positiveQry result set.
     @param {Double} negativeBoost A double value where 0 < n < 1.
      */
@@ -9376,23 +9401,23 @@
     if (!isQuery(positiveQry) || !isQuery(negativeQry)) {
       throw new TypeError('Arguments must be Queries');
     }
-    
-    var 
+
+    var
       _common = ejs.QueryMixin('boosting'),
       query = _common.toJSON();
-    
+
     query.boosting.positive = positiveQry.toJSON();
     query.boosting.negative = negativeQry.toJSON();
     query.boosting.negative_boost = negativeBoost;
 
     return extend(_common, {
-    
+
       /**
              Sets the "master" query that determines which results are returned.
 
              @member ejs.BoostingQuery
              @param {Object} oQuery A valid <code>Query</code> object
-             @returns {Object} returns <code>this</code> so that calls can be 
+             @returns {Object} returns <code>this</code> so that calls can be
               chained. Returns {Object} current positive query if oQuery is
               not specified.
              */
@@ -9400,11 +9425,11 @@
         if (oQuery == null) {
           return query.boosting.positive;
         }
-    
+
         if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         query.boosting.positive = oQuery.toJSON();
         return this;
       },
@@ -9415,7 +9440,7 @@
 
              @member ejs.BoostingQuery
              @param {Object} oQuery A valid <code>Query</code> object
-             @returns {Object} returns <code>this</code> so that calls can be 
+             @returns {Object} returns <code>this</code> so that calls can be
               chained. Returns {Object} current negative query if oQuery is
               not specified.
              */
@@ -9423,15 +9448,15 @@
         if (oQuery == null) {
           return query.boosting.negative;
         }
-    
+
         if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         query.boosting.negative = oQuery.toJSON();
         return this;
       },
-   
+
       /**
             Sets the negative boost value.
 
@@ -9447,30 +9472,30 @@
         query.boosting.negative_boost = negBoost;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>A query that executes high-frequency terms in a optional sub-query to 
+    <p>A query that executes high-frequency terms in a optional sub-query to
     prevent slow queries due to "common" terms like stopwords.</p>
-  
-    <p>This query basically builds two queries out of the terms in the query 
-    string where low-frequency terms are added to a required boolean clause and 
-    high-frequency terms are added to an optional boolean clause. The optional 
+
+    <p>This query basically builds two queries out of the terms in the query
+    string where low-frequency terms are added to a required boolean clause and
+    high-frequency terms are added to an optional boolean clause. The optional
     clause is only executed if the required "low-frequency' clause matches.</p>
-  
-    <p><code>CommonTermsQuery</code> has several advantages over stopword 
-    filtering at index or query time since a term can be "classified" based on 
-    the actual document frequency in the index and can prevent slow queries even 
+
+    <p><code>CommonTermsQuery</code> has several advantages over stopword
+    filtering at index or query time since a term can be "classified" based on
+    the actual document frequency in the index and can prevent slow queries even
     across domains without specialized stopword files.</p>
-  
+
     @name ejs.CommonTermsQuery
     @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
-  
+
     @desc
     A query that executes high-frequency terms in a optional sub-query.
 
@@ -9482,20 +9507,20 @@
     var
       _common = ejs.QueryMixin('common'),
       query = _common.toJSON();
-  
+
     // support for full Builder functionality where no constructor is used
     // use dummy field until one is set
     if (field == null) {
       field = 'no_field_set';
     }
-  
+
     query.common[field] = {};
-  
+
     // only set the query is one is passed in
     if (qstr != null) {
       query.common[field].query = qstr;
     }
-  
+
     return extend(_common, {
 
       /**
@@ -9507,7 +9532,7 @@
             */
       field: function (f) {
         var oldValue = query.common[field];
-    
+
         if (f == null) {
           return field;
         }
@@ -9515,10 +9540,10 @@
         delete query.common[field];
         field = f;
         query.common[f] = oldValue;
-    
+
         return this;
       },
-  
+
       /**
             Sets the query string.
 
@@ -9550,7 +9575,7 @@
         query.common[field].analyzer = analyzer;
         return this;
       },
-    
+
       /**
             Enables or disables similarity coordinate scoring of documents
             commoning the <code>Query</code>. Default: false.
@@ -9567,9 +9592,9 @@
         query.common[field].disable_coord = trueFalse;
         return this;
       },
-          
+
       /**
-            Sets the maximum threshold/frequency to be considered a low 
+            Sets the maximum threshold/frequency to be considered a low
             frequency term.  Set to a value between 0 and 1.
 
             @member ejs.CommonTermsQuery
@@ -9605,11 +9630,11 @@
 
         return this;
       },
-    
+
       /**
             Sets the boolean operator to be used for low frequency terms.
             Default: AND
-          
+
             @member ejs.CommonTermsQuery
             @param {String} op Any of "and" or "or", no quote characters.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -9626,7 +9651,7 @@
 
         return this;
       },
-    
+
       /**
             Sets a string value controlling how many "should" clauses in the
             resulting <code>Query</code> should match.
@@ -9645,7 +9670,7 @@
       },
 
       /**
-            Sets the minimum number of low freq matches that need to match in 
+            Sets the minimum number of low freq matches that need to match in
             a document before that document is returned in the results.
 
             @member ejs.CommonTermsQuery
@@ -9662,11 +9687,11 @@
         }
 
         query.common[field].minimum_should_match.low_freq = min;
-        return this;      
+        return this;
       },
-      
+
       /**
-            Sets the minimum number of high freq matches that need to match in 
+            Sets the minimum number of high freq matches that need to match in
             a document before that document is returned in the results.
 
             @member ejs.CommonTermsQuery
@@ -9685,7 +9710,7 @@
         query.common[field].minimum_should_match.high_freq = min;
         return this;
       },
-      
+
       /**
             Sets the boost value for documents commoning the <code>Query</code>.
 
@@ -9747,11 +9772,11 @@
         if (oQuery == null) {
           return query.constant_score.query;
         }
-      
+
         if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         query.constant_score.query = oQuery.toJSON();
         return this;
       },
@@ -9767,11 +9792,11 @@
         if (oFilter == null) {
           return query.constant_score.filter;
         }
-      
+
         if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter');
         }
-        
+
         query.constant_score.filter = oFilter.toJSON();
         return this;
       },
@@ -9791,7 +9816,7 @@
         query.constant_score._cache = trueFalse;
         return this;
       },
-      
+
       /**
             Set the cache key.
 
@@ -9807,7 +9832,7 @@
         query.constant_score._cache_key = k;
         return this;
       }
-      
+
     });
   };
 
@@ -9839,7 +9864,7 @@
 
       /**
             Updates the queries.  If passed a single Query, it is added to the
-            list of existing queries.  If passed an array of Queries, it 
+            list of existing queries.  If passed an array of Queries, it
             replaces all existing values.
 
             @member ejs.DisMaxQuery
@@ -9848,15 +9873,15 @@
             */
       queries: function (qs) {
         var i, len;
-        
+
         if (qs == null) {
           return query.dis_max.queries;
         }
-      
+
         if (query.dis_max.queries == null) {
           query.dis_max.queries = [];
         }
-        
+
         if (isQuery(qs)) {
           query.dis_max.queries.push(qs.toJSON());
         } else if (isArray(qs)) {
@@ -9865,7 +9890,7 @@
             if (!isQuery(qs[i])) {
               throw new TypeError('Argument must be array of Queries');
             }
-            
+
             query.dis_max.queries.push(qs[i].toJSON());
           }
         } else {
@@ -9876,12 +9901,12 @@
       },
 
       /**
-            <p>The tie breaker value.</p>  
+            <p>The tie breaker value.</p>
 
-            <p>The tie breaker capability allows results that include the same term in multiple 
-            fields to be judged better than results that include this term in only the best of those 
-            multiple fields, without confusing this with the better case of two different terms in 
-            the multiple fields.</p>  
+            <p>The tie breaker capability allows results that include the same term in multiple
+            fields to be judged better than results that include this term in only the best of those
+            multiple fields, without confusing this with the better case of two different terms in
+            the multiple fields.</p>
 
             <p>Default: 0.0.</p>
 
@@ -9897,16 +9922,16 @@
         query.dis_max.tie_breaker = tieBreaker;
         return this;
       }
-      
+
     });
   };
-  
+
 
   /**
     @class
-    <p>Wrapper to allow SpanQuery objects participate in composite single-field 
-    SpanQueries by 'lying' about their search field. That is, the masked 
-    SpanQuery will function as normal, but when asked for the field it 
+    <p>Wrapper to allow SpanQuery objects participate in composite single-field
+    SpanQueries by 'lying' about their search field. That is, the masked
+    SpanQuery will function as normal, but when asked for the field it
     queries against, it will return the value specified as the masked field vs.
     the real field used in the wrapped span query.</p>
 
@@ -9921,18 +9946,18 @@
 
     @param {Query} spanQry A valid SpanQuery
     @param {Integer} field the maximum field position in a match.
-  
+
     */
   ejs.FieldMaskingSpanQuery = function (spanQry, field) {
 
     if (!isQuery(spanQry)) {
       throw new TypeError('Argument must be a SpanQuery');
     }
-  
-    var 
+
+    var
       _common = ejs.QueryMixin('field_masking_span'),
       query = _common.toJSON();
-    
+
     query.field_masking_span.query = spanQry.toJSON();
     query.field_masking_span.field = field;
 
@@ -9949,17 +9974,17 @@
         if (spanQuery == null) {
           return query.field_masking_span.query;
         }
-    
+
         if (!isQuery(spanQuery)) {
           throw new TypeError('Argument must be a SpanQuery');
         }
-      
+
         query.field_masking_span.query = spanQuery.toJSON();
         return this;
       },
 
       /**
-            Sets the value of the "masked" field.  
+            Sets the value of the "masked" field.
 
             @member ejs.FieldMaskingSpanQuery
             @param {String} f A field name the wrapped span query should use
@@ -9969,11 +9994,11 @@
         if (f == null) {
           return query.field_masking_span.field;
         }
-    
+
         query.field_masking_span.field = f;
         return this;
       }
-      
+
     });
   };
 
@@ -10004,21 +10029,21 @@
     if (!isQuery(someQuery)) {
       throw new TypeError('Argument must be a Query');
     }
-    
+
     if (someFilter != null && !isFilter(someFilter)) {
       throw new TypeError('Argument must be a Filter');
     }
-    
-    var 
+
+    var
       _common = ejs.QueryMixin('filtered'),
       query = _common.toJSON();
-    
+
     query.filtered.query = someQuery.toJSON();
 
     if (someFilter != null) {
       query.filtered.filter = someFilter.toJSON();
     }
-    
+
     return extend(_common, {
 
       /**
@@ -10032,11 +10057,11 @@
         if (oQuery == null) {
           return query.filtered.query;
         }
-      
+
         if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         query.filtered.query = oQuery.toJSON();
         return this;
       },
@@ -10052,32 +10077,32 @@
         if (oFilter == null) {
           return query.filtered.filter;
         }
-      
+
         if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter');
         }
-        
+
         query.filtered.filter = oFilter.toJSON();
         return this;
       },
 
       /**
-            <p>Sets the filter strategy.</p>  
+            <p>Sets the filter strategy.</p>
 
-            <p>The strategy defines how the filter is applied during document collection.  
+            <p>The strategy defines how the filter is applied during document collection.
             Valid values are:</p>
-            
+
             <dl>
                 <dd><code>query_first</code> - advance query scorer first then filter</dd>
                 <dd><code>random_access_random</code> - random access filter</dd>
                 <dd><code>leap_frog</code> - query scorer and filter "leap-frog", query goes first</dd>
                 <dd><code>leap_frog_filter_first</code> - same as <code>leap_frog</code>, but filter goes first</dd>
-                <dd><code>random_access_N</code> - replace <code>N</code> with integer, same as random access 
+                <dd><code>random_access_N</code> - replace <code>N</code> with integer, same as random access
                  except you can specify a custom threshold</dd>
             </dl>
 
             <p>This is an advanced setting, use with care.</p>
-            
+
             @member ejs.FilteredQuery
             @param {String} strategy The strategy as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -10091,13 +10116,13 @@
         if (strategy === 'query_first' || strategy === 'random_access_always' ||
           strategy === 'leap_frog' || strategy === 'leap_frog_filter_first' ||
           strategy.indexOf('random_access_') === 0) {
-            
+
           query.filtered.strategy = strategy;
         }
-        
+
         return this;
       },
-      
+
       /**
             <p>Enables caching of the filter.</p>
 
@@ -10113,7 +10138,7 @@
         query.filtered._cache = trueFalse;
         return this;
       },
-      
+
       /**
             <p>Set the cache key.</p>
 
@@ -10129,7 +10154,7 @@
         query.filtered._cache_key = k;
         return this;
       }
-      
+
     });
   };
 
@@ -10350,26 +10375,26 @@
 
   /**
     @class
-    <p>The fuzzy_like_this_field query is the same as the fuzzy_like_this 
-    query, except that it runs against a single field. It provides nicer query 
-    DSL over the generic fuzzy_like_this query, and support typed fields 
-    query (automatically wraps typed fields with type filter to match only on 
+    <p>The fuzzy_like_this_field query is the same as the fuzzy_like_this
+    query, except that it runs against a single field. It provides nicer query
+    DSL over the generic fuzzy_like_this query, and support typed fields
+    query (automatically wraps typed fields with type filter to match only on
     the specific type).</p>
 
-    <p>Fuzzifies ALL terms provided as strings and then picks the best n 
-    differentiating terms. In effect this mixes the behaviour of FuzzyQuery and 
-    MoreLikeThis but with special consideration of fuzzy scoring factors. This 
-    generally produces good results for queries where users may provide details 
-    in a number of fields and have no knowledge of boolean query syntax and 
+    <p>Fuzzifies ALL terms provided as strings and then picks the best n
+    differentiating terms. In effect this mixes the behaviour of FuzzyQuery and
+    MoreLikeThis but with special consideration of fuzzy scoring factors. This
+    generally produces good results for queries where users may provide details
+    in a number of fields and have no knowledge of boolean query syntax and
     also want a degree of fuzzy matching and a fast query.</p>
 
-    <p>For each source term the fuzzy variants are held in a BooleanQuery with 
-    no coord factor (because we are not looking for matches on multiple variants 
-    in any one doc). Additionally, a specialized TermQuery is used for variants 
-    and does not use that variant term’s IDF because this would favour rarer 
-    terms eg misspellings. Instead, all variants use the same IDF 
-    ranking (the one for the source query term) and this is factored into the 
-    variant’s boost. If the source query term does not exist in the index the 
+    <p>For each source term the fuzzy variants are held in a BooleanQuery with
+    no coord factor (because we are not looking for matches on multiple variants
+    in any one doc). Additionally, a specialized TermQuery is used for variants
+    and does not use that variant term’s IDF because this would favour rarer
+    terms eg misspellings. Instead, all variants use the same IDF
+    ranking (the one for the source query term) and this is factored into the
+    variant’s boost. If the source query term does not exist in the index the
     average IDF of the variants is used.</p>
 
     @name ejs.FuzzyLikeThisFieldQuery
@@ -10392,9 +10417,9 @@
     query.flt_field[field] = {
       like_text: likeText
     };
-  
+
     return extend(_common, {
-  
+
       /**
              The field to run the query against.
 
@@ -10404,18 +10429,18 @@
              */
       field: function (f) {
         var oldValue = query.flt_field[field];
-      
+
         if (f == null) {
           return field;
         }
-    
+
         delete query.flt_field[field];
         field = f;
         query.flt_field[f] = oldValue;
-    
+
         return this;
       },
-  
+
       /**
             The text to find documents like
 
@@ -10427,7 +10452,7 @@
         if (txt == null) {
           return query.flt_field[field].like_text;
         }
-  
+
         query.flt_field[field].like_text = txt;
         return this;
       },
@@ -10443,13 +10468,13 @@
         if (trueFalse == null) {
           return query.flt_field[field].ignore_tf;
         }
-  
+
         query.flt_field[field].ignore_tf = trueFalse;
         return this;
       },
 
       /**
-            The maximum number of query terms that will be included in any 
+            The maximum number of query terms that will be included in any
             generated query. Defaults to 25.
 
             @member ejs.FuzzyLikeThisFieldQuery
@@ -10460,7 +10485,7 @@
         if (max == null) {
           return query.flt_field[field].max_query_terms;
         }
-  
+
         query.flt_field[field].max_query_terms = max;
         return this;
       },
@@ -10476,7 +10501,7 @@
         if (min == null) {
           return query.flt_field[field].min_similarity;
         }
-  
+
         query.flt_field[field].min_similarity = min;
         return this;
       },
@@ -10492,13 +10517,13 @@
         if (len == null) {
           return query.flt_field[field].prefix_length;
         }
-  
+
         query.flt_field[field].prefix_length = len;
         return this;
       },
 
       /**
-            The analyzer that will be used to analyze the text. Defaults to the 
+            The analyzer that will be used to analyze the text. Defaults to the
             analyzer associated with the field.
 
             @member ejs.FuzzyLikeThisFieldQuery
@@ -10509,11 +10534,11 @@
         if (analyzerName == null) {
           return query.flt_field[field].analyzer;
         }
-  
+
         query.flt_field[field].analyzer = analyzerName;
         return this;
       },
-      
+
       /**
             Should the <code>Query</code> fail when an unsupported field
             is specified. Defaults to true.
@@ -10526,11 +10551,11 @@
         if (trueFalse == null) {
           return query.flt_field[field].fail_on_unsupported_field;
         }
-  
+
         query.flt_field[field].fail_on_unsupported_field = trueFalse;
         return this;
       },
-                     
+
       /**
             Sets the boost value of the <code>Query</code>.
 
@@ -10546,29 +10571,29 @@
         query.flt_field[field].boost = boost;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>Fuzzy like this query find documents that are “like” provided text by 
+    <p>Fuzzy like this query find documents that are “like” provided text by
     running it against one or more fields.</p>
 
-    <p>Fuzzifies ALL terms provided as strings and then picks the best n 
-    differentiating terms. In effect this mixes the behaviour of FuzzyQuery and 
-    MoreLikeThis but with special consideration of fuzzy scoring factors. This 
-    generally produces good results for queries where users may provide details 
-    in a number of fields and have no knowledge of boolean query syntax and 
+    <p>Fuzzifies ALL terms provided as strings and then picks the best n
+    differentiating terms. In effect this mixes the behaviour of FuzzyQuery and
+    MoreLikeThis but with special consideration of fuzzy scoring factors. This
+    generally produces good results for queries where users may provide details
+    in a number of fields and have no knowledge of boolean query syntax and
     also want a degree of fuzzy matching and a fast query.</p>
-  
-    <p>For each source term the fuzzy variants are held in a BooleanQuery with 
-    no coord factor (because we are not looking for matches on multiple variants 
-    in any one doc). Additionally, a specialized TermQuery is used for variants 
-    and does not use that variant term’s IDF because this would favour rarer 
-    terms eg misspellings. Instead, all variants use the same IDF 
-    ranking (the one for the source query term) and this is factored into the 
-    variant’s boost. If the source query term does not exist in the index the 
+
+    <p>For each source term the fuzzy variants are held in a BooleanQuery with
+    no coord factor (because we are not looking for matches on multiple variants
+    in any one doc). Additionally, a specialized TermQuery is used for variants
+    and does not use that variant term’s IDF because this would favour rarer
+    terms eg misspellings. Instead, all variants use the same IDF
+    ranking (the one for the source query term) and this is factored into the
+    variant’s boost. If the source query term does not exist in the index the
     average IDF of the variants is used.</p>
 
     @name ejs.FuzzyLikeThisQuery
@@ -10584,14 +10609,14 @@
     */
   ejs.FuzzyLikeThisQuery = function (likeText) {
 
-    var 
+    var
       _common = ejs.QueryMixin('flt'),
       query = _common.toJSON();
-    
+
     query.flt.like_text = likeText;
 
     return extend(_common, {
-    
+
       /**
              The fields to run the query against.  If you call with a single field,
              it is added to the existing list of fields.  If called with an array
@@ -10605,11 +10630,11 @@
         if (query.flt.fields == null) {
           query.flt.fields = [];
         }
-      
+
         if (f == null) {
           return query.flt.fields;
         }
-      
+
         if (isString(f)) {
           query.flt.fields.push(f);
         } else if (isArray(f)) {
@@ -10617,10 +10642,10 @@
         } else {
           throw new TypeError('Argument must be a string or array');
         }
-      
+
         return this;
       },
-    
+
       /**
             The text to find documents like
 
@@ -10632,7 +10657,7 @@
         if (txt == null) {
           return query.flt.like_text;
         }
-    
+
         query.flt.like_text = txt;
         return this;
       },
@@ -10648,13 +10673,13 @@
         if (trueFalse == null) {
           return query.flt.ignore_tf;
         }
-    
+
         query.flt.ignore_tf = trueFalse;
         return this;
       },
 
       /**
-            The maximum number of query terms that will be included in any 
+            The maximum number of query terms that will be included in any
             generated query. Defaults to 25.
 
             @member ejs.FuzzyLikeThisQuery
@@ -10665,7 +10690,7 @@
         if (max == null) {
           return query.flt.max_query_terms;
         }
-    
+
         query.flt.max_query_terms = max;
         return this;
       },
@@ -10681,7 +10706,7 @@
         if (min == null) {
           return query.flt.min_similarity;
         }
-    
+
         query.flt.min_similarity = min;
         return this;
       },
@@ -10697,13 +10722,13 @@
         if (len == null) {
           return query.flt.prefix_length;
         }
-    
+
         query.flt.prefix_length = len;
         return this;
       },
 
       /**
-            The analyzer that will be used to analyze the text. Defaults to the 
+            The analyzer that will be used to analyze the text. Defaults to the
             analyzer associated with the field.
 
             @member ejs.FuzzyLikeThisQuery
@@ -10714,11 +10739,11 @@
         if (analyzerName == null) {
           return query.flt.analyzer;
         }
-    
+
         query.flt.analyzer = analyzerName;
         return this;
       },
-      
+
       /**
             Should the <code>Query</code> fail when an unsupported field
             is specified. Defaults to true.
@@ -10731,21 +10756,21 @@
         if (trueFalse == null) {
           return query.flt.fail_on_unsupported_field;
         }
-  
+
         query.flt.fail_on_unsupported_field = trueFalse;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>A fuzzy search query based on the Damerau-Levenshtein (optimal string 
-    alignment) algorithm, though you can explicitly choose classic Levenshtein 
+    <p>A fuzzy search query based on the Damerau-Levenshtein (optimal string
+    alignment) algorithm, though you can explicitly choose classic Levenshtein
     by passing false to the transpositions parameter./p>
-  
-    <p>fuzzy query on a numeric field will result in a range query “around” 
+
+    <p>fuzzy query on a numeric field will result in a range query “around”
     the value using the min_similarity value. As an example, if you perform a
     fuzzy query against a field value of "12" with a min similarity setting
     of "2", the query will search for values between "10" and "14".</p>
@@ -10757,10 +10782,10 @@
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
-    
+
     @param {String} field The field to run the fuzzy query against.
     @param {String} value The value to fuzzify.
-    
+
      */
   ejs.FuzzyQuery = function (field, value) {
 
@@ -10783,15 +10808,15 @@
              */
       field: function (f) {
         var oldValue = query.fuzzy[field];
-    
+
         if (f == null) {
           return field;
         }
-  
+
         delete query.fuzzy[field];
         field = f;
         query.fuzzy[f] = oldValue;
-  
+
         return this;
       },
 
@@ -10828,7 +10853,7 @@
       },
 
       /**
-            <p>The maximum number of query terms that will be included in any 
+            <p>The maximum number of query terms that will be included in any
             generated query. Defaults to <code>50</code>.<p>
 
             @member ejs.FuzzyQuery
@@ -10875,32 +10900,32 @@
         query.fuzzy[field].prefix_length = len;
         return this;
       },
-      
+
       /**
-            <p>Sets rewrite method.  Valid values are:</p> 
-            
+            <p>Sets rewrite method.  Valid values are:</p>
+
             <dl>
-                <dd><code>constant_score_auto</code> - tries to pick the best constant-score rewrite 
+                <dd><code>constant_score_auto</code> - tries to pick the best constant-score rewrite
                  method based on term and document counts from the query</dd>
-              
-                <dd><code>scoring_boolean</code> - translates each term into boolean should and 
+
+                <dd><code>scoring_boolean</code> - translates each term into boolean should and
                  keeps the scores as computed by the query</dd>
-              
+
                 <dd><code>constant_score_boolean</code> - same as scoring_boolean, expect no scores
                  are computed.</dd>
-              
-                <dd><code>constant_score_filter</code> - first creates a private Filter, by visiting 
+
+                <dd><code>constant_score_filter</code> - first creates a private Filter, by visiting
                  each term in sequence and marking all docs for that term</dd>
-              
+
                 <dd><code>top_terms_boost_N</code> - first translates each term into boolean should
                  and scores are only computed as the boost using the top <code>N</code>
                  scoring terms.  Replace <code>N</code> with an integer value.</dd>
-              
+
                 <dd><code>top_terms_N</code> - first translates each term into boolean should
                  and keeps the scores as computed by the query. Only the top <code>N</code>
                  scoring terms are used.  Replace <code>N</code> with an integer value.</dd>
             </dl>
-            
+
             <p>Default is <code>constant_score_auto</code>.</p>
 
             <p>This is an advanced option, use with care.</p>
@@ -10913,20 +10938,20 @@
         if (m == null) {
           return query.fuzzy[field].rewrite;
         }
-        
+
         m = m.toLowerCase();
         if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
           m === 'constant_score_boolean' || m === 'constant_score_filter' ||
-          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_boost_') === 0 ||
           m.indexOf('top_terms_') === 0) {
-            
+
           query.fuzzy[field].rewrite = m;
         }
-        
+
         return this;
       },
-      
-                    
+
+
       /**
             <p>Sets the boost value of the <code>Query</code>.</p>
 
@@ -10942,21 +10967,21 @@
         query.fuzzy[field].boost = boost;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>Efficient querying of documents containing shapes indexed using the 
+    <p>Efficient querying of documents containing shapes indexed using the
     geo_shape type.</p>
 
-    <p>Much like the geo_shape type, the geo_shape query uses a grid square 
-    representation of the query shape to find those documents which have shapes 
-    that relate to the query shape in a specified way. In order to do this, the 
-    field being queried must be of geo_shape type. The query will use the same 
+    <p>Much like the geo_shape type, the geo_shape query uses a grid square
+    representation of the query shape to find those documents which have shapes
+    that relate to the query shape in a specified way. In order to do this, the
+    field being queried must be of geo_shape type. The query will use the same
     PrefixTree configuration as defined for the field.</p>
-  
+
     @name ejs.GeoShapeQuery
     @ejs query
     @borrows ejs.QueryMixin._type as _type
@@ -10985,7 +11010,7 @@
             */
       field: function (f) {
         var oldValue = query.geo_shape[field];
-    
+
         if (f == null) {
           return field;
         }
@@ -10993,7 +11018,7 @@
         delete query.geo_shape[field];
         field = f;
         query.geo_shape[f] = oldValue;
-    
+
         return this;
       },
 
@@ -11012,7 +11037,7 @@
         if (query.geo_shape[field].indexed_shape != null) {
           delete query.geo_shape[field].indexed_shape;
         }
-        
+
         query.geo_shape[field].shape = shape.toJSON();
         return this;
       },
@@ -11033,14 +11058,14 @@
         if (query.geo_shape[field].shape != null) {
           delete query.geo_shape[field].shape;
         }
-        
+
         query.geo_shape[field].indexed_shape = indexedShape.toJSON();
         return this;
       },
 
       /**
-            Sets the shape relation type.  A relationship between a Query Shape 
-            and indexed Shapes that will be used to determine if a Document 
+            Sets the shape relation type.  A relationship between a Query Shape
+            and indexed Shapes that will be used to determine if a Document
             should be matched or not.  Valid values are:  intersects, disjoint,
             and within.
 
@@ -11057,25 +11082,25 @@
         if (relation === 'intersects' || relation === 'disjoint' || relation === 'within') {
           query.geo_shape[field].relation = relation;
         }
-      
+
         return this;
       },
 
       /**
-            <p>Sets the spatial strategy.</p>  
+            <p>Sets the spatial strategy.</p>
             <p>Valid values are:</p>
-            
+
             <dl>
                 <dd><code>recursive</code> - default, recursively traverse nodes in
-                  the spatial prefix tree.  This strategy has support for 
+                  the spatial prefix tree.  This strategy has support for
                   searching non-point shapes.</dd>
                 <dd><code>term</code> - uses a large TermsFilter on each node
-                  in the spatial prefix tree.  It only supports the search of 
+                  in the spatial prefix tree.  It only supports the search of
                   indexed Point shapes.</dd>
             </dl>
 
             <p>This is an advanced setting, use with care.</p>
-            
+
             @since elasticsearch 0.90
             @member ejs.GeoShapeQuery
             @param {String} strategy The strategy as a string.
@@ -11090,10 +11115,10 @@
         if (strategy === 'recursive' || strategy === 'term') {
           query.geo_shape[field].strategy = strategy;
         }
-        
+
         return this;
       },
-             
+
       /**
             Sets the boost value for documents matching the <code>Query</code>.
 
@@ -11109,7 +11134,7 @@
         query.geo_shape[field].boost = boost;
         return this;
       }
-      
+
     });
   };
 
@@ -11320,8 +11345,8 @@
 
   /**
     @class
-    <p>The has_parent query works the same as the has_parent filter, by 
-    automatically wrapping the filter with a constant_score. Results in 
+    <p>The has_parent query works the same as the has_parent filter, by
+    automatically wrapping the filter with a constant_score. Results in
     child documents that have parent docs matching the query being returned.</p>
 
     @name ejs.HasParentQuery
@@ -11341,11 +11366,11 @@
     if (!isQuery(qry)) {
       throw new TypeError('Argument must be a Query');
     }
-    
-    var 
+
+    var
       _common = ejs.QueryMixin('has_parent'),
       query = _common.toJSON();
-    
+
     query.has_parent.query = qry.toJSON();
     query.has_parent.parent_type = parentType;
 
@@ -11362,11 +11387,11 @@
         if (q == null) {
           return query.has_parent.query;
         }
-  
+
         if (!isQuery(q)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         query.has_parent.query = q.toJSON();
         return this;
       },
@@ -11382,14 +11407,14 @@
         if (t == null) {
           return query.has_parent.parent_type;
         }
-  
+
         query.has_parent.parent_type = t;
         return this;
       },
 
       /**
-            Sets the scope of the query.  A scope allows to run facets on the 
-            same scope name that will work against the parent documents. 
+            Sets the scope of the query.  A scope allows to run facets on the
+            same scope name that will work against the parent documents.
 
             @deprecated since elasticsearch 0.90
             @member ejs.HasParentQuery
@@ -11402,12 +11427,12 @@
 
       /**
             Sets the scoring method.  Valid values are:
-            
+
             none - the default, no scoring
             score - the score of the parent is used in all child documents.
 
             @deprecated since elasticsearch 0.90.1 use scoreMode
-            
+
             @member ejs.HasParentQuery
             @param {String} s The score type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -11416,21 +11441,21 @@
         if (s == null) {
           return query.has_parent.score_type;
         }
-    
+
         s = s.toLowerCase();
         if (s === 'none' || s === 'score') {
           query.has_parent.score_type = s;
         }
-        
+
         return this;
       },
-      
+
       /**
             Sets the scoring method.  Valid values are:
-            
+
             none - the default, no scoring
             score - the score of the parent is used in all child documents.
-            
+
             @member ejs.HasParentQuery
             @param {String} s The score type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -11439,7 +11464,7 @@
         if (s == null) {
           return query.has_parent.score_mode;
         }
-    
+
         s = s.toLowerCase();
         if (s === 'none' || s === 'score') {
           query.has_parent.score_mode = s;
@@ -11473,8 +11498,8 @@
 
   /**
     @class
-    <p>Filters documents that only have the provided ids. Note, this filter 
-    does not require the _id field to be indexed since it works using the 
+    <p>Filters documents that only have the provided ids. Note, this filter
+    does not require the _id field to be indexed since it works using the
     _uid field.</p>
 
     @name ejs.IdsQuery
@@ -11493,7 +11518,7 @@
     var
       _common = ejs.QueryMixin('ids'),
       query = _common.toJSON();
-    
+
     if (isString(ids)) {
       query.ids.values = [ids];
     } else if (isArray(ids)) {
@@ -11517,7 +11542,7 @@
         if (val == null) {
           return query.ids.values;
         }
-    
+
         if (isString(val)) {
           query.ids.values.push(val);
         } else if (isArray(val)) {
@@ -11525,7 +11550,7 @@
         } else {
           throw new TypeError('Argument must be string or array');
         }
-        
+
         return this;
       },
 
@@ -11543,11 +11568,11 @@
         if (query.ids.type == null) {
           query.ids.type = [];
         }
-        
+
         if (type == null) {
           return query.ids.type;
         }
-        
+
         if (isString(type)) {
           query.ids.type.push(type);
         } else if (isArray(type)) {
@@ -11555,18 +11580,18 @@
         } else {
           throw new TypeError('Argument must be string or array');
         }
-        
+
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>The indices query can be used when executed across multiple indices, 
-    allowing to have a query that executes only when executed on an index that 
-    matches a specific list of indices, and another query that executes when it 
+    <p>The indices query can be used when executed across multiple indices,
+    allowing to have a query that executes only when executed on an index that
+    matches a specific list of indices, and another query that executes when it
     is executed on an index that does not match the listed indices.</p>
 
     @name ejs.IndicesQuery
@@ -11579,7 +11604,7 @@
     A configurable query that is dependent on the index name.
 
     @param {Query} qry A valid query object.
-    @param {(String|String[])} indices a single index name or an array of index 
+    @param {(String|String[])} indices a single index name or an array of index
       names.
     */
   ejs.IndicesQuery = function (qry, indices) {
@@ -11587,11 +11612,11 @@
     if (!isQuery(qry)) {
       throw new TypeError('Argument must be a Query');
     }
-    
-    var 
+
+    var
       _common = ejs.QueryMixin('indices'),
       query = _common.toJSON();
-    
+
     query.indices.query = qry.toJSON();
 
     if (isString(indices)) {
@@ -11601,7 +11626,7 @@
     } else {
       throw new TypeError('Argument must be a string or array');
     }
-  
+
     return extend(_common, {
 
       /**
@@ -11617,7 +11642,7 @@
         if (i == null) {
           return query.indices.indices;
         }
-  
+
         if (isString(i)) {
           query.indices.indices.push(i);
         } else if (isArray(i)) {
@@ -11628,7 +11653,7 @@
 
         return this;
       },
-    
+
       /**
             Sets the query to be executed against the indices specified.
 
@@ -11640,11 +11665,11 @@
         if (q == null) {
           return query.indices.query;
         }
-  
+
         if (!isQuery(q)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         query.indices.query = q.toJSON();
         return this;
       },
@@ -11662,7 +11687,7 @@
         if (q == null) {
           return query.indices.no_match_query;
         }
-  
+
         if (isString(q)) {
           q = q.toLowerCase();
           if (q === 'none' || q === 'all') {
@@ -11673,10 +11698,10 @@
         } else {
           throw new TypeError('Argument must be string or Query');
         }
-      
+
         return this;
       }
-      
+
     });
   };
 
@@ -11701,10 +11726,10 @@
 
   /**
     @class
-    A <code>MatchQuery</code> is a type of <code>Query</code> that accepts 
+    A <code>MatchQuery</code> is a type of <code>Query</code> that accepts
     text/numerics/dates, analyzes it, generates a query based on the
     <code>MatchQuery</code> type.
-  
+
     @name ejs.MatchQuery
     @ejs query
     @borrows ejs.QueryMixin._type as _type
@@ -11722,7 +11747,7 @@
     var
       _common = ejs.QueryMixin('match'),
       query = _common.toJSON();
-    
+
     query.match[field] = {
       query: qstr
     };
@@ -11783,8 +11808,8 @@
       },
 
       /**
-            Sets the maximum threshold/frequency to be considered a low 
-            frequency term in a <code>CommonTermsQuery</code>.  
+            Sets the maximum threshold/frequency to be considered a low
+            frequency term in a <code>CommonTermsQuery</code>.
             Set to a value between 0 and 1.
 
             @member ejs.MatchQuery
@@ -11799,7 +11824,7 @@
         query.match[field].cutoff_frequency = freq;
         return this;
       },
-      
+
       /**
             Sets the prefix length for a fuzzy prefix <code>MatchQuery</code>.
 
@@ -11901,30 +11926,30 @@
         query.match[field].minimum_should_match = minMatch;
         return this;
       },
-      
+
       /**
-            Sets rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
+            Sets rewrite method.  Valid values are:
+
+            constant_score_auto - tries to pick the best constant-score rewrite
               method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
+
+            scoring_boolean - translates each term into boolean should and
               keeps the scores as computed by the query
-              
+
             constant_score_boolean - same as scoring_boolean, expect no scores
               are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
+
+            constant_score_filter - first creates a private Filter, by visiting
               each term in sequence and marking all docs for that term
-              
+
             top_terms_boost_N - first translates each term into boolean should
               and scores are only computed as the boost using the top N
               scoring terms.  Replace N with an integer value.
-              
+
             top_terms_N -   first translates each term into boolean should
                 and keeps the scores as computed by the query. Only the top N
                 scoring terms are used.  Replace N with an integer value.
-            
+
             Default is constant_score_auto.
 
             This is an advanced option, use with care.
@@ -11937,46 +11962,46 @@
         if (m == null) {
           return query.match[field].rewrite;
         }
-        
+
         m = m.toLowerCase();
         if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
           m === 'constant_score_boolean' || m === 'constant_score_filter' ||
-          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_boost_') === 0 ||
           m.indexOf('top_terms_') === 0) {
-            
+
           query.match[field].rewrite = m;
         }
-        
+
         return this;
       },
-      
+
       /**
-            Sets fuzzy rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
+            Sets fuzzy rewrite method.  Valid values are:
+
+            constant_score_auto - tries to pick the best constant-score rewrite
               method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
+
+            scoring_boolean - translates each term into boolean should and
               keeps the scores as computed by the query
-              
+
             constant_score_boolean - same as scoring_boolean, expect no scores
               are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
+
+            constant_score_filter - first creates a private Filter, by visiting
               each term in sequence and marking all docs for that term
-              
+
             top_terms_boost_N - first translates each term into boolean should
               and scores are only computed as the boost using the top N
               scoring terms.  Replace N with an integer value.
-              
+
             top_terms_N -   first translates each term into boolean should
                 and keeps the scores as computed by the query. Only the top N
                 scoring terms are used.  Replace N with an integer value.
-            
+
             Default is constant_score_auto.
 
             This is an advanced option, use with care.
-            
+
             @member ejs.MatchQuery
             @param {String} m The rewrite method as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -11989,17 +12014,17 @@
         m = m.toLowerCase();
         if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
           m === 'constant_score_boolean' || m === 'constant_score_filter' ||
-          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_boost_') === 0 ||
           m.indexOf('top_terms_') === 0) {
-            
+
           query.match[field].fuzzy_rewrite = m;
         }
-        
+
         return this;
       },
-      
+
       /**
-            Set to false to use classic Levenshtein edit distance in the 
+            Set to false to use classic Levenshtein edit distance in the
             fuzzy query.
 
             @member ejs.MatchQuery
@@ -12030,10 +12055,10 @@
         query.match[field].lenient = trueFalse;
         return this;
       },
-    
+
       /**
             Sets what happens when no terms match.  Valid values are
-            "all" or "none".  
+            "all" or "none".
 
             @member ejs.MatchQuery
             @param {String} q A no match action, "all" or "none".
@@ -12048,10 +12073,10 @@
         if (q === 'all' || q === 'none') {
           query.match[field].zero_terms_query = q;
         }
-        
+
         return this;
       },
-      
+
       /**
             Sets the boost value for documents matching the <code>Query</code>.
 
@@ -12073,7 +12098,7 @@
 
   /**
     @class
-    <p>The more_like_this_field query is the same as the more_like_this query, 
+    <p>The more_like_this_field query is the same as the more_like_this query,
     except it runs against a single field.</p>
 
     @name ejs.MoreLikeThisFieldQuery
@@ -12097,7 +12122,7 @@
     query.mlt_field[field] = {
       like_text: likeText
     };
-  
+
     return extend(_common, {
 
       /**
@@ -12109,15 +12134,15 @@
              */
       field: function (f) {
         var oldValue = query.mlt_field[field];
-    
+
         if (f == null) {
           return field;
         }
-  
+
         delete query.mlt_field[field];
         field = f;
         query.mlt_field[f] = oldValue;
-  
+
         return this;
       },
 
@@ -12138,7 +12163,7 @@
       },
 
       /**
-            The percentage of terms to match on (float value). 
+            The percentage of terms to match on (float value).
             Defaults to 0.3 (30 percent).
 
             @member ejs.MoreLikeThisFieldQuery
@@ -12155,7 +12180,7 @@
       },
 
       /**
-            The frequency below which terms will be ignored in the source doc. 
+            The frequency below which terms will be ignored in the source doc.
             The default frequency is 2.
 
             @member ejs.MoreLikeThisFieldQuery
@@ -12170,9 +12195,9 @@
         query.mlt_field[field].min_term_freq = freq;
         return this;
       },
-      
+
       /**
-            The maximum number of query terms that will be included in any 
+            The maximum number of query terms that will be included in any
             generated query. Defaults to 25.
 
             @member ejs.MoreLikeThisFieldQuery
@@ -12189,12 +12214,12 @@
       },
 
       /**
-            An array of stop words. Any word in this set is considered 
-            “uninteresting” and ignored. Even if your Analyzer allows stopwords, 
-            you might want to tell the MoreLikeThis code to ignore them, as for 
-            the purposes of document similarity it seems reasonable to assume 
+            An array of stop words. Any word in this set is considered
+            “uninteresting” and ignored. Even if your Analyzer allows stopwords,
+            you might want to tell the MoreLikeThis code to ignore them, as for
+            the purposes of document similarity it seems reasonable to assume
             that “a stop word is never interesting”.
-        
+
             @member ejs.MoreLikeThisFieldQuery
             @param {Array} stopWords An array of string stopwords
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -12209,7 +12234,7 @@
       },
 
       /**
-            The frequency at which words will be ignored which do not occur in 
+            The frequency at which words will be ignored which do not occur in
             at least this many docs. Defaults to 5.
 
             @member ejs.MoreLikeThisFieldQuery
@@ -12226,8 +12251,8 @@
       },
 
       /**
-            The maximum frequency in which words may still appear. Words that 
-            appear in more than this many docs will be ignored. 
+            The maximum frequency in which words may still appear. Words that
+            appear in more than this many docs will be ignored.
             Defaults to unbounded.
 
             @member ejs.MoreLikeThisFieldQuery
@@ -12244,9 +12269,9 @@
       },
 
       /**
-            The minimum word length below which words will be ignored. 
+            The minimum word length below which words will be ignored.
             Defaults to 0.
-        
+
             @member ejs.MoreLikeThisFieldQuery
             @param {Integer} len A positive integer value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -12261,9 +12286,9 @@
       },
 
       /**
-            The maximum word length above which words will be ignored. 
+            The maximum word length above which words will be ignored.
             Defaults to unbounded (0).
-        
+
             @member ejs.MoreLikeThisFieldQuery
             @param {Integer} len A positive integer value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -12276,9 +12301,9 @@
         query.mlt_field[field].max_word_len = len;
         return this;
       },
-          
+
       /**
-            The analyzer that will be used to analyze the text. Defaults to the 
+            The analyzer that will be used to analyze the text. Defaults to the
             analyzer associated with the field.
 
             @member ejs.MoreLikeThisFieldQuery
@@ -12293,9 +12318,9 @@
         query.mlt_field[field].analyzer = analyzerName;
         return this;
       },
-  
+
       /**
-            Sets the boost factor to use when boosting terms. 
+            Sets the boost factor to use when boosting terms.
             Defaults to 1.
 
             @member ejs.MoreLikeThisFieldQuery
@@ -12310,7 +12335,7 @@
         query.mlt_field[field].boost_terms = boost;
         return this;
       },
-      
+
       /**
             Should the <code>Query</code> fail when an unsupported field
             is specified. Defaults to true.
@@ -12323,11 +12348,11 @@
         if (trueFalse == null) {
           return query.mlt_field[field].fail_on_unsupported_field;
         }
-  
+
         query.mlt_field[field].fail_on_unsupported_field = trueFalse;
         return this;
       },
-                    
+
       /**
             Sets the boost value of the <code>Query</code>.
 
@@ -12343,13 +12368,13 @@
         query.mlt_field[field].boost = boost;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>More like this query find documents that are “like” provided text by 
+    <p>More like this query find documents that are “like” provided text by
     running it against one or more fields.</p>
 
     @name ejs.MoreLikeThisQuery
@@ -12363,18 +12388,18 @@
 
     @param {(String|String[])} fields A single field or array of fields to run against.
     @param {String} likeText The text to find documents like it.
-  
+
      */
   ejs.MoreLikeThisQuery = function (likeText) {
 
-    var 
+    var
       _common = ejs.QueryMixin('mlt'),
       query = _common.toJSON();
-    
+
     query.mlt.like_text = likeText;
 
     return extend(_common, {
-  
+
       /**
              The fields to run the query against.  If you call with a single field,
              it is added to the existing list of fields.  If called with an array
@@ -12388,7 +12413,7 @@
         if (f == null) {
           return this;
         }
-    
+
         if (isString(f)) {
           query.mlt.fields = [f];
         } else if (isArray(f)) {
@@ -12396,7 +12421,7 @@
         } else {
           throw new TypeError('Must pass a field or an array of fields');
         }
-    
+
         return this;
       },
 
@@ -12420,13 +12445,13 @@
         if (txt == null) {
           return query.mlt.like_text;
         }
-  
+
         query.mlt.like_text = txt;
         return this;
       },
 
       /**
-            The percentage of terms to match on (float value). 
+            The percentage of terms to match on (float value).
             Defaults to 0.3 (30 percent).
 
             @member ejs.MoreLikeThisQuery
@@ -12437,13 +12462,13 @@
         if (percent == null) {
           return query.mlt.percent_terms_to_match;
         }
-  
+
         query.mlt.percent_terms_to_match = percent;
         return this;
       },
 
       /**
-            The frequency below which terms will be ignored in the source doc. 
+            The frequency below which terms will be ignored in the source doc.
             The default frequency is 2.
 
             @member ejs.MoreLikeThisQuery
@@ -12454,13 +12479,13 @@
         if (freq == null) {
           return query.mlt.min_term_freq;
         }
-  
+
         query.mlt.min_term_freq = freq;
         return this;
       },
-        
+
       /**
-            The maximum number of query terms that will be included in any 
+            The maximum number of query terms that will be included in any
             generated query. Defaults to 25.
 
             @member ejs.MoreLikeThisQuery
@@ -12471,18 +12496,18 @@
         if (max == null) {
           return query.mlt.max_query_terms;
         }
-  
+
         query.mlt.max_query_terms = max;
         return this;
       },
 
       /**
-            An array of stop words. Any word in this set is considered 
-            “uninteresting” and ignored. Even if your Analyzer allows stopwords, 
-            you might want to tell the MoreLikeThis code to ignore them, as for 
-            the purposes of document similarity it seems reasonable to assume 
+            An array of stop words. Any word in this set is considered
+            “uninteresting” and ignored. Even if your Analyzer allows stopwords,
+            you might want to tell the MoreLikeThis code to ignore them, as for
+            the purposes of document similarity it seems reasonable to assume
             that “a stop word is never interesting”.
-          
+
             @member ejs.MoreLikeThisQuery
             @param {Array} stopWords An array of string stopwords
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -12491,13 +12516,13 @@
         if (stopWords == null) {
           return query.mlt.stop_words;
         }
-  
+
         query.mlt.stop_words = stopWords;
         return this;
       },
 
       /**
-            The frequency at which words will be ignored which do not occur in 
+            The frequency at which words will be ignored which do not occur in
             at least this many docs. Defaults to 5.
 
             @member ejs.MoreLikeThisQuery
@@ -12508,14 +12533,14 @@
         if (min == null) {
           return query.mlt.min_doc_freq;
         }
-  
+
         query.mlt.min_doc_freq = min;
         return this;
       },
 
       /**
-            The maximum frequency in which words may still appear. Words that 
-            appear in more than this many docs will be ignored. 
+            The maximum frequency in which words may still appear. Words that
+            appear in more than this many docs will be ignored.
             Defaults to unbounded.
 
             @member ejs.MoreLikeThisQuery
@@ -12526,15 +12551,15 @@
         if (max == null) {
           return query.mlt.max_doc_freq;
         }
-  
+
         query.mlt.max_doc_freq = max;
         return this;
       },
 
       /**
-            The minimum word length below which words will be ignored. 
+            The minimum word length below which words will be ignored.
             Defaults to 0.
-          
+
             @member ejs.MoreLikeThisQuery
             @param {Integer} len A positive integer value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -12543,15 +12568,15 @@
         if (len == null) {
           return query.mlt.min_word_len;
         }
-  
+
         query.mlt.min_word_len = len;
         return this;
       },
 
       /**
-            The maximum word length above which words will be ignored. 
+            The maximum word length above which words will be ignored.
             Defaults to unbounded (0).
-          
+
             @member ejs.MoreLikeThisQuery
             @param {Integer} len A positive integer value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -12560,13 +12585,13 @@
         if (len == null) {
           return query.mlt.max_word_len;
         }
-  
+
         query.mlt.max_word_len = len;
         return this;
       },
-            
+
       /**
-            The analyzer that will be used to analyze the text. Defaults to the 
+            The analyzer that will be used to analyze the text. Defaults to the
             analyzer associated with the field.
 
             @member ejs.MoreLikeThisQuery
@@ -12577,13 +12602,13 @@
         if (analyzerName == null) {
           return query.mlt.analyzer;
         }
-  
+
         query.mlt.analyzer = analyzerName;
         return this;
       },
-    
+
       /**
-            Sets the boost factor to use when boosting terms. 
+            Sets the boost factor to use when boosting terms.
             Defaults to 1.
 
             @member ejs.MoreLikeThisQuery
@@ -12598,7 +12623,7 @@
         query.mlt.boost_terms = boost;
         return this;
       },
-         
+
       /**
             Should the <code>Query</code> fail when an unsupported field
             is specified. Defaults to true.
@@ -12611,22 +12636,22 @@
         if (trueFalse == null) {
           return query.mlt.fail_on_unsupported_field;
         }
-  
+
         query.mlt.fail_on_unsupported_field = trueFalse;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    A <code>MultiMatchQuery</code> query builds further on top of the 
-    <code>MatchQuery</code> by allowing multiple fields to be specified. 
-    The idea here is to allow to more easily build a concise match type query 
-    over multiple fields instead of using a relatively more expressive query 
+    A <code>MultiMatchQuery</code> query builds further on top of the
+    <code>MatchQuery</code> by allowing multiple fields to be specified.
+    The idea here is to allow to more easily build a concise match type query
+    over multiple fields instead of using a relatively more expressive query
     by using multiple match queries within a bool query.
-  
+
     @name ejs.MultiMatchQuery
     @ejs query
     @borrows ejs.QueryMixin.boost as boost
@@ -12634,7 +12659,7 @@
     @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
-    A Query that allow to more easily build a MatchQuery 
+    A Query that allow to more easily build a MatchQuery
     over multiple fields
 
     @param {(String|String[])} fields the single field or array of fields to search across
@@ -12642,10 +12667,10 @@
     */
   ejs.MultiMatchQuery = function (fields, qstr) {
 
-    var 
+    var
       _common = ejs.QueryMixin('multi_match'),
       query = _common.toJSON();
-    
+
     query.multi_match.query = qstr;
     query.multi_match.fields = [];
 
@@ -12656,18 +12681,18 @@
     } else {
       throw new TypeError('Argument must be string or array');
     }
-    
+
     return extend(_common, {
 
       /**
             Sets the fields to search across.  If passed a single value it is
-            added to the existing list of fields.  If passed an array of 
+            added to the existing list of fields.  If passed an array of
             values, they overwite all existing values.
 
             @member ejs.MultiMatchQuery
-            @param {(String|String[])} f A single field or list of fields names to 
+            @param {(String|String[])} f A single field or list of fields names to
               search across.
-            @returns {Object} returns <code>this</code> so that calls can be 
+            @returns {Object} returns <code>this</code> so that calls can be
               chained. Returns {Array} current value if `f` not specified.
             */
       fields: function (f) {
@@ -12682,7 +12707,7 @@
         } else {
           throw new TypeError('Argument must be string or array');
         }
-        
+
         return this;
       },
 
@@ -12699,7 +12724,7 @@
         if (trueFalse == null) {
           return query.multi_match.use_dis_max;
         }
-      
+
         query.multi_match.use_dis_max = trueFalse;
         return this;
       },
@@ -12725,8 +12750,8 @@
       },
 
       /**
-            Sets the maximum threshold/frequency to be considered a low 
-            frequency term in a <code>CommonTermsQuery</code>.  
+            Sets the maximum threshold/frequency to be considered a low
+            frequency term in a <code>CommonTermsQuery</code>.
             Set to a value between 0 and 1.
 
             @member ejs.MultiMatchQuery
@@ -12741,7 +12766,7 @@
         query.multi_match.cutoff_frequency = freq;
         return this;
       },
-      
+
       /**
             Sets a percent value controlling how many "should" clauses in the
             resulting <code>Query</code> should match.
@@ -12758,30 +12783,30 @@
         query.multi_match.minimum_should_match = minMatch;
         return this;
       },
-      
+
       /**
-            Sets rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
+            Sets rewrite method.  Valid values are:
+
+            constant_score_auto - tries to pick the best constant-score rewrite
               method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
+
+            scoring_boolean - translates each term into boolean should and
               keeps the scores as computed by the query
-              
+
             constant_score_boolean - same as scoring_boolean, expect no scores
               are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
+
+            constant_score_filter - first creates a private Filter, by visiting
               each term in sequence and marking all docs for that term
-              
+
             top_terms_boost_N - first translates each term into boolean should
               and scores are only computed as the boost using the top N
               scoring terms.  Replace N with an integer value.
-              
+
             top_terms_N -   first translates each term into boolean should
                 and keeps the scores as computed by the query. Only the top N
                 scoring terms are used.  Replace N with an integer value.
-            
+
             Default is constant_score_auto.
 
             This is an advanced option, use with care.
@@ -12794,46 +12819,46 @@
         if (m == null) {
           return query.multi_match.rewrite;
         }
-        
+
         m = m.toLowerCase();
         if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
           m === 'constant_score_boolean' || m === 'constant_score_filter' ||
-          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_boost_') === 0 ||
           m.indexOf('top_terms_') === 0) {
-            
+
           query.multi_match.rewrite = m;
         }
-        
+
         return this;
       },
-      
+
       /**
-            Sets fuzzy rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
+            Sets fuzzy rewrite method.  Valid values are:
+
+            constant_score_auto - tries to pick the best constant-score rewrite
               method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
+
+            scoring_boolean - translates each term into boolean should and
               keeps the scores as computed by the query
-              
+
             constant_score_boolean - same as scoring_boolean, expect no scores
               are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
+
+            constant_score_filter - first creates a private Filter, by visiting
               each term in sequence and marking all docs for that term
-              
+
             top_terms_boost_N - first translates each term into boolean should
               and scores are only computed as the boost using the top N
               scoring terms.  Replace N with an integer value.
-              
+
             top_terms_N -   first translates each term into boolean should
                 and keeps the scores as computed by the query. Only the top N
                 scoring terms are used.  Replace N with an integer value.
-            
+
             Default is constant_score_auto.
 
             This is an advanced option, use with care.
-            
+
             @member ejs.MultiMatchQuery
             @param {String} m The rewrite method as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -12846,12 +12871,12 @@
         m = m.toLowerCase();
         if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
           m === 'constant_score_boolean' || m === 'constant_score_filter' ||
-          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_boost_') === 0 ||
           m.indexOf('top_terms_') === 0) {
-            
+
           query.multi_match.fuzzy_rewrite = m;
         }
-        
+
         return this;
       },
 
@@ -13011,7 +13036,7 @@
 
       /**
             Sets what happens when no terms match.  Valid values are
-            "all" or "none".  
+            "all" or "none".
 
             @member ejs.MultiMatchQuery
             @param {String} q A no match action, "all" or "none".
@@ -13026,7 +13051,7 @@
         if (q === 'all' || q === 'none') {
           query.multi_match.zero_terms_query = q;
         }
-        
+
         return this;
       }
 
@@ -13039,10 +13064,10 @@
        embedded inside of other objects. It is similar to <code>XPath</code> expressions
        in <code>XML</code> both conceptually and syntactically.</p>
 
-    <p>The query is executed against the nested objects / docs as if they were 
-    indexed as separate docs and resulting in the rootparent doc (or parent 
+    <p>The query is executed against the nested objects / docs as if they were
+    indexed as separate docs and resulting in the rootparent doc (or parent
     nested mapping).</p>
-    
+
     @name ejs.NestedQuery
     @ejs query
     @borrows ejs.QueryMixin.boost as boost
@@ -13058,17 +13083,17 @@
      */
   ejs.NestedQuery = function (path) {
 
-    var 
+    var
       _common = ejs.QueryMixin('nested'),
       query = _common.toJSON();
-    
+
     query.nested.path = path;
 
     return extend(_common, {
-      
+
       /**
              Sets the root context for the nested query.
-             
+
              @member ejs.NestedQuery
              @param {String} path The path defining the root context for the nested query.
              @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -13077,14 +13102,14 @@
         if (path == null) {
           return query.nested.path;
         }
-      
+
         query.nested.path = path;
         return this;
       },
 
       /**
              Sets the nested query to be executed.
-             
+
              @member ejs.NestedQuery
              @param {Object} oQuery A valid Query object
              @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -13093,11 +13118,11 @@
         if (oQuery == null) {
           return query.nested.query;
         }
-    
+
         if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         query.nested.query = oQuery.toJSON();
         return this;
       },
@@ -13105,7 +13130,7 @@
 
       /**
              Sets the nested filter to be executed.
-             
+
              @member ejs.NestedQuery
              @param {Object} oFilter A valid Filter object
              @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -13114,18 +13139,18 @@
         if (oFilter == null) {
           return query.nested.filter;
         }
-    
+
         if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter');
         }
-        
+
         query.nested.filter = oFilter.toJSON();
         return this;
       },
 
       /**
              Sets how the inner (nested) matches affect scoring on the parent document.
-             
+
              @member ejs.NestedQuery
              @param {String} mode The mode of scoring to be used for nested matches.
                              Options are avg, total, max, none - defaults to avg
@@ -13135,20 +13160,20 @@
         if (mode == null) {
           return query.nested.score_mode;
         }
-      
+
         mode = mode.toLowerCase();
-        if (mode === 'avg' || mode === 'total' || mode === 'max' || 
+        if (mode === 'avg' || mode === 'total' || mode === 'max' ||
           mode === 'none' || mode === 'sum') {
-            
+
           query.nested.score_mode = mode;
         }
-        
+
         return this;
       },
 
       /**
-            Sets the scope of the query.  A scope allows to run facets on the 
-            same scope name that will work against the nested documents. 
+            Sets the scope of the query.  A scope allows to run facets on the
+            same scope name that will work against the nested documents.
 
             @deprecated since elasticsearch 0.90
             @member ejs.NestedQuery
@@ -13184,7 +13209,7 @@
 
   /**
     @class
-    <p>Matches documents that have fields containing terms with a specified 
+    <p>Matches documents that have fields containing terms with a specified
     prefix (not analyzed). The prefix query maps to Lucene PrefixQuery.</p>
 
     @name ejs.PrefixQuery
@@ -13207,7 +13232,7 @@
     query.prefix[field] = {
       value: value
     };
-  
+
     return extend(_common, {
 
       /**
@@ -13219,7 +13244,7 @@
              */
       field: function (f) {
         var oldValue = query.prefix[field];
-  
+
         if (f == null) {
           return field;
         }
@@ -13248,28 +13273,28 @@
       },
 
       /**
-            Sets rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
+            Sets rewrite method.  Valid values are:
+
+            constant_score_auto - tries to pick the best constant-score rewrite
               method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
+
+            scoring_boolean - translates each term into boolean should and
               keeps the scores as computed by the query
-              
+
             constant_score_boolean - same as scoring_boolean, expect no scores
               are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
+
+            constant_score_filter - first creates a private Filter, by visiting
               each term in sequence and marking all docs for that term
-              
+
             top_terms_boost_N - first translates each term into boolean should
               and scores are only computed as the boost using the top N
               scoring terms.  Replace N with an integer value.
-              
+
             top_terms_N -   first translates each term into boolean should
                 and keeps the scores as computed by the query. Only the top N
                 scoring terms are used.  Replace N with an integer value.
-            
+
             Default is constant_score_auto.
 
             This is an advanced option, use with care.
@@ -13282,19 +13307,19 @@
         if (m == null) {
           return query.prefix[field].rewrite;
         }
-        
+
         m = m.toLowerCase();
         if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
           m === 'constant_score_boolean' || m === 'constant_score_filter' ||
-          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_boost_') === 0 ||
           m.indexOf('top_terms_') === 0) {
-            
+
           query.prefix[field].rewrite = m;
         }
-        
+
         return this;
       },
-      
+
       /**
             Sets the boost value of the <code>Query</code>.
 
@@ -13310,7 +13335,7 @@
         query.prefix[field].boost = boost;
         return this;
       }
-      
+
     });
   };
 
@@ -13371,16 +13396,16 @@
         if (fieldName == null) {
           return query.query_string.default_field;
         }
-      
+
         query.query_string.default_field = fieldName;
         return this;
       },
 
       /**
-            A set of fields/properties this query should execute against.  
-            Pass a single value to add to the existing list of fields and 
-            pass an array to overwrite all existing fields.  For each field, 
-            you can apply a field specific boost by appending a ^boost to the 
+            A set of fields/properties this query should execute against.
+            Pass a single value to add to the existing list of fields and
+            pass an array to overwrite all existing fields.  For each field,
+            you can apply a field specific boost by appending a ^boost to the
             field name.  For example, title^10, to give the title field a
             boost of 10.
 
@@ -13392,11 +13417,11 @@
         if (query.query_string.fields == null) {
           query.query_string.fields = [];
         }
-        
+
         if (fieldNames == null) {
           return query.query_string.fields;
         }
-      
+
         if (isString(fieldNames)) {
           query.query_string.fields.push(fieldNames);
         } else if (isArray(fieldNames)) {
@@ -13404,7 +13429,7 @@
         } else {
           throw new TypeError('Argument must be a string or array');
         }
-        
+
         return this;
       },
 
@@ -13421,7 +13446,7 @@
         if (trueFalse == null) {
           return query.query_string.use_dis_max;
         }
-      
+
         query.query_string.use_dis_max = trueFalse;
         return this;
       },
@@ -13439,12 +13464,12 @@
         if (op == null) {
           return query.query_string.default_operator;
         }
-      
+
         op = op.toUpperCase();
         if (op === 'AND' || op === 'OR') {
           query.query_string.default_operator = op;
         }
-        
+
         return this;
       },
 
@@ -13480,7 +13505,7 @@
         query.query_string.quote_analyzer = analyzer;
         return this;
       },
-      
+
       /**
             Sets whether or not wildcard characters (* and ?) are allowed as the
             first character of the <code>Query</code>.  Default: true.
@@ -13673,7 +13698,7 @@
       },
 
       /**
-            Sets the max number of term expansions for fuzzy queries.  
+            Sets the max number of term expansions for fuzzy queries.
 
             @member ejs.QueryStringQuery
             @param {Integer} max A positive <code>integer</code> value.
@@ -13689,32 +13714,32 @@
       },
 
       /**
-            Sets fuzzy rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
+            Sets fuzzy rewrite method.  Valid values are:
+
+            constant_score_auto - tries to pick the best constant-score rewrite
               method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
+
+            scoring_boolean - translates each term into boolean should and
               keeps the scores as computed by the query
-              
+
             constant_score_boolean - same as scoring_boolean, expect no scores
               are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
+
+            constant_score_filter - first creates a private Filter, by visiting
               each term in sequence and marking all docs for that term
-              
+
             top_terms_boost_N - first translates each term into boolean should
               and scores are only computed as the boost using the top N
               scoring terms.  Replace N with an integer value.
-              
+
             top_terms_N -   first translates each term into boolean should
                 and keeps the scores as computed by the query. Only the top N
                 scoring terms are used.  Replace N with an integer value.
-            
+
             Default is constant_score_auto.
 
             This is an advanced option, use with care.
-            
+
             @member ejs.QueryStringQuery
             @param {String} m The rewrite method as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -13727,38 +13752,38 @@
         m = m.toLowerCase();
         if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
           m === 'constant_score_boolean' || m === 'constant_score_filter' ||
-          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_boost_') === 0 ||
           m.indexOf('top_terms_') === 0) {
-            
+
           query.query_string.fuzzy_rewrite = m;
         }
-        
+
         return this;
       },
 
       /**
-            Sets rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
+            Sets rewrite method.  Valid values are:
+
+            constant_score_auto - tries to pick the best constant-score rewrite
               method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
+
+            scoring_boolean - translates each term into boolean should and
               keeps the scores as computed by the query
-              
+
             constant_score_boolean - same as scoring_boolean, expect no scores
               are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
+
+            constant_score_filter - first creates a private Filter, by visiting
               each term in sequence and marking all docs for that term
-              
+
             top_terms_boost_N - first translates each term into boolean should
               and scores are only computed as the boost using the top N
               scoring terms.  Replace N with an integer value.
-              
+
             top_terms_N -   first translates each term into boolean should
                 and keeps the scores as computed by the query. Only the top N
                 scoring terms are used.  Replace N with an integer value.
-            
+
             Default is constant_score_auto.
 
             This is an advanced option, use with care.
@@ -13771,21 +13796,21 @@
         if (m == null) {
           return query.query_string.rewrite;
         }
-        
+
         m = m.toLowerCase();
         if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
           m === 'constant_score_boolean' || m === 'constant_score_filter' ||
-          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_boost_') === 0 ||
           m.indexOf('top_terms_') === 0) {
-            
+
           query.query_string.rewrite = m;
         }
-        
+
         return this;
       },
 
       /**
-            Sets the suffix to automatically add to the field name when 
+            Sets the suffix to automatically add to the field name when
             performing a quoted search.
 
             @member ejs.QueryStringQuery
@@ -13800,7 +13825,7 @@
         query.query_string.quote_field_suffix = s;
         return this;
       },
-      
+
       /**
             Enables lenient parsing of the query string.
 
@@ -13816,15 +13841,15 @@
         query.query_string.lenient = trueFalse;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>Matches documents with fields that have terms within a certain range. 
-    The type of the Lucene query depends on the field type, for string fields, 
-    the TermRangeQuery, while for number/date fields, the query is a 
+    <p>Matches documents with fields that have terms within a certain range.
+    The type of the Lucene query depends on the field type, for string fields,
+    the TermRangeQuery, while for number/date fields, the query is a
     NumericRangeQuery.</p>
 
     @name ejs.RangeQuery
@@ -13901,11 +13926,11 @@
       },
 
       /**
-            Should the first from (if set) be inclusive or not. 
+            Should the first from (if set) be inclusive or not.
             Defaults to true
 
             @member ejs.RangeQuery
-            @param {Boolean} trueFalse true to include, false to exclude 
+            @param {Boolean} trueFalse true to include, false to exclude
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       includeLower: function (trueFalse) {
@@ -13921,7 +13946,7 @@
             Should the last to (if set) be inclusive or not. Defaults to true.
 
             @member ejs.RangeQuery
-            @param {Boolean} trueFalse true to include, false to exclude 
+            @param {Boolean} trueFalse true to include, false to exclude
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       includeUpper: function (trueFalse) {
@@ -13934,7 +13959,7 @@
       },
 
       /**
-            Greater than value.  Same as setting from to the value, and 
+            Greater than value.  Same as setting from to the value, and
             include_lower to false,
 
             @member ejs.RangeQuery
@@ -13968,7 +13993,7 @@
       },
 
       /**
-            Less than value.  Same as setting to to the value, and include_upper 
+            Less than value.  Same as setting to to the value, and include_upper
             to false.
 
             @member ejs.RangeQuery
@@ -13985,7 +14010,7 @@
       },
 
       /**
-            Less than or equal to value.  Same as setting to to the value, 
+            Less than or equal to value.  Same as setting to to the value,
             and include_upper to true.
 
             @member ejs.RangeQuery
@@ -14000,7 +14025,7 @@
         query.range[field].lte = val;
         return this;
       },
-                            
+
       /**
             Sets the boost value of the <code>Query</code>.
 
@@ -14016,14 +14041,14 @@
         query.range[field].boost = boost;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>Matches documents that have fields matching a regular expression. Based 
-    on Lucene 4.0 RegexpQuery which uses automaton to efficiently iterate over 
+    <p>Matches documents that have fields matching a regular expression. Based
+    on Lucene 4.0 RegexpQuery which uses automaton to efficiently iterate over
     index terms.</p>
 
     @name ejs.RegexpQuery
@@ -14088,7 +14113,7 @@
 
       /**
             The regex flags to use.  Valid flags are:
-          
+
             INTERSECTION - Support for intersection notation
             COMPLEMENT - Support for complement notation
             EMPTY - Support for the empty language symbol: #
@@ -14096,9 +14121,9 @@
             INTERVAL - Support for numerical interval notation: <n-m>
             NONE - Disable support for all syntax options
             ALL - Enables support for all syntax options
-          
+
             Use multiple flags by separating with a "|" character.  Example:
-          
+
             INTERSECTION|COMPLEMENT|EMPTY
 
             @member ejs.RegexpQuery
@@ -14113,11 +14138,11 @@
         query.regexp[field].flags = f;
         return this;
       },
-    
+
       /**
             The regex flags to use as a numeric value.  Advanced use only,
             it is probably better to stick with the <code>flags</code> option.
-          
+
             @member ejs.RegexpQuery
             @param {String} v The flags as a numeric value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -14130,30 +14155,30 @@
         query.regexp[field].flags_value = v;
         return this;
       },
-    
+
       /**
-            Sets rewrite method.  Valid values are: 
-          
-            constant_score_auto - tries to pick the best constant-score rewrite 
+            Sets rewrite method.  Valid values are:
+
+            constant_score_auto - tries to pick the best constant-score rewrite
               method based on term and document counts from the query
-            
-            scoring_boolean - translates each term into boolean should and 
+
+            scoring_boolean - translates each term into boolean should and
               keeps the scores as computed by the query
-            
+
             constant_score_boolean - same as scoring_boolean, expect no scores
               are computed.
-            
-            constant_score_filter - first creates a private Filter, by visiting 
+
+            constant_score_filter - first creates a private Filter, by visiting
               each term in sequence and marking all docs for that term
-            
+
             top_terms_boost_N - first translates each term into boolean should
               and scores are only computed as the boost using the top N
               scoring terms.  Replace N with an integer value.
-            
+
             top_terms_N -   first translates each term into boolean should
                 and keeps the scores as computed by the query. Only the top N
                 scoring terms are used.  Replace N with an integer value.
-          
+
             Default is constant_score_auto.
 
             This is an advanced option, use with care.
@@ -14166,19 +14191,19 @@
         if (m == null) {
           return query.regexp[field].rewrite;
         }
-      
+
         m = m.toLowerCase();
         if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
           m === 'constant_score_boolean' || m === 'constant_score_filter' ||
-          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_boost_') === 0 ||
           m.indexOf('top_terms_') === 0) {
-          
+
           query.regexp[field].rewrite = m;
         }
-      
+
         return this;
       },
-    
+
       /**
             Sets the boost value of the <code>Query</code>.
 
@@ -14194,7 +14219,7 @@
         query.regexp[field].boost = boost;
         return this;
       }
-      
+
     });
   };
 
@@ -14215,18 +14240,18 @@
 
     @param {Query} spanQry A valid SpanQuery
     @param {Integer} end the maximum end position in a match.
-    
+
     */
   ejs.SpanFirstQuery = function (spanQry, end) {
 
     if (!isQuery(spanQry)) {
       throw new TypeError('Argument must be a SpanQuery');
     }
-    
-    var 
+
+    var
       _common = ejs.QueryMixin('span_first'),
       query = _common.toJSON();
-    
+
     query.span_first.match = spanQry.toJSON();
     query.span_first.end = end;
 
@@ -14243,11 +14268,11 @@
         if (spanQuery == null) {
           return query.span_first.match;
         }
-      
+
         if (!isQuery(spanQuery)) {
           throw new TypeError('Argument must be a SpanQuery');
         }
-        
+
         query.span_first.match = spanQuery.toJSON();
         return this;
       },
@@ -14263,11 +14288,11 @@
         if (position == null) {
           return query.span_first.end;
         }
-      
+
         query.span_first.end = position;
         return this;
       }
-      
+
     });
   };
 
@@ -14294,12 +14319,12 @@
       throw new TypeError('Argument must be a MultiTermQuery');
     }
 
-    var 
+    var
       _common = ejs.QueryMixin('span_multi'),
       query = _common.toJSON();
-    
+
     query.span_multi.match = {};
-    
+
     if (qry != null) {
       query.span_multi.match = qry.toJSON();
     }
@@ -14317,15 +14342,15 @@
         if (mtQuery == null) {
           return query.span_multi.match;
         }
-  
+
         if (!isQuery(mtQuery)) {
           throw new TypeError('Argument must be a MultiTermQuery');
         }
-    
+
         query.span_multi.match = mtQuery.toJSON();
         return this;
       }
-      
+
     });
   };
 
@@ -14349,15 +14374,15 @@
     */
   ejs.SpanNearQuery = function (clauses, slop) {
 
-    var 
-      i, 
+    var
+      i,
       len,
       _common = ejs.QueryMixin('span_near'),
       query = _common.toJSON();
-    
+
     query.span_near.clauses = [];
     query.span_near.slop = slop;
-    
+
     if (isQuery(clauses)) {
       query.span_near.clauses.push(clauses.toJSON());
     } else if (isArray(clauses)) {
@@ -14365,7 +14390,7 @@
         if (!isQuery(clauses[i])) {
           throw new TypeError('Argument must be array of SpanQueries');
         }
-        
+
         query.span_near.clauses.push(clauses[i].toJSON());
       }
     } else {
@@ -14385,11 +14410,11 @@
             */
       clauses: function (clauses) {
         var i, len;
-        
+
         if (clauses == null) {
           return query.span_near.clauses;
         }
-      
+
         if (isQuery(clauses)) {
           query.span_near.clauses.push(clauses.toJSON());
         } else if (isArray(clauses)) {
@@ -14404,7 +14429,7 @@
         } else {
           throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
         }
-        
+
         return this;
       },
 
@@ -14419,7 +14444,7 @@
         if (distance == null) {
           return query.span_near.slop;
         }
-      
+
         query.span_near.slop = distance;
         return this;
       },
@@ -14435,7 +14460,7 @@
         if (trueFalse == null) {
           return query.span_near.in_order;
         }
-      
+
         query.span_near.in_order = trueFalse;
         return this;
       },
@@ -14452,11 +14477,11 @@
         if (trueFalse == null) {
           return query.span_near.collect_payloads;
         }
-      
+
         query.span_near.collect_payloads = trueFalse;
         return this;
       }
-      
+
     });
   };
 
@@ -14476,18 +14501,18 @@
 
     @param {Query} includeQry a valid SpanQuery whose matching docs will be returned.
     @param {Query} excludeQry a valid SpanQuery whose matching docs will not be returned
-    
+
     */
   ejs.SpanNotQuery = function (includeQry, excludeQry) {
 
     if (!isQuery(includeQry) || !isQuery(excludeQry)) {
       throw new TypeError('Argument must be a SpanQuery');
     }
-    
+
     var
       _common = ejs.QueryMixin('span_not'),
       query = _common.toJSON();
-    
+
     query.span_not.include = includeQry.toJSON();
     query.span_not.exclude = excludeQry.toJSON();
 
@@ -14504,11 +14529,11 @@
         if (spanQuery == null) {
           return query.span_not.include;
         }
-      
+
         if (!isQuery(spanQuery)) {
           throw new TypeError('Argument must be a SpanQuery');
         }
-        
+
         query.span_not.include = spanQuery.toJSON();
         return this;
       },
@@ -14524,15 +14549,15 @@
         if (spanQuery == null) {
           return query.span_not.exclude;
         }
-      
+
         if (!isQuery(spanQuery)) {
           throw new TypeError('Argument must be a SpanQuery');
         }
-        
+
         query.span_not.exclude = spanQuery.toJSON();
         return this;
       }
-      
+
     });
   };
 
@@ -14556,11 +14581,11 @@
   ejs.SpanOrQuery = function (clauses) {
 
     var
-      i, 
+      i,
       len,
       _common = ejs.QueryMixin('span_or'),
       query = _common.toJSON();
-    
+
     query.span_or.clauses = [];
 
     if (isQuery(clauses)) {
@@ -14570,7 +14595,7 @@
         if (!isQuery(clauses[i])) {
           throw new TypeError('Argument must be array of SpanQueries');
         }
-        
+
         query.span_or.clauses.push(clauses[i].toJSON());
       }
     } else {
@@ -14590,11 +14615,11 @@
             */
       clauses: function (clauses) {
         var i, len;
-        
+
         if (clauses == null) {
           return query.span_or.clauses;
         }
-      
+
         if (isQuery(clauses)) {
           query.span_or.clauses.push(clauses.toJSON());
         } else if (isArray(clauses)) {
@@ -14609,10 +14634,10 @@
         } else {
           throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
         }
-        
+
         return this;
       }
-      
+
     });
   };
 
@@ -14654,7 +14679,7 @@
             */
       field: function (f) {
         var oldValue = query.span_term[field];
-      
+
         if (f == null) {
           return field;
         }
@@ -14662,10 +14687,10 @@
         delete query.span_term[field];
         field = f;
         query.span_term[f] = oldValue;
-      
+
         return this;
       },
-    
+
       /**
             Sets the term.
 
@@ -14681,7 +14706,7 @@
         query.span_term[field].term = t;
         return this;
       },
-      
+
       /**
             Sets the boost value for documents matching the <code>Query</code>.
 
@@ -14697,7 +14722,7 @@
         query.span_term[field].boost = boost;
         return this;
       }
-      
+
     });
   };
 
@@ -14741,7 +14766,7 @@
             */
       field: function (f) {
         var oldValue = query.term[field];
-      
+
         if (f == null) {
           return field;
         }
@@ -14749,10 +14774,10 @@
         delete query.term[field];
         field = f;
         query.term[f] = oldValue;
-      
+
         return this;
       },
-    
+
       /**
             Sets the term.
 
@@ -14768,7 +14793,7 @@
         query.term[field].term = t;
         return this;
       },
-      
+
       /**
             Sets the boost value for documents matching the <code>Query</code>.
 
@@ -14784,14 +14809,14 @@
         query.term[field].boost = boost;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>A query that match on any (configurable) of the provided terms. This is 
-    a simpler syntax query for using a bool query with several term queries 
+    <p>A query that match on any (configurable) of the provided terms. This is
+    a simpler syntax query for using a bool query with several term queries
     in the should clauses.</p>
 
     @name ejs.TermsQuery
@@ -14801,7 +14826,7 @@
     @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
-    A Query that matches documents containing provided terms. 
+    A Query that matches documents containing provided terms.
 
     @param {String} field the document field/key to query against
     @param {(String|String[])} terms a single term or array of "terms" to match
@@ -14811,7 +14836,7 @@
     var
       _common = ejs.QueryMixin('terms'),
       query = _common.toJSON();
-    
+
     if (isString(terms)) {
       query.terms[field] = [terms];
     } else if (isArray(terms)) {
@@ -14819,7 +14844,7 @@
     } else {
       throw new TypeError('Argument must be string or array');
     }
-    
+
     return extend(_common, {
 
       /**
@@ -14831,7 +14856,7 @@
             */
       field: function (f) {
         var oldValue = query.terms[field];
-      
+
         if (f == null) {
           return field;
         }
@@ -14839,10 +14864,10 @@
         delete query.terms[field];
         field = f;
         query.terms[f] = oldValue;
-      
+
         return this;
       },
-    
+
       /**
             Sets the terms.  If you t is a String, it is added to the existing
             list of terms.  If t is an array, the list of terms replaces the
@@ -14864,7 +14889,7 @@
         } else {
           throw new TypeError('Argument must be string or array');
         }
-      
+
         return this;
       },
 
@@ -14880,11 +14905,11 @@
         if (minMatch == null) {
           return query.terms.minimum_should_match;
         }
-      
+
         query.terms.minimum_should_match = minMatch;
         return this;
       },
-      
+
       /**
             Enables or disables similarity coordinate scoring of documents
             matching the <code>Query</code>. Default: false.
@@ -14901,18 +14926,18 @@
         query.terms.disable_coord = trueFalse;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>TThe top_children query runs the child query with an estimated hits size, 
-    and out of the hit docs, aggregates it into parent docs. If there aren’t 
-    enough parent docs matching the requested from/size search request, then it 
+    <p>TThe top_children query runs the child query with an estimated hits size,
+    and out of the hit docs, aggregates it into parent docs. If there aren’t
+    enough parent docs matching the requested from/size search request, then it
     is run again with a wider (more hits) search.</p>
 
-    <p>The top_children also provide scoring capabilities, with the ability to 
+    <p>The top_children also provide scoring capabilities, with the ability to
     specify max, sum or avg as the score type.</p>
 
     @name ejs.TopChildrenQuery
@@ -14932,11 +14957,11 @@
     if (!isQuery(qry)) {
       throw new TypeError('Argument must be a Query');
     }
-    
-    var 
+
+    var
       _common = ejs.QueryMixin('top_children'),
       query = _common.toJSON();
-    
+
     query.top_children.query = qry.toJSON();
     query.top_children.type = type;
 
@@ -14953,11 +14978,11 @@
         if (q == null) {
           return query.top_children.query;
         }
-  
+
         if (!isQuery(q)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         query.top_children.query = q.toJSON();
         return this;
       },
@@ -14973,14 +14998,14 @@
         if (t == null) {
           return query.top_children.type;
         }
-  
+
         query.top_children.type = t;
         return this;
       },
 
       /**
-            Sets the scope of the query.  A scope allows to run facets on the 
-            same scope name that will work against the child documents. 
+            Sets the scope of the query.  A scope allows to run facets on the
+            same scope name that will work against the child documents.
 
             @deprecated since elasticsearch 0.90
             @member ejs.TopChildrenQuery
@@ -14996,45 +15021,45 @@
             another value is passed it we silently ignore the value.
 
             @deprecated since elasticsearch 0.90.1, use scoreMode
-            
+
             @member ejs.TopChildrenQuery
-            @param {String} s The scoring type as a string. 
+            @param {String} s The scoring type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       score: function (s) {
         if (s == null) {
           return query.top_children.score;
         }
-  
+
         s = s.toLowerCase();
         if (s === 'max' || s === 'sum' || s === 'avg' || s === 'total') {
           query.top_children.score = s;
         }
-      
+
         return this;
       },
-  
+
       /**
-            Sets the scoring type.  Valid values are max, sum, total, or avg. 
+            Sets the scoring type.  Valid values are max, sum, total, or avg.
             If another value is passed it we silently ignore the value.
 
             @member ejs.TopChildrenQuery
-            @param {String} s The scoring type as a string. 
+            @param {String} s The scoring type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scoreMode: function (s) {
         if (s == null) {
           return query.top_children.score_mode;
         }
-  
+
         s = s.toLowerCase();
         if (s === 'max' || s === 'sum' || s === 'avg' || s === 'total') {
           query.top_children.score_mode = s;
         }
-      
+
         return this;
       },
-      
+
       /**
             Sets the factor which is the number of hits that are asked for in
             the child query.  Defaults to 5.
@@ -15069,18 +15094,18 @@
         query.top_children.incremental_factor = f;
         return this;
       }
-      
+
     });
   };
 
   /**
     @class
-    <p>Matches documents that have fields matching a wildcard expression 
-    (not analyzed). Supported wildcards are *, which matches any character 
-    sequence (including the empty one), and ?, which matches any single 
-    character. Note this query can be slow, as it needs to iterate over many 
-    wildcards. In order to prevent extremely slow wildcard queries, a wildcard 
-    wildcard should not start with one of the wildcards * or ?. The wildcard query 
+    <p>Matches documents that have fields matching a wildcard expression
+    (not analyzed). Supported wildcards are *, which matches any character
+    sequence (including the empty one), and ?, which matches any single
+    character. Note this query can be slow, as it needs to iterate over many
+    wildcards. In order to prevent extremely slow wildcard queries, a wildcard
+    wildcard should not start with one of the wildcards * or ?. The wildcard query
     maps to Lucene WildcardQuery.</p>
 
     @name ejs.WildcardQuery
@@ -15116,7 +15141,7 @@
             */
       field: function (f) {
         var oldValue = query.wildcard[field];
-    
+
         if (f == null) {
           return field;
         }
@@ -15124,10 +15149,10 @@
         delete query.wildcard[field];
         field = f;
         query.wildcard[f] = oldValue;
-    
+
         return this;
       },
-  
+
       /**
             Sets the wildcard query value.
 
@@ -15143,30 +15168,30 @@
         query.wildcard[field].value = v;
         return this;
       },
-    
+
       /**
-            Sets rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
+            Sets rewrite method.  Valid values are:
+
+            constant_score_auto - tries to pick the best constant-score rewrite
               method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
+
+            scoring_boolean - translates each term into boolean should and
               keeps the scores as computed by the query
-              
+
             constant_score_boolean - same as scoring_boolean, expect no scores
               are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
+
+            constant_score_filter - first creates a private Filter, by visiting
               each term in sequence and marking all docs for that term
-              
+
             top_terms_boost_N - first translates each term into boolean should
               and scores are only computed as the boost using the top N
               scoring terms.  Replace N with an integer value.
-              
+
             top_terms_N -   first translates each term into boolean should
                 and keeps the scores as computed by the query. Only the top N
                 scoring terms are used.  Replace N with an integer value.
-            
+
             Default is constant_score_auto.
 
             This is an advanced option, use with care.
@@ -15179,19 +15204,19 @@
         if (m == null) {
           return query.wildcard[field].rewrite;
         }
-        
+
         m = m.toLowerCase();
         if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
           m === 'constant_score_boolean' || m === 'constant_score_filter' ||
-          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_boost_') === 0 ||
           m.indexOf('top_terms_') === 0) {
-            
+
           query.wildcard[field].rewrite = m;
         }
-        
+
         return this;
       },
-      
+
       /**
             Sets the boost value for documents matching the <code>Query</code>.
 
@@ -15207,7 +15232,7 @@
         query.wildcard[field].boost = boost;
         return this;
       }
-      
+
     });
   };
 
@@ -15665,7 +15690,7 @@
 
   /**
     @class
-    <p>A GeoPoint object that can be used in queries and filters that 
+    <p>A GeoPoint object that can be used in queries and filters that
     take a GeoPoint.  GeoPoint supports various input formats.</p>
 
     <p>See http://www.elasticsearch.org/guide/reference/mapping/geo-point-type.html</p>
@@ -15686,13 +15711,13 @@
     if (p != null && isArray(p) && p.length === 2) {
       point = [p[1], p[0]];
     }
-  
+
     return {
 
       /**
             Sets the GeoPoint as properties on an object.  The object must have
-            a 'lat' and 'lon' or a 'geohash' property.  
-          
+            a 'lat' and 'lon' or a 'geohash' property.
+
             Example:
             {lat: 41.12, lon: -71.34} or {geohash: "drm3btev3e86"}
 
@@ -15704,7 +15729,7 @@
         if (obj == null) {
           return point;
         }
-      
+
         if (isObject(obj) && has(obj, 'lat') && has(obj, 'lon')) {
           point = {
             lat: obj.lat,
@@ -15715,15 +15740,15 @@
             geohash: obj.geohash
           };
         }
-      
+
         return this;
       },
 
       /**
             Sets the GeoPoint as a string.  The format is "lat,lon".
-          
+
             Example:
-          
+
             "41.12,-71.34"
 
             @member ejs.GeoPoint
@@ -15734,18 +15759,18 @@
         if (s == null) {
           return point;
         }
-      
+
         if (isString(s) && s.indexOf(',') !== -1) {
           point = s;
         }
-      
+
         return this;
       },
-    
+
       /**
-            Sets the GeoPoint as a GeoHash.  The hash is a string of 
+            Sets the GeoPoint as a GeoHash.  The hash is a string of
             alpha-numeric characters with a precision length that defaults to 12.
-          
+
             Example:
             "drm3btev3e86"
 
@@ -15758,22 +15783,22 @@
       geohash: function (hash, precision) {
         // set precision, default to 12
         precision = (precision != null && isNumber(precision)) ? precision : 12;
-      
+
         if (hash == null) {
           return point;
         }
-      
+
         if (isString(hash) && hash.length === precision) {
           point = hash;
         }
-      
+
         return this;
       },
-    
+
       /**
             Sets the GeoPoint from an array point.  The array must contain only
             2 values.  The first value is the lat and the 2nd value is the lon.
-          
+
             Example:
             [41.12, -71.34]
 
@@ -15785,26 +15810,26 @@
         if (a == null) {
           return point;
         }
-      
-      
+
+
         // convert to GeoJSON format of [lon, lat]
         if (isArray(a) && a.length === 2) {
           point = [a[1], a[0]];
         }
-      
+
         return this;
       },
 
       /**
             The type of ejs object.  For internal use only.
-            
+
             @member ejs.GeoPoint
             @returns {String} the type of object
             */
       _type: function () {
         return 'geo point';
       },
-      
+
       /**
             Retrieves the internal <code>script</code> object. This is typically used by
             internal API functions so use with caution.
@@ -16267,10 +16292,10 @@
 
   /**
     @class
-    <p>A shape which has already been indexed in another index and/or index 
-    type. This is particularly useful for when you have a pre-defined list of 
-    shapes which are useful to your application and you want to reference this 
-    using a logical name (for example ‘New Zealand’) rather than having to 
+    <p>A shape which has already been indexed in another index and/or index
+    type. This is particularly useful for when you have a pre-defined list of
+    shapes which are useful to your application and you want to reference this
+    using a logical name (for example ‘New Zealand’) rather than having to
     provide their coordinates each time.</p>
 
     @name ejs.IndexedShape
@@ -16303,7 +16328,7 @@
         if (t == null) {
           return indexedShape.type;
         }
-    
+
         indexedShape.type = t;
         return this;
       },
@@ -16319,13 +16344,13 @@
         if (id == null) {
           return indexedShape.id;
         }
-    
+
         indexedShape.id = id;
         return this;
       },
 
       /**
-            Sets the index which the shape is indexed under. 
+            Sets the index which the shape is indexed under.
             Defaults to "shapes".
 
             @member ejs.IndexedShape
@@ -16336,13 +16361,13 @@
         if (idx == null) {
           return indexedShape.index;
         }
-    
+
         indexedShape.index = idx;
         return this;
       },
 
       /**
-            Sets the field name containing the indexed shape. 
+            Sets the field name containing the indexed shape.
             Defaults to "shape".
 
             @member ejs.IndexedShape
@@ -16353,21 +16378,21 @@
         if (field == null) {
           return indexedShape.shape_field_name;
         }
-    
+
         indexedShape.shape_field_name = field;
         return this;
       },
 
       /**
             The type of ejs object.  For internal use only.
-            
+
             @member ejs.IndexedShape
             @returns {String} the type of object
             */
       _type: function () {
         return 'indexed shape';
       },
-      
+
       /**
             Retrieves the internal <code>script</code> object. This is typically used by
             internal API functions so use with caution.
@@ -16632,8 +16657,8 @@
 
   /**
     @class
-    <p>When loading data from _source, partial fields can be used 
-    to use wildcards to control what part of the _source will be loaded 
+    <p>When loading data from _source, partial fields can be used
+    to use wildcards to control what part of the _source will be loaded
     based on include and exclude patterns. </p>
 
     @name ejs.PartialField
@@ -16701,17 +16726,17 @@
 
         return this;
       },
-  
+
       /**
             The type of ejs object.  For internal use only.
-            
+
             @member ejs.PartialField
             @returns {String} the type of object
             */
       _type: function () {
         return 'partial field';
       },
-      
+
       /**
             Retrieves the internal <code>script</code> object. This is typically used by
             internal API functions so use with caution.
@@ -17340,11 +17365,11 @@
     if (windowSize != null && !isNumber(windowSize)) {
       throw new TypeError('Argument must be a Number');
     }
-    
+
     if (qry != null && !isQuery(qry)) {
       throw new TypeError('Argument must be a Query');
     }
-    
+
     var rescore = {
       query: {}
     };
@@ -17352,11 +17377,11 @@
     if (windowSize != null) {
       rescore.window_size = windowSize;
     }
-    
+
     if (qry != null) {
       rescore.query.rescore_query = qry.toJSON();
     }
-    
+
     return {
 
       /**
@@ -17441,11 +17466,11 @@
 
       /**
             Sets the scoring mode.  Valid values are:
-            
+
             total - default mode, the scores combined
             multiply - the scores multiplied
             min - the lowest of the scores
-            max - the highest score 
+            max - the highest score
             avg - the average of the scores
 
             @member ejs.Rescore
@@ -17456,13 +17481,13 @@
         if (s == null) {
           return rescore.query.score_mode;
         }
-    
+
         s = s.toLowerCase();
-        if (s === 'total' || s === 'min' || s === 'max' || s === 'multiply' || 
+        if (s === 'total' || s === 'min' || s === 'max' || s === 'multiply' ||
           s === 'avg') {
           rescore.query.score_mode = s;
         }
-        
+
         return this;
       },
 
@@ -17524,7 +17549,7 @@
         if (language == null) {
           return script[fieldName].lang;
         }
-      
+
         script[fieldName].lang = language;
         return this;
       },
@@ -17540,7 +17565,7 @@
         if (expression == null) {
           return script[fieldName].script;
         }
-      
+
         script[fieldName].script = expression;
         return this;
       },
@@ -17556,7 +17581,7 @@
         if (oParams == null) {
           return script[fieldName].params;
         }
-      
+
         script[fieldName].params = oParams;
         return this;
       },
@@ -17573,21 +17598,21 @@
         if (trueFalse == null) {
           return script[fieldName].ignore_failure;
         }
-        
+
         script[fieldName].ignore_failure = trueFalse;
         return this;
       },
 
       /**
             The type of ejs object.  For internal use only.
-            
+
             @member ejs.ScriptField
             @returns {String} the type of object
             */
       _type: function () {
         return 'script field';
       },
-      
+
       /**
             Retrieves the internal <code>script</code> object. This is typically used by
             internal API functions so use with caution.
@@ -17603,7 +17628,7 @@
 
   /**
     @class
-    <p>A Shape object that can be used in queries and filters that 
+    <p>A Shape object that can be used in queries and filters that
     take a Shape.  Shape uses the GeoJSON format.</p>
 
     <p>See http://www.geojson.org/</p>
@@ -17619,12 +17644,12 @@
 
     */
   ejs.Shape = function (type, coords) {
-  
-    var 
+
+    var
       shape = {},
       validType = function (t) {
         var valid = false;
-        if (t === 'point' || t === 'linestring' || t === 'polygon' || 
+        if (t === 'point' || t === 'linestring' || t === 'polygon' ||
           t === 'multipoint' || t === 'envelope' || t === 'multipolygon' ||
           t === 'circle' || t === 'multilinestring') {
           valid = true;
@@ -17632,13 +17657,13 @@
 
         return valid;
       };
-    
+
     type = type.toLowerCase();
     if (validType(type)) {
       shape.type = type;
       shape.coordinates = coords;
-    }  
-  
+    }
+
     return {
 
       /**
@@ -17653,12 +17678,12 @@
         if (t == null) {
           return shape.type;
         }
-      
+
         t = t.toLowerCase();
         if (validType(t)) {
           shape.type = t;
         }
-      
+
         return this;
       },
 
@@ -17679,7 +17704,7 @@
         shape.coordinates = c;
         return this;
       },
-      
+
       /**
             Sets the radius for parsing a circle <code>Shape</code>.
 
@@ -17691,21 +17716,21 @@
         if (r == null) {
           return shape.radius;
         }
-        
+
         shape.radius = r;
         return this;
       },
 
       /**
             The type of ejs object.  For internal use only.
-            
+
             @member ejs.Shape
             @returns {String} the type of object
             */
       _type: function () {
         return 'shape';
       },
-      
+
       /**
             Retrieves the internal <code>script</code> object. This is typically used by
             internal API functions so use with caution.
@@ -17721,7 +17746,7 @@
 
   /**
     @class
-    <p>A Sort object that can be used in on the Request object to specify 
+    <p>A Sort object that can be used in on the Request object to specify
     various types of sorting.</p>
 
     <p>See http://www.elasticsearch.org/guide/reference/api/search/sort.html</p>
@@ -17741,12 +17766,12 @@
     if (fieldName == null) {
       fieldName = '_score';
     }
-  
+
     var sort = {},
       key = fieldName, // defaults to field search
       geo_key = '_geo_distance', // used when doing geo distance sort
       script_key = '_script'; // used when doing script sort
-    
+
     // defaults to a field sort
     sort[key] = {};
 
@@ -17756,21 +17781,21 @@
             Set's the field to sort on
 
             @member ejs.Sort
-            @param {String} f The name of a field 
+            @param {String} f The name of a field
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       field: function (f) {
         var oldValue = sort[key];
-      
+
         if (f == null) {
           return fieldName;
         }
-    
-        delete sort[key];      
+
+        delete sort[key];
         fieldName = f;
         key = f;
         sort[key] = oldValue;
-      
+
         return this;
       },
 
@@ -17783,23 +17808,23 @@
             */
       geoDistance: function (point) {
         var oldValue = sort[key];
-      
+
         if (point == null) {
           return sort[key][fieldName];
         }
-    
+
         if (!isGeoPoint(point)) {
           throw new TypeError('Argument must be a GeoPoint');
         }
-      
+
         delete sort[key];
         key = geo_key;
         sort[key] = oldValue;
         sort[key][fieldName] = point.toJSON();
-      
+
         return this;
       },
-    
+
       /**
             Enables sorting based on a script.
 
@@ -17809,27 +17834,27 @@
             */
       script: function (scriptCode) {
         var oldValue = sort[key];
-      
+
         if (scriptCode == null) {
           return sort[key].script;
         }
-      
+
         delete sort[key];
         key = script_key;
         sort[key] = oldValue;
         sort[key].script = scriptCode;
-      
+
         return this;
       },
-    
+
       /**
             Sets the sort order.  Valid values are:
-          
+
             asc - for ascending order
             desc - for descending order
 
             Valid during sort types:  field, geo distance, and script
-          
+
             @member ejs.Sort
             @param {String} o The sort order as a string, asc or desc.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -17838,19 +17863,19 @@
         if (o == null) {
           return sort[key].order;
         }
-    
+
         o = o.toLowerCase();
         if (o === 'asc' || o === 'desc') {
-          sort[key].order = o;  
+          sort[key].order = o;
         }
-      
+
         return this;
       },
-    
+
       /**
             Sets the sort order to ascending (asc).  Same as calling
             <code>order('asc')</code>.
-          
+
             @member ejs.Sort
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -17858,11 +17883,11 @@
         sort[key].order = 'asc';
         return this;
       },
-      
+
       /**
             Sets the sort order to descending (desc).  Same as calling
             <code>order('desc')</code>.
-          
+
             @member ejs.Sort
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -17870,15 +17895,15 @@
         sort[key].order = 'desc';
         return this;
       },
-      
+
       /**
-            Sets the order with a boolean value.  
-          
+            Sets the order with a boolean value.
+
             true = descending sort order
             false = ascending sort order
 
             Valid during sort types:  field, geo distance, and script
-          
+
             @member ejs.Sort
             @param {Boolean} trueFalse If sort should be in reverse order.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -17887,20 +17912,20 @@
         if (trueFalse == null) {
           return sort[key].reverse;
         }
-    
-        sort[key].reverse = trueFalse;  
+
+        sort[key].reverse = trueFalse;
         return this;
       },
-    
+
       /**
             Sets the value to use for missing fields.  Valid values are:
-          
+
             _last - to put documents with the field missing last
             _first - to put documents with the field missing first
             {String} - any string value to use as the sort value.
 
             Valid during sort types:  field
-          
+
             @member ejs.Sort
             @param {String} m The value to use for documents with the field missing.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -17909,16 +17934,16 @@
         if (m == null) {
           return sort[key].missing;
         }
-    
-        sort[key].missing = m;  
+
+        sort[key].missing = m;
         return this;
       },
-    
+
       /**
             Sets if the sort should ignore unmapped fields vs throwing an error.
 
             Valid during sort types:  field
-          
+
             @member ejs.Sort
             @param {Boolean} trueFalse If sort should ignore unmapped fields.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -17927,17 +17952,17 @@
         if (trueFalse == null) {
           return sort[key].ignore_unmapped;
         }
-    
-        sort[key].ignore_unmapped = trueFalse;  
+
+        sort[key].ignore_unmapped = trueFalse;
         return this;
       },
-    
+
       /**
              Sets the distance unit.  Valid values are "mi" for miles or "km"
              for kilometers. Defaults to "km".
 
              Valid during sort types:  geo distance
-           
+
              @member ejs.Sort
              @param {Number} unit the unit of distance measure.
              @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -17946,25 +17971,25 @@
         if (unit == null) {
           return sort[key].unit;
         }
-    
+
         unit = unit.toLowerCase();
         if (unit === 'mi' || unit === 'km') {
           sort[key].unit = unit;
         }
-      
+
         return this;
       },
-    
+
       /**
             If the lat/long points should be normalized to lie within their
             respective normalized ranges.
-          
+
             Normalized ranges are:
             lon = -180 (exclusive) to 180 (inclusive) range
             lat = -90 to 90 (both inclusive) range
 
             Valid during sort types:  geo distance
-          
+
             @member ejs.Sort
             @param {String} trueFalse True if the coordinates should be normalized. False otherwise.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -17977,15 +18002,15 @@
         sort[key].normalize = trueFalse;
         return this;
       },
-    
+
       /**
-            How to compute the distance. Can either be arc (better precision) 
+            How to compute the distance. Can either be arc (better precision)
             or plane (faster). Defaults to arc.
 
             Valid during sort types:  geo distance
-          
+
             @member ejs.Sort
-            @param {String} type The execution type as a string.  
+            @param {String} type The execution type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       distanceType: function (type) {
@@ -17997,18 +18022,18 @@
         if (type === 'arc' || type === 'plane') {
           sort[key].distance_type = type;
         }
-      
+
         return this;
       },
-    
+
       /**
-            Sets parameters that will be applied to the script.  Overwrites 
+            Sets parameters that will be applied to the script.  Overwrites
             any existing params.
 
             Valid during sort types:  script
-          
+
             @member ejs.Sort
-            @param {Object} p An object where the keys are the parameter name and 
+            @param {Object} p An object where the keys are the parameter name and
               values are the parameter value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -18016,16 +18041,16 @@
         if (p == null) {
           return sort[key].params;
         }
-  
+
         sort[key].params = p;
         return this;
       },
-  
+
       /**
             Sets the script language.
 
             Valid during sort types:  script
-          
+
             @member ejs.Sort
             @param {String} lang The script language, default mvel.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -18038,17 +18063,17 @@
         sort[key].lang = lang;
         return this;
       },
-    
+
       /**
             Sets the script sort type.  Valid values are:
-          
+
             <dl>
                 <dd><code>string</code> - script return value is sorted as a string</dd>
                 <dd><code>number</code> - script return value is sorted as a number</dd>
             <dl>
 
             Valid during sort types:  script
-          
+
             @member ejs.Sort
             @param {String} type The sort type.  Either string or number.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -18062,22 +18087,22 @@
         if (type === 'string' || type === 'number') {
           sort[key].type = type;
         }
-      
+
         return this;
       },
 
       /**
             Sets the sort mode.  Valid values are:
-          
+
             <dl>
                 <dd><code>min</code> - sort by lowest value</dd>
                 <dd><code>max</code> - sort by highest value</dd>
                 <dd><code>sum</code> - sort by the sum of all values</dd>
                 <dd><code>avg</code> - sort by the average of all values</dd>
             <dl>
-            
+
             Valid during sort types:  field, geo distance
-          
+
             @since elasticsearch 0.90
             @member ejs.Sort
             @param {String} m The sort mode.  Either min, max, sum, or avg.
@@ -18092,15 +18117,15 @@
         if (m === 'min' || m === 'max' || m === 'sum' || m === 'avg') {
           sort[key].mode = m;
         }
-      
+
         return this;
       },
-      
+
       /**
             Sets the path of the nested object.
 
             Valid during sort types:  field, geo distance
-          
+
             @since elasticsearch 0.90
             @member ejs.Sort
             @param {String} path The nested path value.
@@ -18114,13 +18139,13 @@
         sort[key].nested_path = path;
         return this;
       },
-      
+
       /**
             <p>Allows you to set a filter that nested objects must match
             in order to be considered during sorting.</p>
 
             Valid during sort types: field, geo distance
-            
+
             @since elasticsearch 0.90
             @member ejs.Sort
             @param {Object} oFilter A valid <code>Filter</code> object.
@@ -18130,25 +18155,25 @@
         if (oFilter == null) {
           return sort[key].nested_filter;
         }
-      
+
         if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter');
         }
-        
+
         sort[key].nested_filter = oFilter.toJSON();
         return this;
       },
 
       /**
             The type of ejs object.  For internal use only.
-          
+
             @member ejs.Sort
             @returns {String} the type of object
             */
       _type: function () {
         return 'sort';
       },
-    
+
       /**
             Retrieves the internal <code>script</code> object. This is typically used by
             internal API functions so use with caution.
@@ -18165,7 +18190,7 @@
   /**
     @class
     @suggester
-    <p>The completion suggester is a so-called prefix suggester. It does not do spell 
+    <p>The completion suggester is a so-called prefix suggester. It does not do spell
     correction like the term or phrase suggesters but allows basic auto-complete functionality.</p>
 
     @name ejs.CompletionSuggester
@@ -18177,9 +18202,9 @@
     @borrows ejs.SuggestContextMixin.field as field
     @borrows ejs.SuggestContextMixin.size as size
     @borrows ejs.SuggestContextMixin.shardSize as shardSize
-  
+
     @since elasticsearch 0.90.4
-  
+
     @desc
     <p>A suggester that allows basic auto-complete functionality.</p>
 
@@ -18191,12 +18216,12 @@
       _context,
       _common = ejs.SuggesterMixin(name),
       suggest = _common.toJSON();
-    
+
     suggest[name].completion = {};
     _context = ejs.SuggestContextMixin(suggest[name].completion);
-  
+
     return extend(_common, _context, {
-    
+
       /**
             <p>Enable fuzzy completions which means a can spell a word
             incorrectly and still get a suggestion.</p>
@@ -18209,18 +18234,18 @@
         if (trueFalse == null) {
           return suggest[name].completion.fuzzy;
         }
-      
+
         if (trueFalse && suggest[name].completion.fuzzy == null) {
           suggest[name].completion.fuzzy = {};
         } else if (!trueFalse && suggest[name].completion.fuzzy != null) {
           delete suggest[name].completion.fuzzy;
         }
-      
+
         return this;
       },
-    
+
       /**
-            <p>Sets if transpositions should be counted as one or two changes, defaults 
+            <p>Sets if transpositions should be counted as one or two changes, defaults
             to true when fuzzy is enabled.  Automatically enables fuzzy suggestions
             when set to any value.</p>
 
@@ -18232,18 +18257,18 @@
         if (suggest[name].completion.fuzzy == null) {
           suggest[name].completion.fuzzy = {};
         }
-      
+
         if (trueFalse == null) {
           return suggest[name].completion.fuzzy.transpositions;
         }
-      
+
         suggest[name].completion.fuzzy.transpositions = trueFalse;
         return this;
       },
-    
+
       /**
-            <p>Sets all are measurements (like edit distance, transpositions and lengths) 
-            in unicode code points (actual letters) instead of bytes.  Automatically 
+            <p>Sets all are measurements (like edit distance, transpositions and lengths)
+            in unicode code points (actual letters) instead of bytes.  Automatically
             enables fuzzy suggestions when set to any value.</p>
 
             @member ejs.CompletionSuggester
@@ -18254,17 +18279,17 @@
         if (suggest[name].completion.fuzzy == null) {
           suggest[name].completion.fuzzy = {};
         }
-      
+
         if (trueFalse == null) {
           return suggest[name].completion.fuzzy.unicode_aware;
         }
-      
+
         suggest[name].completion.fuzzy.unicode_aware = trueFalse;
         return this;
       },
-    
+
       /**
-            <p>Maximum edit distance (fuzziness), defaults to 1.  Automatically 
+            <p>Maximum edit distance (fuzziness), defaults to 1.  Automatically
             enables fuzzy suggestions when set to any value.</p>
 
             @member ejs.CompletionSuggester
@@ -18275,17 +18300,17 @@
         if (suggest[name].completion.fuzzy == null) {
           suggest[name].completion.fuzzy = {};
         }
-      
+
         if (d == null) {
           return suggest[name].completion.fuzzy.edit_distance;
         }
-      
+
         suggest[name].completion.fuzzy.edit_distance = d;
         return this;
       },
-    
+
       /**
-            <p>Minimum length of the input before fuzzy suggestions are returned, defaults 
+            <p>Minimum length of the input before fuzzy suggestions are returned, defaults
             to 3.  Automatically enables fuzzy suggestions when set to any value.</p>
 
             @member ejs.CompletionSuggester
@@ -18296,17 +18321,17 @@
         if (suggest[name].completion.fuzzy == null) {
           suggest[name].completion.fuzzy = {};
         }
-      
+
         if (m == null) {
           return suggest[name].completion.fuzzy.min_length;
         }
-      
+
         suggest[name].completion.fuzzy.min_length = m;
         return this;
       },
-    
+
       /**
-            <p>Minimum length of the input, which is not checked for fuzzy alternatives, defaults 
+            <p>Minimum length of the input, which is not checked for fuzzy alternatives, defaults
             to 1.  Automatically enables fuzzy suggestions when set to any value.</p>
 
             @member ejs.CompletionSuggester
@@ -18317,15 +18342,15 @@
         if (suggest[name].completion.fuzzy == null) {
           suggest[name].completion.fuzzy = {};
         }
-      
+
         if (l == null) {
           return suggest[name].completion.fuzzy.prefix_length;
         }
-      
+
         suggest[name].completion.fuzzy.prefix_length = l;
         return this;
       }
-    
+
     });
   };
 
@@ -18349,23 +18374,23 @@
     @borrows ejs.DirectSettingsMixin.minDocFreq as minDocFreq
 
     @since elasticsearch 0.90
-  
+
     @desc
     <p>A candidate generator that generates terms based on edit distance.</p>
-  
+
     */
   ejs.DirectGenerator = function () {
 
-  
+
     var
-  
+
     generator = {},
     _common = ejs.DirectSettingsMixin(generator);
-    
+
     return extend(_common, {
 
       /**
-            <p>Sets an analyzer that is applied to each of the tokens passed to 
+            <p>Sets an analyzer that is applied to each of the tokens passed to
             this generator.  The analyzer is applied to the original tokens,
             not the generated tokens.</p>
 
@@ -18377,13 +18402,13 @@
         if (analyzer == null) {
           return generator.pre_filter;
         }
-  
+
         generator.pre_filter = analyzer;
         return this;
       },
-    
+
       /**
-            <p>Sets an analyzer that is applied to each of the generated tokens 
+            <p>Sets an analyzer that is applied to each of the generated tokens
             before they are passed to the actual phrase scorer.</p>
 
             @member ejs.DirectGenerator
@@ -18394,11 +18419,11 @@
         if (analyzer == null) {
           return generator.post_filter;
         }
-  
+
         generator.post_filter = analyzer;
         return this;
       },
-    
+
       /**
             <p>Sets the field used to generate suggestions from.</p>
 
@@ -18410,11 +18435,11 @@
         if (field == null) {
           return generator.field;
         }
-  
+
         generator.field = field;
         return this;
       },
-    
+
       /**
             <p>Sets the number of suggestions returned for each token.</p>
 
@@ -18426,21 +18451,21 @@
         if (s == null) {
           return generator.size;
         }
-  
+
         generator.size = s;
         return this;
       },
 
       /**
             The type of ejs object.  For internal use only.
-        
+
             @member ejs.DirectGenerator
             @returns {String} the type of object
             */
       _type: function () {
         return 'generator';
       },
-  
+
       /**
             <p>Retrieves the internal <code>generator</code> object. This is typically used by
                internal API functions so use with caution.</p>
@@ -18752,10 +18777,10 @@
 
   /**
     @class
-    <p>TermSuggester suggests terms based on edit distance. The provided suggest 
-    text is analyzed before terms are suggested. The suggested terms are 
-    provided per analyzed suggest text token.  This leaves the suggest-selection 
-    to the API consumer.  For a higher level suggester, please use the 
+    <p>TermSuggester suggests terms based on edit distance. The provided suggest
+    text is analyzed before terms are suggested. The suggested terms are
+    provided per analyzed suggest text token.  This leaves the suggest-selection
+    to the API consumer.  For a higher level suggester, please use the
     <code>PhraseSuggester</code>.</p>
 
     @name ejs.TermSuggester
@@ -18779,7 +18804,7 @@
     @borrows ejs.SuggestContextMixin.shardSize as shardSize
 
     @since elasticsearch 0.90
-    
+
     @desc
     <p>A suggester that suggests terms based on edit distance.</p>
 
@@ -18791,8 +18816,8 @@
       _direct,
       _context,
       _common = ejs.SuggesterMixin(name),
-      suggest = _common.toJSON();  
-    
+      suggest = _common.toJSON();
+
     suggest[name].term = {};
     _direct = ejs.DirectSettingsMixin(suggest[name].term);
     _context = ejs.SuggestContextMixin(suggest[name].term);
@@ -18805,5 +18830,5 @@
     root.ejs = _ejs;
     return this;
   };
-  
+
 }).call(this);
