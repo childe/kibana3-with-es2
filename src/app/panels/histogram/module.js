@@ -372,24 +372,23 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       } else {
         timeField = timeField[0];
       }
-      var query = $scope.ejs.FilteredQuery(
-        $scope.ejs.BoolQuery(),
+
+     var boolQuery = $scope.ejs.BoolQuery().filter(
         filterSrv.getBoolFilter(_ids_without_time).must(
           $scope.ejs.RangeFilter(timeField)
-          .from($scope.shifted_time.from)
-          .to($scope.shifted_time.to)
+          .from($scope.shifted_time.from.getTime())
+          .to($scope.shifted_time.to.getTime())
         )
-      );
-      request = request.query(query);
+     );
+
+      request = request.query(boolQuery);
 
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
 
       queries = querySrv.getQueryObjs($scope.panel.queries.ids);
 
       _.each(queries, function(q) {
-        var query = $scope.ejs.QueryFilter(
-          querySrv.toEjsObj(q)
-        );
+        var query = querySrv.toEjsObj(q);
 
         var aggr = buildAggs(q.id);
 
@@ -516,11 +515,12 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
 
       $scope.panelMeta.loading = true;
       request = $scope.ejs.Request();
-      var query = $scope.ejs.FilteredQuery(
-        $scope.ejs.BoolQuery(),
+
+     var boolQuery = $scope.ejs.BoolQuery().filter(
         filterSrv.getBoolFilter(filterSrv.ids())
-      );
-      request = request.query(query);
+     );
+
+      request = request.query(boolQuery);
 
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
 
@@ -528,9 +528,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
 
       // Build the query
       _.each(queries, function(q) {
-        var query = $scope.ejs.QueryFilter(
-          querySrv.toEjsObj(q)
-        );
+        var query = querySrv.toEjsObj(q);
 
         var aggr = buildAggs(q.id);
 
