@@ -114,7 +114,8 @@ define([
 
       var _segment = _.isUndefined(segment) ? 0 : segment;
 
-      var boolQuery = $scope.ejs.BoolQuery().filter(filterSrv.getBoolFilter(filterSrv.ids()));
+      var boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1)
+            .filter(filterSrv.getBoolFilter(filterSrv.ids()));
       var request = $scope.ejs.Request(boolQuery);
 
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
