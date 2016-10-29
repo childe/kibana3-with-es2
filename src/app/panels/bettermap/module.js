@@ -145,13 +145,11 @@ function (angular, app, _, L, localRequire) {
         _.each(queries,function(q) {
           boolQuery = boolQuery.should(querySrv.toEjsObj(q));
         });
+        boolQuery.filter(filterSrv.getBoolFilter(filterSrv.ids()).must($scope.ejs.ExistsFilter($scope.panel.field))).minimumShouldMatch(1);
 
         var request = $scope.ejs.Request()
-          .query($scope.ejs.FilteredQuery(
-            boolQuery,
-            filterSrv.getBoolFilter(filterSrv.ids()).must($scope.ejs.ExistsFilter($scope.panel.field))
-          ))
-          .fields([$scope.panel.field,$scope.panel.tooltip])
+          .query(boolQuery)
+          .source([$scope.panel.field,$scope.panel.tooltip])
           .size($scope.panel.size);
 
         if(!_.isNull(timeField)) {
@@ -184,8 +182,8 @@ function (angular, app, _, L, localRequire) {
             // Keep only what we need for the set
             $scope.data = $scope.data.slice(0,$scope.panel.size).concat(_.map(results.hits.hits, function(hit) {
               return {
-                coordinates : new L.LatLng(hit.fields[$scope.panel.field][1],hit.fields[$scope.panel.field][0]),
-                tooltip : hit.fields[$scope.panel.tooltip]
+                coordinates : new L.LatLng(hit._source[$scope.panel.field][1],hit._source[$scope.panel.field][0]),
+                tooltip : hit._source[$scope.panel.tooltip]
               };
             }));
 
