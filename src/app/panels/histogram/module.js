@@ -404,7 +404,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       // NOT Populate the inspector panel
 
       // Then run it
-      results = $scope.ejs.doSearch($scope.shifted_index[segment], request);
+      results = $scope.ejs.doSearch($scope.shifted_index[segment], request, 0);
 
       // Populate scope when we have results
       return results.then(function(results) {
@@ -476,7 +476,12 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
         if(segment < $scope.shifted_index.length-1) {
           $scope.get_data_timeshift(data,segment+1,query_id);
         }
-      });
+      },
+        function(results){
+          $scope.panel.error = $scope.parse_error(results.body);
+          $scope.panelMeta.loading = false;
+        }
+      );
     };
 
 
@@ -651,7 +656,12 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
         if(segment < dashboard.indices.length-1) {
           $scope.get_data(data,segment+1,query_id);
         }
-      });
+      },
+        function(results){ //error
+          $scope.panel.error = $scope.parse_error(results.body);
+          $scope.panelMeta.loading = false;
+        }
+      );
     };
 
     function buildResult(query_results, hits, time_series, counters, timeshift){
