@@ -168,8 +168,6 @@ function (angular, app, _, $, kbn) {
 
       $scope.panelMeta.loading = true;
       var request,
-        terms_facet,
-        termstats_facet,
         results,
         boolQuery,
         queries;
@@ -187,12 +185,7 @@ function (angular, app, _, $, kbn) {
       _.each(queries,function(q) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
-
-      var query = $scope.ejs.FilteredQuery(
-        boolQuery,
-        filterSrv.getBoolFilter(filterSrv.ids())
-      );
-      // request = request.query(query);
+      boolQuery.filter(filterSrv.getBoolFilter(filterSrv.ids()));
 
       // Terms mode
       if($scope.panel.tmode === 'terms') {
@@ -219,7 +212,7 @@ function (angular, app, _, $, kbn) {
             default:
             terms_aggs.order('_count');
           }
-        request = request.query(query).agg(terms_aggs).size(0);
+        request = request.query(boolQuery).agg(terms_aggs).size(0);
       }
       else if($scope.panel.tmode === 'terms_stats') {
         var terms_aggs = $scope.ejs.TermsAggregation('terms')
@@ -281,7 +274,7 @@ function (angular, app, _, $, kbn) {
               break;
           }
 
-        request = request.query(query)
+        request = request.query(boolQuery)
         .agg(terms_aggs.agg(sub_aggs)).size(0);
       }
 
@@ -289,19 +282,26 @@ function (angular, app, _, $, kbn) {
       $scope.inspector = request.toJSON();
 
       results = $scope.ejs.doSearch(dashboard.indices, request);
+        //console.log(results);
 
       // Populate scope when we have results
-      results.then(function(results) {
-        if(!(_.isUndefined(results.error))) {
-          $scope.panel.error = $scope.parse_error(results.error);
+      results.then(
+        function(results) {
+          if(!(_.isUndefined(results.error))) {
+            $scope.panel.error = $scope.parse_error(results.error);
+          }
+          $scope.panelMeta.loading = false;
+          $scope.hits = results.hits.total;
+
+          $scope.results = results;
+
+          $scope.$emit('render');
+        },
+        function(results){
+          $scope.panel.error = $scope.parse_error(results.body);
+          $scope.panelMeta.loading = false;
         }
-        $scope.panelMeta.loading = false;
-        $scope.hits = results.hits.total;
-
-        $scope.results = results;
-
-        $scope.$emit('render');
-      });
+      );
     };
 
     $scope.build_search = function(term,negate) {
