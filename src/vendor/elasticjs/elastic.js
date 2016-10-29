@@ -9159,6 +9159,23 @@
     return extend(_common, {
 
       /**
+            Sets a string value controlling how many "should" clauses in the
+            resulting <code>Query</code> should match.
+
+            @member ejs.MatchQuery
+            @param {String} minMatch A min should match parameter.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minimumShouldMatch: function (minMatch) {
+        if (minMatch == null) {
+          return query.bool.minimum_should_match;
+        }
+
+        query.bool.minimum_should_match = minMatch;
+        return this;
+      },
+
+      /**
              Adds filter to boolean container. Given query "must" appear in matching documents.
 
              @member ejs.BoolQuery
