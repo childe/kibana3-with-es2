@@ -423,6 +423,7 @@ function (angular, app, _, kbn, moment) {
       });
 
       boolQuery.filter(filterSrv.getBoolFilter(filterSrv.ids()));
+      boolQuery.minimumShouldMatch(1);
 
       request = request.query(
           boolQuery
