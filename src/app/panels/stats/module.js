@@ -126,19 +126,14 @@ define([
       _.each(queries,function(q) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
+      boolQuery.filter(filterSrv.getBoolFilter(filterSrv.ids()));
 
-      var query = $scope.ejs.FilteredQuery(
-        $scope.ejs.BoolQuery(),
-        filterSrv.getBoolFilter(filterSrv.ids())
-      );
-      request = $scope.ejs.Request().query(query);
+      request = $scope.ejs.Request().query(boolQuery);
 
       if ($scope.panel.mode !== '-'){
         request = request
         .agg($scope.ejs.FilterAggregation('stats')
-        .filter($scope.ejs.QueryFilter(
-            boolQuery
-          )).agg($scope.ejs.ExtendedStatsAggregation("0").field($scope.panel.field))
+        .filter(boolQuery).agg($scope.ejs.ExtendedStatsAggregation("0").field($scope.panel.field))
         );
       }
 
@@ -146,7 +141,7 @@ define([
       _.each(queries, function (q) {
         var alias = q.alias || q.query;
         request.agg($scope.ejs.FilterAggregation('stats_'+alias)
-          .filter($scope.ejs.QueryFilter(querySrv.toEjsObj(q)))
+          .filter(querySrv.toEjsObj(q))
           .agg($scope.ejs.ExtendedStatsAggregation("0").field($scope.panel.field))
         );
       });
