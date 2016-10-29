@@ -1331,11 +1331,6 @@ var protocolPattern = /^([a-z0-9.+-]+:)/i,
       'ftp': true,
       'gopher': true,
       'file': true,
-      'http:': true,
-      'https:': true,
-      'ftp:': true,
-      'gopher:': true,
-      'file:': true
     },
     querystring = require('querystring');
 
@@ -32787,7 +32782,11 @@ AngularConnector.prototype.request = function (params, cb) {
     transformRequest: [],
     transformResponse: []
   }).then(function (response) {
-    cb(null, response.data, response.status, response.headers());
+    if(_.isUndefined(response)){
+      cb(null, 'angular http returned undefined response', null, null);
+    } else {
+      cb(null, response.data, response.status, response.headers());
+    }
   }, function (err) {
     if (err.status) {
       cb(null, err.data, err.status, err.headers());
