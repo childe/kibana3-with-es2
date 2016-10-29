@@ -181,7 +181,7 @@ function (angular, app, _, $, kbn) {
       queries = querySrv.getQueryObjs($scope.panel.queries.ids);
 
       // This could probably be changed to a BoolFilter
-      boolQuery = $scope.ejs.BoolQuery();
+      boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1);
       _.each(queries,function(q) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
