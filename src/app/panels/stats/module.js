@@ -159,6 +159,9 @@ define([
 
       results.then(function(results) {
         $scope.panelMeta.loading = false;
+        if(!(_.isUndefined(results.error))) {
+          $scope.panel.error = $scope.parse_error(results.error);
+        }
         if ($scope.panel.mode !== '-'){
           var _fcm = {
             "sum":"sum",
@@ -199,7 +202,12 @@ define([
         };
 
         $scope.$emit('render');
-      });
+      },
+      function(results){
+        $scope.panel.error = $scope.parse_error(results.body);
+        $scope.panelMeta.loading = false;
+      }
+      );
     };
 
     $scope.set_refresh = function (state) {
