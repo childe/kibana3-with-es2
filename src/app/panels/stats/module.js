@@ -108,7 +108,13 @@ define([
     }
 
     $scope.get_data = function () {
+      $scope.panel.error = '';
       if(dashboard.indices.length === 0) {
+        return;
+      }
+
+      if (_.isUndefined($scope.panel.field) || $scope.panel.field === ''){
+        $scope.panel.error = 'Field must not be blank';
         return;
       }
 
@@ -122,7 +128,7 @@ define([
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
       queries = querySrv.getQueryObjs($scope.panel.queries.ids);
 
-      boolQuery = $scope.ejs.BoolQuery();
+      boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1);
       _.each(queries,function(q) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
