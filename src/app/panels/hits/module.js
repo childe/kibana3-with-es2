@@ -113,19 +113,17 @@ define([
       }
 
       var _segment = _.isUndefined(segment) ? 0 : segment;
-      var request = $scope.ejs.Request();
+
+      var boolQuery = $scope.ejs.BoolQuery().filter(filterSrv.getBoolFilter(filterSrv.ids()));
+      var request = $scope.ejs.Request(boolQuery);
 
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
       var queries = querySrv.getQueryObjs($scope.panel.queries.ids);
-        
+
       // Build the question part of the query
       _.each(queries, function(q) {
-        var _q = $scope.ejs.FilteredQuery(
-          querySrv.toEjsObj(q),
-          filterSrv.getBoolFilter(filterSrv.ids()));
-
         request = request.agg(
-          $scope.ejs.FilterAggregation(q.id).filter($scope.ejs.QueryFilter(_q))
+          $scope.ejs.FilterAggregation(q.id).filter(querySrv.toEjsObj(q))
         ).size(0);
       });
 
