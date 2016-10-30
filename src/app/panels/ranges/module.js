@@ -132,25 +132,20 @@ function (angular, app, _, $, kbn) {
       boolQuery,
       queries;
 
-      $scope.field = _.contains(fields.list,$scope.panel.field+'.raw') ?
-      $scope.panel.field+'.raw' : $scope.panel.field;
+      $scope.field = $scope.panel.field;
 
       request = $scope.ejs.Request();
 
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
       queries = querySrv.getQueryObjs($scope.panel.queries.ids);
 
-      // This could probably be changed to a BoolFilter
-      boolQuery = $scope.ejs.BoolQuery();
+      boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1)
+        .filter(filterSrv.getBoolFilter(filterSrv.ids()));
       _.each(queries,function(q) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
-      var query = $scope.ejs.FilteredQuery(
-        boolQuery,
-        filterSrv.getBoolFilter(filterSrv.ids())
-      );
 
-      request = request.query(query);
+      request = request.query(boolQuery);
 
       rangeAgg = $scope.ejs.RangeAggregation('ranges');
       // AddRange
