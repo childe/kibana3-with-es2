@@ -335,16 +335,13 @@ function (angular, app, _, kbn, moment) {
 
       queries = querySrv.getQueryObjs($scope.panel.queries.ids);
 
-      boolQuery = $scope.ejs.BoolQuery();
+      boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1)
+        .filter(filterSrv.getBoolFilter(filterSrv.ids()));
       _.each(queries,function(q) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
 
-      request = request.query(
-        $scope.ejs.FilteredQuery(
-          boolQuery,
-          filterSrv.getBoolFilter(filterSrv.ids())
-        ))
+      request = request.query(boolQuery)
         .highlight(
           $scope.ejs.Highlight($scope.panel.highlight)
           .fragmentSize(2147483647) // Max size of a 32bit unsigned int
