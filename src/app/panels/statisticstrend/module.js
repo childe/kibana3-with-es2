@@ -141,8 +141,7 @@ function (angular, app, _, $, kbn) {
         boolQuery,
         queries;
 
-      $scope.field = _.contains(fields.list,$scope.panel.field+'.raw') ?
-        $scope.panel.field+'.raw' : $scope.panel.field;
+      $scope.field = $scope.panel.field;
 
       request = $scope.ejs.Request();
 
@@ -150,7 +149,7 @@ function (angular, app, _, $, kbn) {
       queries = querySrv.getQueryObjs($scope.panel.queries.ids);
 
       // This could probably be changed to a BoolFilter
-      boolQuery = $scope.ejs.BoolQuery();
+      boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1);
       _.each(queries,function(q) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
@@ -181,8 +180,8 @@ function (angular, app, _, $, kbn) {
       $scope.ejs.FilterAggregation('old').filter(
         filterSrv.getBoolFilter(_ids_without_time).must(
           $scope.ejs.RangeFilter(timeField)
-          .from($scope.old_time.from)
-          .to($scope.old_time.to)
+          .from($scope.old_time.from.getTime())
+          .to($scope.old_time.to.getTime())
         )
       );
 
