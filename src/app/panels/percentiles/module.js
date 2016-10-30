@@ -116,43 +116,37 @@ define([
         queries;
 
       request = $scope.ejs.Request();
-      var query = $scope.ejs.FilteredQuery(
-        $scope.ejs.BoolQuery(),
-        filterSrv.getBoolFilter(filterSrv.ids())
-      );
-      request = $scope.ejs.Request().query(query);
+      boolQuery = $scope.ejs.BoolQuery()
+        .filter(filterSrv.getBoolFilter(filterSrv.ids()));
+      request = $scope.ejs.Request().query(boolQuery);
 
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
       queries = querySrv.getQueryObjs($scope.panel.queries.ids);
-
-      // This could probably be changed to a BoolFilter
-      boolQuery = $scope.ejs.BoolQuery();
-      _.each(queries,function(q) {
-        boolQuery = boolQuery.should(querySrv.toEjsObj(q));
-      });
 
       var percents = _.keys($scope.panel.show);
 
       if ($scope.panel.mode !== '-'){
         var sub_aggs = $scope.ejs.PercentilesAggregation('stats')
         .field($scope.panel.field)
-        .percents(percents).hdr(3);
+        .percents([$scope.panel.mode]).hdr(3);
 
-        if ($scope.panel.compression!==''){
+        if ($scope.panel.compression !== ''){
           sub_aggs.compression($scope.panel.compression);
         }
 
+        var allQueries = $scope.ejs.BoolQuery().minimumShouldMatch(1);
+        $.each(queries, function (i, q) {
+          allQueries.should(querySrv.toEjsObj(q));
+        });
         request = request
         .aggregation(
           $scope.ejs.FilterAggregation('stats')
-          .filter($scope.ejs.QueryFilter(boolQuery))
+          .filter(allQueries)
           .aggregation(sub_aggs)
-      ).size(0);
+        ).size(0);
       }
 
       $.each(queries, function (i, q) {
-        var query = $scope.ejs.BoolQuery();
-        query.should(querySrv.toEjsObj(q));
         var qname = 'stats_'+i;
 
         var sub_aggs = $scope.ejs.PercentilesAggregation(qname)
@@ -165,22 +159,23 @@ define([
 
         request.aggregation(
           $scope.ejs.FilterAggregation(qname)
-            .filter($scope.ejs.QueryFilter(
-                querySrv.toEjsObj(q)
-            ))
+            .filter(querySrv.toEjsObj(q))
             .aggregation(sub_aggs)
           );
       });
-      // Populate the inspector panel
+
       $scope.inspector = request.toJSON();
 
-      results = $scope.ejs.doSearch(dashboard.indices, request);
+      results = $scope.ejs.doSearch(dashboard.indices, request, 0);
 
       results.then(function(results) {
         $scope.panelMeta.loading = false;
         esVersion.gte('1.3.0').then(function(is) {
           if (is) {
             if ($scope.panel.mode !== '-'){
+                console.log(results.aggregations.stats['stats']['values']);
+                console.log($scope.panel.mode+'.0');
+                console.log(results.aggregations.stats['stats']['values'][$scope.panel.mode+'.0']);
               var value = results.aggregations.stats['stats']['values'][$scope.panel.mode+'.0'];
             }
             var rows = queries.map(function (q, i) {
@@ -231,7 +226,12 @@ define([
             });
           };
         });
-      });
+      },
+      function(results){
+        $scope.panel.error = $scope.parse_error(results.body);
+        $scope.panelMeta.loading = false;
+      }
+      );
     };
 
     $scope.set_refresh = function (state) {
