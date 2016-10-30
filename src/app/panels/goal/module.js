@@ -122,7 +122,9 @@ define([
       var queries = querySrv.getQueryObjs($scope.panel.queries.ids);
 
       // This could probably be changed to a BoolFilter
-      var boolQuery = $scope.ejs.BoolQuery();
+      var boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1)
+        .filter(filterSrv.getBoolFilter(filterSrv.ids()));
+
       _.each(queries,function(q) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
@@ -131,7 +133,6 @@ define([
 
       request = request
         .query(boolQuery)
-        .filter(filterSrv.getBoolFilter(filterSrv.ids()))
         .size(0);
 
       $scope.inspector = request.toJSON();
