@@ -373,7 +373,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
         timeField = timeField[0];
       }
 
-     var boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1).filter(
+     var boolQuery = $scope.ejs.BoolQuery().filter(
         filterSrv.getBoolFilter(_ids_without_time).must(
           $scope.ejs.RangeFilter(timeField)
           .from($scope.shifted_time.from.getTime())
@@ -521,8 +521,8 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       $scope.panelMeta.loading = true;
       request = $scope.ejs.Request();
 
-     var boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1).
-      filter(filterSrv.getBoolFilter(filterSrv.ids()));
+     var boolQuery = $scope.ejs.BoolQuery()
+        .filter(filterSrv.getBoolFilter(filterSrv.ids()));
 
       request = request.query(boolQuery);
 
