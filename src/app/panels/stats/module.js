@@ -128,18 +128,19 @@ define([
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
       queries = querySrv.getQueryObjs($scope.panel.queries.ids);
 
-      boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1);
-      _.each(queries,function(q) {
-        boolQuery = boolQuery.should(querySrv.toEjsObj(q));
-      });
-      boolQuery.filter(filterSrv.getBoolFilter(filterSrv.ids()));
+      boolQuery = $scope.ejs.BoolQuery()
+        .filter(filterSrv.getBoolFilter(filterSrv.ids()));
 
       request = $scope.ejs.Request().query(boolQuery);
 
       if ($scope.panel.mode !== '-'){
+        var allQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1);
+        _.each(queries,function(q) {
+          allQuery = allQuery.should(querySrv.toEjsObj(q));
+        });
         request = request
         .agg($scope.ejs.FilterAggregation('stats')
-        .filter(boolQuery).agg($scope.ejs.ExtendedStatsAggregation("0").field($scope.panel.field))
+        .filter(allQuery).agg($scope.ejs.ExtendedStatsAggregation("0").field($scope.panel.field))
         );
       }
 
