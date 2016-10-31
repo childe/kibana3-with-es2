@@ -171,10 +171,9 @@ function (angular, app, $, _, kbn, moment, timeSeries) {
 
       // Build the query
       _.each(queries, function(q) {
-        var query = $scope.ejs.FilteredQuery(
-          querySrv.toEjsObj(q),
-          filterSrv.getBoolFilter(filterSrv.ids())
-        );
+        var query = $scope.ejs.BoolQuery()
+          .must(querySrv.toEjsObj(q))
+          .filter(filterSrv.getBoolFilter(filterSrv.ids()));
 
         var aggr = $scope.ejs.DateHistogramAggregation(q.id);
 
@@ -189,7 +188,7 @@ function (angular, app, $, _, kbn, moment, timeSeries) {
         }
         request = request.agg(
                 $scope.ejs.GlobalAggregation(q.id).agg(
-                    $scope.ejs.FilterAggregation(q.id).filter($scope.ejs.QueryFilter(query)).agg(
+                    $scope.ejs.FilterAggregation(q.id).filter(query).agg(
                         aggr.interval(_interval)
                         )
                     )
@@ -245,9 +244,15 @@ function (angular, app, $, _, kbn, moment, timeSeries) {
 
             // push each entry into the time series, while incrementing counters
             _.each(query_results.buckets, function(entry) {
-              time_series.addValue(entry.key, entry.doc_count);
-              hits += entry.doc_count; // The series level hits counter
-              $scope.hits += entry.doc_count; // Entire dataset level hits counter
+              if($scope.panel.mode === 'count') {
+                time_series.addValue(entry.key, entry.doc_count);
+                hits += entry.doc_count; // The series level hits counter
+                $scope.hits += entry.doc_count; // Entire dataset level hits counter
+              }else{
+                time_series.addValue(entry.key, entry[q.id][$scope.panel.mode]);
+                hits += entry.doc_count; // The series level hits counter
+                $scope.hits += entry.doc_count; // Entire dataset level hits counter
+              }
             });
             $scope.data[i] = {
               info: q,
