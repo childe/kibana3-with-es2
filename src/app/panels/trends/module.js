@@ -132,31 +132,30 @@ function (angular, app, _, kbn) {
 
       // Build the question part of the query
       _.each(queries, function(query) {
-        var q = $scope.ejs.FilteredQuery(
-          querySrv.toEjsObj(query),
-          filterSrv.getBoolFilter(filterSrv.ids())
-        );
+        var q = $scope.ejs.BoolQuery()
+          .must(querySrv.toEjsObj(query))
+          .filter(filterSrv.getBoolFilter(filterSrv.ids()));
 
         request = request
         .agg($scope.ejs.FilterAggregation(query.id)
-        .filter($scope.ejs.QueryFilter(q)));
+        .filter(q));
       });
 
 
       // And again for the old time period
       _.each(queries, function(query) {
-        var q = $scope.ejs.FilteredQuery(
-          querySrv.toEjsObj(query),
-          filterSrv.getBoolFilter(_ids_without_time).must(
+        var q = $scope.ejs.BoolQuery()
+          .must(querySrv.toEjsObj(query))
+          .filter(
+            filterSrv.getBoolFilter(_ids_without_time).must(
             $scope.ejs.RangeFilter(timeField)
             .from($scope.old_time.from)
-            .to($scope.old_time.to)
-          )
-        );
+            .to($scope.old_time.to))
+          );
 
         request = request
         .agg($scope.ejs.FilterAggregation('old_'+query.id)
-        .filter($scope.ejs.QueryFilter(q)));
+        .filter(q));
       });
 
 
