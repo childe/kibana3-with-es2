@@ -133,9 +133,7 @@ function (Settings) {
       'sparklines',
       'percentiles',
       'ranges',
-      'force',
       'statisticstrend',
-      'multifieldhistogram',
       'valuehistogram',
       'uniq'
     ]
