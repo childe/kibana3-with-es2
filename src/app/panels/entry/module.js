@@ -56,8 +56,8 @@ function (angular, app, _, $, kbn, config) {
 
     $scope.get_data = function() {
       var request = $scope.ejs.Request();
-      request = request.fields(["mainclass","subclass","title"])
-        .filter($scope.ejs.TermFilter("_type","dashboard"));
+      request = request.source(["mainclass","subclass","title"])
+        .query($scope.ejs.BoolQuery().filter($scope.ejs.TermFilter("_type","dashboard")));
       var result = $scope.ejs.doSearch(config.kibana_index, request,5000);
       result.then(
         // Success
@@ -72,25 +72,22 @@ function (angular, app, _, $, kbn, config) {
 
           var entries = {}
           for (var i in result['hits']['hits']){
-            var fields = result['hits']['hits'][i]['fields'];
+            var fields = result['hits']['hits'][i]['_source'];
 
-            if (fields === undefined){
+            if (_.isUndefined(fields) || _.isUndefined(fields['title'])){
               continue;
             }
 
-            var mainclass = 'Other';
+            var mainclass = 'Others';
             if ('mainclass' in fields){
-              mainclass = fields['mainclass'][0];
-            }
-            if (mainclass === ""){
-              mainclass = "Other";
+              mainclass = fields['mainclass'] || 'Others';
             }
 
             if ('subclass' in fields){
-              var subclass = fields['subclass'][0];
+              var subclass = fields['subclass'] || '';
             }else{
               if (mainclass in dashboardclass && dashboardclass[mainclass].length > 0){
-                var subclass='其它';
+                var subclass='Others';
               }else{
                 var subclass='';
               }
@@ -98,13 +95,13 @@ function (angular, app, _, $, kbn, config) {
 
             if (mainclass in entries){
               if (subclass in entries[mainclass]){
-                entries[mainclass][subclass].push({title:fields['title'][0],subclass:subclass,mainclass:mainclass});
+                entries[mainclass][subclass].push({title:fields['title'],subclass:subclass,mainclass:mainclass});
               } else{
-                entries[mainclass][subclass] = [{title:fields['title'][0],subclass:subclass,mainclass:mainclass}];
+                entries[mainclass][subclass] = [{title:fields['title'],subclass:subclass,mainclass:mainclass}];
               }
             }else{
               entries[mainclass] = {};
-              entries[mainclass][subclass] = [{title:fields['title'][0],subclass:subclass,mainclass:mainclass}];
+              entries[mainclass][subclass] = [{title:fields['title'],subclass:subclass,mainclass:mainclass}];
             }
           }
 
