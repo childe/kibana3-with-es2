@@ -25,7 +25,7 @@ function (Settings) {
      * elasticsearch host
      */
     elasticsearch: "http://"+window.location.hostname+":9200",
-    
+
 
     /*
     * logout kibana
@@ -54,7 +54,7 @@ function (Settings) {
      *
      * Valid value: true, false
      */
-    sniff: true,
+    sniff: false,
 
     /** @scratch /configuration/config.js/5
      *
