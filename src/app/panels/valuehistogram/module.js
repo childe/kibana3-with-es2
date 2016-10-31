@@ -162,10 +162,8 @@ function (angular, app, $, _, kbn, moment) {
 
        $scope.panelMeta.loading = true;
 
-       var query = $scope.ejs.FilteredQuery(
-         $scope.ejs.BoolQuery(),
-         filterSrv.getBoolFilter(filterSrv.ids())
-       );
+       var query = $scope.ejs.BoolQuery()
+         .filter(filterSrv.getBoolFilter(filterSrv.ids()));
        request = $scope.ejs.Request().query(query);
 
        $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
@@ -174,9 +172,7 @@ function (angular, app, $, _, kbn, moment) {
 
        // Build the query
        _.each(queries, function(q) {
-         var query = $scope.ejs.QueryFilter(
-           querySrv.toEjsObj(q)
-         );
+         var query = querySrv.toEjsObj(q);
 
          var aggr = $scope.ejs.HistogramAggregation(q.id)
          .field($scope.panel.key_field)
@@ -217,20 +213,20 @@ function (angular, app, $, _, kbn, moment) {
          ).size($scope.panel.annotate.enable ? $scope.panel.annotate.size : 0);
        });
 
-       if($scope.panel.annotate.enable) {
-         var query = $scope.ejs.FilteredQuery(
-           $scope.ejs.QueryStringQuery($scope.panel.annotate.query || '*'),
-           filterSrv.getBoolFilter(filterSrv.idsByType('time'))
-         );
-         request = request.query(query);
+       //if($scope.panel.annotate.enable) {
+         //var query = $scope.ejs.FilteredQuery(
+           //$scope.ejs.QueryStringQuery($scope.panel.annotate.query || '*'),
+           //filterSrv.getBoolFilter(filterSrv.idsByType('time'))
+         //);
+         //request = request.query(query);
 
-         // This is a hack proposed by @boaz to work around the fact that we can't get
-         // to field data values directly, and we need timestamps as normalized longs
-         request = request.sort([
-           $scope.ejs.Sort($scope.panel.annotate.sort[0]).order($scope.panel.annotate.sort[1]),
-           $scope.ejs.Sort($scope.panel.time_field).desc()
-         ]);
-       }
+         //// This is a hack proposed by @boaz to work around the fact that we can't get
+         //// to field data values directly, and we need timestamps as normalized longs
+         //request = request.sort([
+           //$scope.ejs.Sort($scope.panel.annotate.sort[0]).order($scope.panel.annotate.sort[1]),
+           //$scope.ejs.Sort($scope.panel.time_field).desc()
+         //]);
+       //}
 
        // Populate the inspector panel
        $scope.populate_modal(request);
