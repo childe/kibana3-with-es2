@@ -102,26 +102,21 @@ function (angular, app, _, $, kbn) {
       queries = querySrv.getQueryObjs($scope.panel.queries.ids);
 
       // This could probably be changed to a BoolFilter
-      boolQuery = $scope.ejs.BoolQuery();
+      boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1)
+        .filter(filterSrv.getBoolFilter(filterSrv.ids()));
       _.each(queries,function(q) {
         boolQuery = boolQuery.should(querySrv.toEjsObj(q));
       });
 
-      var query = $scope.ejs.FilteredQuery(
-        boolQuery,
-        filterSrv.getBoolFilter(filterSrv.ids())
-      );
-      // request = request.query(query);
-
       aggs = $scope.ejs.CardinalityAggregation('uniq')
           .field($scope.panel.field);
 
-      request = request.query(query).agg(aggs);
+      request = request.query(boolQuery).agg(aggs);
 
       // Populate the inspector panel
       $scope.inspector = request.toJSON();
 
-      results = $scope.ejs.doSearch(dashboard.indices, request);
+      results = $scope.ejs.doSearch(dashboard.indices, request, 0);
 
       // Populate scope when we have results
       results.then(function(results) {
