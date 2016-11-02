@@ -181,8 +181,9 @@ function (angular, app, _, L, localRequire) {
 
             // Keep only what we need for the set
             $scope.data = $scope.data.slice(0,$scope.panel.size).concat(_.map(results.hits.hits, function(hit) {
+              var location = eval("hit._source." + $scope.panel.field);
               return {
-                coordinates : new L.LatLng(hit._source[$scope.panel.field][1],hit._source[$scope.panel.field][0]),
+                coordinates : new L.LatLng(location[1],location[0]),
                 tooltip : hit._source[$scope.panel.tooltip]
               };
             }));
