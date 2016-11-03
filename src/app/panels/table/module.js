@@ -190,7 +190,10 @@ function (angular, app, _, kbn, moment) {
       var text = '';
       var nonAlphaNumRE = /[^a-zA-Z0-9]/;
       var allDoubleQuoteRE = /"/g;
-      var escape = function (val) {
+      var escape = function (val, field) {
+        if ($scope.panel.localTime && $scope.panel.timeField === field){
+            return moment(val).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+        }
         val = String(val);
         if ($scope.csv.quoteValues && nonAlphaNumRE.test(val)) {
           val = '"' + val.replace(allDoubleQuoteRE, '""') + '"';
@@ -201,7 +204,7 @@ function (angular, app, _, kbn, moment) {
       var rows = _.map($scope.data, function(e) {
         var exportFields = [];
         _.each($scope.panel.fields, function(field) {
-          exportFields.push(escape(e._source[field]));
+          exportFields.push(escape(e._source[field], field));
         });
         return exportFields.join($scope.csv.separator) + '\r\n';
       });
