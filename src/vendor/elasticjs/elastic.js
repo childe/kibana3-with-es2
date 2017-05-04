@@ -5530,17 +5530,17 @@
       */
       exclude: function (exclude, flags) {
         if (agg[name].terms.exclude == null) {
-          agg[name].terms.exclude = {};
+          agg[name].terms.exclude = [];
         }
 
         if (exclude == null) {
           return agg[name].terms.exclude;
         }
 
-        agg[name].terms.exclude.pattern = exclude;
-        if (flags != null) {
-          agg[name].terms.exclude.flags = flags;
-        }
+        agg[name].terms.exclude = exclude;
+        //if (flags != null) {
+          //agg[name].terms.exclude.flags = flags;
+        //}
 
         return this;
       },
