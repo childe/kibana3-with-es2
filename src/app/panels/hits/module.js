@@ -116,7 +116,6 @@ define([
 
       var boolQuery = $scope.ejs.BoolQuery().filter(filterSrv.getBoolFilter(filterSrv.ids()));
       var request = $scope.ejs.Request().query(boolQuery);
-      console.log(request.toJSON());
 
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
       var queries = querySrv.getQueryObjs($scope.panel.queries.ids);
