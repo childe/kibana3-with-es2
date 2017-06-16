@@ -270,7 +270,7 @@ define([
 
     });
 
-    module.directive('termsChart', function(querySrv) {
+    module.directive('nestedChart', function(querySrv) {
       return {
         restrict: 'A',
         link: function(scope, elem) {
