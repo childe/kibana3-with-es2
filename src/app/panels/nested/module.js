@@ -155,7 +155,6 @@ define([
         var termsAggs = $scope.ejs.TermsAggregation('1')
           .field($scope.panel.field)
           .size($scope.panel.size);
-        console.log(termsAggs);
 
         var nestedAggs = $scope.ejs.NestedAggregation('0')
           .path($scope.panel.path).agg(termsAggs);
