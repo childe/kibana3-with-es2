@@ -135,7 +135,8 @@ function (Settings) {
       'ranges',
       'statisticstrend',
       'valuehistogram',
-      'uniq'
+      'uniq',
+      'nested'
     ]
   });
 });
