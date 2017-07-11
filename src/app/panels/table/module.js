@@ -337,16 +337,21 @@ function (angular, app, _, kbn, moment) {
         var indices = _.uniq(jsonPath(p, '*.*.*.*.mapping.*.index'));
 
         if(_.intersection(types, ['string']).length > 0 && _.intersection(indices, ['not_analyzed']).length != 1) {
-          $scope.panel.error = "could not sort by an analyzed field;";
+          $scope.panel.error = "could not sort by text field";
           return;
-        }
-        else{
+        } else if(_.intersection(types, ['text']).length > 0) {
+          $scope.panel.error = "could not sort by text field";
+          return;
+        } else if (types.length == 0) {
+          $scope.panel.error = "could not sort by field which is not configured";
+          return;
+        } else {
           if($scope.panel.sort[0] === field) {
             $scope.panel.sort[1] = $scope.panel.sort[1] === 'asc' ? 'desc' : 'asc';
           } else {
             $scope.panel.sort[0] = field;
           }
-          $scope.get_data();
+          $scope.get_data(0, undefined, true);
         }
       });
     };
@@ -399,7 +404,7 @@ function (angular, app, _, kbn, moment) {
       filterSrv.set({type:'exists',field:field,mandate:mandate});
     };
 
-    $scope.get_data = function(segment,query_id) {
+    $scope.get_data = function(segment, query_id, couldSort) {
       var
         _segment,
         request,
@@ -415,9 +420,9 @@ function (angular, app, _, kbn, moment) {
       }
 
       sort = [$scope.ejs.Sort($scope.panel.sort[0]).order($scope.panel.sort[1])];
-      if($scope.panel.localTime) {
-        sort.push($scope.ejs.Sort($scope.panel.timeField).order($scope.panel.sort[1]));
-      }
+      // if($scope.panel.localTime) {
+      //   sort.push($scope.ejs.Sort($scope.panel.timeField).order($scope.panel.sort[1]));
+      // }
 
 
       $scope.panelMeta.loading = true;
@@ -452,6 +457,32 @@ function (angular, app, _, kbn, moment) {
         .sort(sort);
 
       $scope.populate_modal(request);
+
+      if (couldSort !== true) {
+        var field = $scope.panel.sort[0]
+        var nodeInfo = $scope.ejs.getFieldMapping(dashboard.indices, field)
+
+        return nodeInfo.then(function(p) {
+          var types = _.uniq(jsonPath(p, '*.*.*.*.mapping.*.type'));
+          var indices = _.uniq(jsonPath(p, '*.*.*.*.mapping.*.index'))
+
+          if(_.intersection(types, ['string']).length > 0 && _.intersection(indices, ['not_analyzed']).length != 1) {
+            $scope.panel.error = "could not sort by text field"
+            $scope.panelMeta.loading = false;
+            return;
+          } else if(_.intersection(types, ['text']).length > 0) {
+            $scope.panel.error = "could not sort by text field"
+            $scope.panelMeta.loading = false;
+            return;
+          } else if (types.length == 0) {
+            $scope.panel.error = "could not sort by field which is not configured"
+            $scope.panelMeta.loading = false;
+            return;
+          } else {
+            $scope.get_data(segment, query_id, true)
+          }
+        })
+      }
 
       // Populate scope when we have results
       $scope.ejs.doSearch(dashboard.indices[_segment], request, $scope.panel.size*$scope.panel.pages).then(function(results) {
@@ -529,6 +560,8 @@ function (angular, app, _, kbn, moment) {
     };
 
     $scope.populate_modal = function(request) {
+      $scope.inspector = ''
+      return
       $scope.inspector = request.toJSON();
     };
 
