@@ -391,6 +391,11 @@ function (angular, app, _, kbn, moment) {
     };
 
     $scope.build_search = function(field,value,negate) {
+      if ($scope.fields.list.indexOf(field) === -1) {
+        $scope.panel.error =  'could not filter by ' + field + ' because it is not configured in the index mapping'
+        return false
+      }
+
       var query;
       // This needs to be abstracted somewhere
       if(_.isArray(value)) {
@@ -610,6 +615,14 @@ function (angular, app, _, kbn, moment) {
         return 'could not sort by ' + field + ' because it is not configured in the index mapping'
       }else {
         return ''
+      }
+    }
+
+    $scope.ifCouldFilterTip = function(field, d) {
+      if ($scope.fields.list.indexOf(field) === -1) {
+        return 'could not filter by ' + field + ' because it is not configured in the index mapping'
+      }else {
+        return d
       }
     }
   });
