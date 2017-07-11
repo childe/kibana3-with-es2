@@ -330,6 +330,11 @@ function (angular, app, _, kbn, moment) {
 
     $scope.set_sort = function(field) {
 
+      if ($scope.fields.list.indexOf(field) === -1) {
+          $scope.panel.error = "could not sort by " + field + ' because it is not configured in the index mapping';
+          return;
+      }
+
       var nodeInfo = $scope.ejs.getFieldMapping(dashboard.indices, field);
 
       return nodeInfo.then(function(p) {
@@ -337,13 +342,13 @@ function (angular, app, _, kbn, moment) {
         var indices = _.uniq(jsonPath(p, '*.*.*.*.mapping.*.index'));
 
         if(_.intersection(types, ['string']).length > 0 && _.intersection(indices, ['not_analyzed']).length != 1) {
-          $scope.panel.error = "could not sort by text field";
+          $scope.panel.error = 'could not sort by text field ' + field;
           return;
         } else if(_.intersection(types, ['text']).length > 0) {
-          $scope.panel.error = "could not sort by text field";
+          $scope.panel.error = 'could not sort by text field ' + field;
           return;
         } else if (types.length == 0) {
-          $scope.panel.error = "could not sort by field which is not configured";
+          $scope.panel.error = "could not sort by " + field + ' because it is not configured in the index mapping';
           return;
         } else {
           if($scope.panel.sort[0] === field) {
@@ -600,7 +605,13 @@ function (angular, app, _, kbn, moment) {
       return obj;
     };
 
-
+    $scope.ifCouldSortTip = function(field) {
+      if ($scope.fields.list.indexOf(field) === -1) {
+        return 'could not sort by ' + field + ' because it is not configured in the index mapping'
+      }else {
+        return ''
+      }
+    }
   });
 
   // This also escapes some xml sequences

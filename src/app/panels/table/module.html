@@ -131,7 +131,7 @@
         <table class="table-hover table table-condensed" ng-style="panel.style">
           <thead ng-show="panel.header">
             <th ng-show="panel.fields.length<1">_source (select columns from the list to the left)</th>
-            <th style="white-space:nowrap" ng-repeat="field in panel.fields">
+            <th style="white-space:nowrap" ng-repeat="field in panel.fields" bs-tooltip="ifCouldSortTip(field)">
               <i ng-show="!$first" class="pointer link icon-caret-left" ng-click="_.move(panel.fields,$index,$index-1)"></i>
 
               <span  class="pointer" ng-click="set_sort(field)" ng-show='panel.sortable'>
