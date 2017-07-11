@@ -391,7 +391,7 @@ function (angular, app, _, kbn, moment) {
     };
 
     $scope.build_search = function(field,value,negate) {
-      if ($scope.fields.list.indexOf(field) === -1) {
+      if (['_index', '_type', '_id'].indexOf(field) === -1 && $scope.fields.list.indexOf(field) === -1) {
         $scope.panel.error =  'could not filter by ' + field + ' because it is not configured in the index mapping'
         return false
       }
@@ -619,6 +619,9 @@ function (angular, app, _, kbn, moment) {
     }
 
     $scope.ifCouldFilterTip = function(field, d) {
+      if (['_index', '_type', '_id'].indexOf(field) !== -1) {
+        return d
+      }
       if ($scope.fields.list.indexOf(field) === -1) {
         return 'could not filter by ' + field + ' because it is not configured in the index mapping'
       }else {
