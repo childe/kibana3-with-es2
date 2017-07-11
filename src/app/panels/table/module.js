@@ -570,8 +570,6 @@ function (angular, app, _, kbn, moment) {
     };
 
     $scope.populate_modal = function(request) {
-      $scope.inspector = ''
-      return
       $scope.inspector = request.toJSON();
     };
 
