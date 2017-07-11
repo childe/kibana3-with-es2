@@ -430,9 +430,9 @@ function (angular, app, _, kbn, moment) {
       }
 
       sort = [$scope.ejs.Sort($scope.panel.sort[0]).order($scope.panel.sort[1])];
-      // if($scope.panel.localTime) {
-      //   sort.push($scope.ejs.Sort($scope.panel.timeField).order($scope.panel.sort[1]));
-      // }
+       if($scope.panel.localTime) {
+         sort.push($scope.ejs.Sort($scope.panel.timeField).order($scope.panel.sort[1]));
+       }
 
 
       $scope.panelMeta.loading = true;
