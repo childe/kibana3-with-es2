@@ -330,10 +330,10 @@ function (angular, app, _, kbn, moment) {
 
     $scope.set_sort = function(field) {
 
-      if ($scope.fields.list.indexOf(field) === -1) {
-          $scope.panel.error = "could not sort by " + field + ' because it is not configured in the index mapping';
-          return;
-      }
+      //if ($scope.fields.list.indexOf(field) === -1) {
+          //$scope.panel.error = "could not sort by " + field + ' because it is not configured in the index mapping';
+          //return;
+      //}
 
       var nodeInfo = $scope.ejs.getFieldMapping(dashboard.indices, field);
 
@@ -390,11 +390,20 @@ function (angular, app, _, kbn, moment) {
       $scope.get_data();
     };
 
-    $scope.build_search = function(field,value,negate) {
-      if (['_index', '_type', '_id'].indexOf(field) === -1 && $scope.fields.list.indexOf(field) === -1) {
-        $scope.panel.error =  'could not filter by ' + field + ' because it is not configured in the index mapping'
-        return false
-      }
+    $scope.build_search = function(field,value,negate,couldFilter) {
+      if (couldFilter !== true) {
+        var nodeInfo = $scope.ejs.getFieldMapping(dashboard.indices, field);
+        return nodeInfo.then(function(p) {
+          var types = _.uniq(jsonPath(p, '*.*.*.*.mapping.*.type'));
+
+          if (types.length == 0) {
+            $scope.panel.error = "could not filter by " + field + ' because it is not configured in the index mapping';
+            return;
+          } else {
+            $scope.build_search(field, value, negate, true);
+          }
+        });
+      };
 
       var query;
       // This needs to be abstracted somewhere
@@ -608,24 +617,24 @@ function (angular, app, _, kbn, moment) {
       return obj;
     };
 
-    $scope.ifCouldSortTip = function(field) {
-      if ($scope.fields.list.indexOf(field) === -1) {
-        return 'could not sort by ' + field + ' because it is not configured in the index mapping'
-      }else {
-        return ''
-      }
-    }
+    //$scope.ifCouldSortTip = function(field) {
+      //if ($scope.fields.list.indexOf(field) === -1) {
+        //return 'could not sort by ' + field + ' because it is not configured in the index mapping'
+      //}else {
+        //return ''
+      //}
+    //}
 
-    $scope.ifCouldFilterTip = function(field, d) {
-      if (['_index', '_type', '_id'].indexOf(field) !== -1) {
-        return d
-      }
-      if ($scope.fields.list.indexOf(field) === -1) {
-        return 'could not filter by ' + field + ' because it is not configured in the index mapping'
-      }else {
-        return d
-      }
-    }
+    //$scope.ifCouldFilterTip = function(field, d) {
+      //if (['_index', '_type', '_id'].indexOf(field) !== -1) {
+        //return d
+      //}
+      //if ($scope.fields.list.indexOf(field) === -1) {
+        //return 'could not filter by ' + field + ' because it is not configured in the index mapping'
+      //}else {
+        //return d
+      //}
+    //}
   });
 
   // This also escapes some xml sequences
