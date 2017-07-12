@@ -81,7 +81,6 @@ function (angular, $, _, appLevelRequire) {
         responseError: function(resp) {
           if (resp.status === 0) {
             $location.path('/connectionFailed');
-            console.log(resp);
           }
         }
       };
