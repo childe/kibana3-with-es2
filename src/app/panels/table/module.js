@@ -391,7 +391,7 @@ function (angular, app, _, kbn, moment) {
     };
 
     $scope.build_search = function(field,value,negate,couldFilter) {
-      if (couldFilter !== true) {
+      if (['_index', '_type', '_id'].indexOf(field) === -1 && couldFilter !== true) {
         var nodeInfo = $scope.ejs.getFieldMapping(dashboard.indices, field);
         return nodeInfo.then(function(p) {
           var types = _.uniq(jsonPath(p, '*.*.*.*.mapping.*.type'));
