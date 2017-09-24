@@ -504,7 +504,9 @@ function (angular, app, _, kbn, moment) {
       }
 
       // Populate scope when we have results
-      $scope.ejs.doSearch(dashboard.indices[_segment], request, $scope.panel.size*$scope.panel.pages).then(function(results) {
+      $scope.ejs.doSearch(dashboard.indices[_segment], request,
+        $scope.panel.size*$scope.panel.pages,
+        dashboard.current.index.routing).then(function(results) {
         $scope.panelMeta.loading = false;
 
         if(_segment === 0) {

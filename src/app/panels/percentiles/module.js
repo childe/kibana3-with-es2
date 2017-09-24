@@ -166,7 +166,8 @@ define([
 
       $scope.inspector = request.toJSON();
 
-      results = $scope.ejs.doSearch(dashboard.indices, request, 0);
+      results = $scope.ejs.doSearch(dashboard.indices, request,
+        0, dashboard.current.index.routing);
 
       results.then(function(results) {
         $scope.panelMeta.loading = false;

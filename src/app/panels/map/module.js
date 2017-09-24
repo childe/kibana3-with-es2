@@ -171,7 +171,7 @@ function (angular, app, _, $) {
 
       $scope.populate_modal(request);
 
-      var results = $scope.ejs.doSearch(dashboard.indices, request, 0);
+      var results = $scope.ejs.doSearch(dashboard.indices, request, 0,dashboard.current.index.routing);
 
       // Populate scope when we have results
       results.then(function(results) {

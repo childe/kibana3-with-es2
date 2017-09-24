@@ -116,7 +116,7 @@ function (angular, app, _, $, kbn) {
       // Populate the inspector panel
       $scope.inspector = request.toJSON();
 
-      results = $scope.ejs.doSearch(dashboard.indices, request, 0);
+      results = $scope.ejs.doSearch(dashboard.indices, request, 0, dashboard.current.index.routing);
 
       // Populate scope when we have results
       results.then(function(results) {

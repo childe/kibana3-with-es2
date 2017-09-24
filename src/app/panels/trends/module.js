@@ -171,10 +171,12 @@ function (angular, app, _, kbn) {
           dashboard.current.index.interval
         ).then(function (p) {
           $scope.index = _.union(p,$scope.index);
-          process_results($scope.ejs.doSearch($scope.index[_segment], request),_segment,query_id);
+          process_results($scope.ejs.doSearch($scope.index[_segment], request,
+            0, dashboard.current.index.routing),_segment,query_id);
         });
       } else {
-        process_results($scope.ejs.doSearch($scope.index[_segment], request),_segment,query_id);
+        process_results($scope.ejs.doSearch($scope.index[_segment], request,
+          0, dashboard.current.index.routing),_segment,query_id);
       }
 
     };

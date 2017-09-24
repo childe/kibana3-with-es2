@@ -131,7 +131,8 @@ define([
       $scope.inspector = request.toJSON();
 
       // Then run it
-      var results = $scope.ejs.doSearch(dashboard.indices[_segment], request);
+      var results = $scope.ejs.doSearch(dashboard.indices[_segment], request,
+        0,dashboard.current.index.routing);
 
       // Populate scope when we have results
       results.then(function(results) {

@@ -199,7 +199,8 @@ function (angular, app, $, _, kbn, moment, timeSeries) {
       $scope.populate_modal(request);
 
       // Then run it
-      results = $scope.ejs.doSearch(dashboard.indices[segment], request);
+      results = $scope.ejs.doSearch(dashboard.indices[segment], request,
+        0, dashboard.current.index.routing);
 
       // Populate scope when we have results
       results.then(function(results) {

@@ -235,7 +235,8 @@ function (angular, app, $, _, kbn, moment) {
        results = $scope.ejs.doSearch(
          dashboard.indices[segment],
          request,
-         $scope.panel.annotate.enable ? $scope.panel.annotate.size : 0
+         $scope.panel.annotate.enable ? $scope.panel.annotate.size : 0,
+         dashboard.current.index.routing
        );
 
        // Populate scope when we have results

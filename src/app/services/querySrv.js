@@ -104,7 +104,7 @@ function (angular, _, config, kbn) {
             .size(q.size);
 
           request = request.query(query).agg(terms_aggs).size(0);
-          var results = ejs.doSearch(dashboard.indices, request);
+          var results = ejs.doSearch(dashboard.indices, request, 0, dashboard.current.index.routing);
 
           // Like the regex and lucene queries, this returns a promise
           return results.then(function(data) {

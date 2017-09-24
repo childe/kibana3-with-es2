@@ -404,7 +404,9 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       // NOT Populate the inspector panel
 
       // Then run it
-      results = $scope.ejs.doSearch($scope.shifted_index[segment], request, 0);
+      results = $scope.ejs.doSearch($scope.shifted_index[segment], request,
+        0, dashboard.current.index.routing
+      );
 
       // Populate scope when we have results
       return results.then(function(results) {
@@ -562,7 +564,10 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       $scope.populate_modal(request);
 
       // Then run it
-      results = $scope.ejs.doSearch(dashboard.indices[segment], request, $scope.panel.annotate.enable ? $scope.panel.annotate.size : 0);
+      results = $scope.ejs.doSearch(dashboard.indices[segment], request,
+        $scope.panel.annotate.enable ? $scope.panel.annotate.size : 0,
+        dashboard.current.index.routing
+    );
 
       // Populate scope when we have results
       return results.then(function(results) {
