@@ -42,11 +42,18 @@ angular.module('elasticjs.service', ['elasticsearch'])
         }
     };
 
-    ejs.doSearch = function(indices, searchBody, size) {
+    ejs.doSearch = function(indices, searchBody, size, routing) {
+      if (size === undefined) {
+        size = 0
+      }
+      if (routing === '') {
+        routing = undefined
+      }
         return esClient.search({
         index: indices,
         body: searchBody,
-        size: size
+        size: size,
+        routing: routing
         });
     };
 
