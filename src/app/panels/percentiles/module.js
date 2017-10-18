@@ -50,7 +50,7 @@ define([
       description: 'A percentiles panel for displaying aggregations using the Elastic Search percentiles aggregation query.'
     };
 
-    $scope.modes = ['25','50','75','80',85','90','95','99'];
+    $scope.modes = ['25','50','75','80','85','90','95','99'];
 
     var defaults = {
       queries     : {
@@ -70,6 +70,8 @@ define([
       show: {
         '25': true,
         '75': true,
+        '80': true,
+        '85': true,
         '95': true,
         '99': true,
       }
