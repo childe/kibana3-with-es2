@@ -56,7 +56,7 @@ define([
         ids         : []
       },
       style   : { "font-size": '24pt'},
-      format: 'number',
+      format: 'float',
       mode: '-',
       display_breakdown: 'yes',
       sort_field: '',
