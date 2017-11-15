@@ -24,7 +24,7 @@ function (Settings) {
      * kibana installed on. You probably want to set it to the FQDN of your
      * elasticsearch host
      */
-    elasticsearch: "http://"+window.location.hostname+":8080/elasticsearch",
+    elasticsearch: "http://" + window.location.host + "/elasticsearch",
 
 
     /*
