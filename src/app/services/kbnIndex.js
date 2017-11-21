@@ -34,7 +34,7 @@ function (angular, _, config, moment) {
     // returns a promise containing an array of all indices in an elasticsearch
     // cluster
     function resolve_indices(indices) {
-      var something = ejs.getAliases(indices);
+      var something = ejs.getAlias(indices);
 
       return something.then(function(p) {
 
