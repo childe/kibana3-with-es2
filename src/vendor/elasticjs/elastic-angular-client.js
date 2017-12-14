@@ -91,6 +91,13 @@ angular.module('elasticjs.service', ['elasticsearch'])
         });
     };
 
+    ejs.getAlias = function(indices) {
+        return esClient.indices.getAlias({
+          index: indices,
+          ignoreUnavailable: true
+        });
+    };
+
     ejs.getAliases = function(indices) {
         return esClient.indices.getAliases({
           index: indices,
