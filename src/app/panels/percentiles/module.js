@@ -176,9 +176,6 @@ define([
         esVersion.gte('1.3.0').then(function(is) {
           if (is) {
             if ($scope.panel.mode !== '-'){
-                console.log(results.aggregations.stats['stats']['values']);
-                console.log($scope.panel.mode+'.0');
-                console.log(results.aggregations.stats['stats']['values'][$scope.panel.mode+'.0']);
               var value = results.aggregations.stats['stats']['values'][$scope.panel.mode+'.0'];
             }
             var rows = queries.map(function (q, i) {
