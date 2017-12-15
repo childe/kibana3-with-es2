@@ -18,6 +18,10 @@ function (angular, _, config, moment) {
         possible.push(d.utc().format(pattern));
       });
 
+      return new Promise(function (resolve, reject) {
+        resolve(possible);
+      });
+
       return resolve_indices(possible).then(function(p) {
         // an extra intersection
         var indices = _.uniq(_.flatten(_.map(possible,function(possibleIndex) {
