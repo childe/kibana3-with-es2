@@ -1,10 +1,11 @@
 define([
   'angular',
+  'jquery',
   'lodash',
   'config',
   'moment'
 ],
-function (angular, _, config, moment) {
+function (angular, $, _, config, moment) {
   'use strict';
 
   var module = angular.module('kibana.services');
@@ -19,7 +20,7 @@ function (angular, _, config, moment) {
       });
 
       return new Promise(function (resolve, reject) {
-        resolve(possible);
+        resolve($.unique(possible));
       });
 
       return resolve_indices(possible).then(function(p) {
