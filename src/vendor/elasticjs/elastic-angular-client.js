@@ -49,11 +49,12 @@ angular.module('elasticjs.service', ['elasticsearch'])
       if (routing === '') {
         routing = undefined
       }
-        return esClient.search({
+      return esClient.search({
         index: indices,
         body: searchBody,
         size: size,
-        routing: routing
+        routing: routing,
+        ignoreUnavailable: true
         });
     };
 
