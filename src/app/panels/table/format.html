@@ -1,0 +1,16 @@
+<div class="row-fluid">
+    <div class="section span6">
+        <h5>Columns</h5>
+        <form class="input-append editor-option">
+          <div ng-repeat="fv in panel.columnFormats">
+            <input style="margin-right:5px;" bs-typeahead="fields.list" type="text" placeholder="Field" class="input-small" ng-model=fv.field>
+            <input type="text" placeholder="Value" class="input-big" ng-model=fv.value>
+            <button class="btn" ng-click="panel.columnFormats.splice($index,1)"><i class="icon-remove"></i></button>
+          </div>
+
+          <input style="margin-right:5px;" bs-typeahead="fields.list" type="text" placeholder="Field" class="input-small" ng-model='f'>
+          <input type="text" placeholder="Value" class="input-big" ng-model='v'>
+          <button class="btn" ng-click="panel.columnFormats= _.toggleInOut(panel.columnFormats, {field: f, value: v});f='';v=''"><i class="icon-plus"></i></button>
+        </form>
+    </div>
+</div>

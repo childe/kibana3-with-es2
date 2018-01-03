@@ -55,6 +55,10 @@ function (angular, app, _, kbn, moment) {
           src: 'app/panels/table/color.html'
         },
         {
+          title:'Format',
+          src: 'app/panels/table/format.html'
+        },
+        {
           title:'Queries',
           src: 'app/partials/querySelect.html'
         }
@@ -134,9 +138,13 @@ function (angular, app, _, kbn, moment) {
        */
       timeField: '@timestamp',
       /** @scratch /panels/table/5
-       * colorRules:: filed, value(RegExp), color
+       * colorRules:: field, value(RegExp), color
        */
       colorRules: [],
+      /** @scratch /panels/table/5
+       * columnFormats:: field, value(template)
+       */
+      columnFormats: [],
       /** @scratch /panels/table/5
        * spyable:: Set to false to disable the inspect icon
        */
@@ -700,6 +708,25 @@ function (angular, app, _, kbn, moment) {
   module.filter('tableLocalTime', function(){
     return function(text,event) {
       return moment(event.sort[1]).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+    };
+  });
+
+  module.filter('columnFormat', function(){
+    var r = /\${(\S+?)}/g;
+    return function(text,field,event,columnFormats) {
+      var template = "";
+      for (var i in columnFormats) {
+        if (columnFormats[i].field === field) {
+          template = columnFormats[i].value;
+          break
+        }
+      }
+      if (template === "") {
+        return text;
+      }
+      return template.replace(r, function(match, field, idx) {
+        return event['_source'][field];
+      });
     };
   });
 
