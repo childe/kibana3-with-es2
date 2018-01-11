@@ -19,9 +19,9 @@ function (angular, $, _, config, moment) {
         possible.push(d.utc().format(pattern));
       });
 
-      return new Promise(function (resolve, reject) {
-        resolve($.unique(possible));
-      });
+      //return new Promise(function (resolve, reject) {
+        //resolve($.unique(possible));
+      //});
 
       return resolve_indices(possible).then(function(p) {
         // an extra intersection
