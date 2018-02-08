@@ -48,7 +48,7 @@ function (angular, _, config, kbn) {
     // Defaults for specific query types
     var _dTypes = {
       "lucene": {
-        query: "*"
+        query: "*:*"
       },
       "regex": {
         query: ".*"
@@ -96,6 +96,9 @@ function (angular, _, config, kbn) {
 
           var request = ejs.Request();
 
+          if (q.query==='*' || q.query===''){
+            q.query = '*:*';
+          }
           var query = ejs.BoolQuery().must(ejs.QueryStringQuery(q.query || '*'))
             .filter(filterSrv.getBoolFilter(filterSrv.ids()));
 
@@ -255,6 +258,9 @@ function (angular, _, config, kbn) {
       })).then(function(data) {
         resolvedQueries = _.flatten(data);
         _.each(resolvedQueries,function(q,i) {
+          if (q.query==='*' || q.query===''){
+            q.query = '*:*';
+          }
           q.id = i;
         });
         return resolvedQueries;
