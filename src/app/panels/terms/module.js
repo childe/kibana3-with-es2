@@ -219,6 +219,8 @@ function (angular, app, _, $, kbn) {
           .field($scope.panel.field)
           .size($scope.panel.size);
 
+        var all_stats_aggs = $scope.ejs.StatsAggregation('all').field($scope.panel.field);
+
         var sub_aggs;
 
           if ($scope.panel.tstat !== 'uniq') {
@@ -275,6 +277,7 @@ function (angular, app, _, $, kbn) {
           }
 
         request = request.query(boolQuery)
+        .agg(all_stats_aggs)
         .agg(terms_aggs.agg(sub_aggs)).size(0);
       }
 
@@ -424,6 +427,23 @@ function (angular, app, _, $, kbn) {
              if (!_.isUndefined(scope.results.aggregations.terms.sum_other_doc_count)) {
                scope.data.push({label:'Other values',
                  data:[[k+1,scope.results.aggregations.terms.sum_other_doc_count]],meta:"other",color:'#444', actions: false});
+             }
+           } else if(scope.panel.tmode === 'terms_stats') {
+             if (scope.panel.tstat === 'total') {
+               var sumOfTopSumvalue = 0
+               for (var i in scope.data) {
+                 sumOfTopSumvalue += scope.data[i]['data'][0][1]
+               }
+               scope.data.push({label:'Other values',
+                 data:[[k+1,scope.results.aggregations.all.sum - sumOfTopSumvalue]],meta:"other",color:'#444', actions: false});
+             } else if (scope.panel.tstat === 'mean') {
+               var sumOfTopSumvalue = 0
+               for (var i in scope.data) {
+                 sumOfTopSumvalue += scope.data[i]['data'][0][1]
+               }
+               var otherMean = (scope.results.aggregations.all.sum - sumOfTopSumvalue) / scope.results.aggregations.terms.sum_other_doc_count
+               scope.data.push({label:'Other values',
+                 data:[[k+1, otherMean]],meta:"other",color:'#444', actions: false});
              }
            }
         }
