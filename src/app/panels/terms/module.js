@@ -219,7 +219,7 @@ function (angular, app, _, $, kbn) {
           .field($scope.panel.field)
           .size($scope.panel.size);
 
-        var all_stats_aggs = $scope.ejs.StatsAggregation('all').field($scope.panel.field);
+        var all_stats_aggs = $scope.ejs.StatsAggregation('all').field($scope.panel.valuefield);
 
         var sub_aggs;
 
