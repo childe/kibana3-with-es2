@@ -105,8 +105,12 @@ function (angular, config, _) {
 
     // This is whoafully incomplete, but will do for now
     $scope.parse_error = function(data) {
-      var _error = data.match("nested: (.*?);");
-      return _.isNull(_error) ? data : _error[1];
+      if (typeof data === 'string') {
+        return data
+      }
+      return data['error']['root_cause']
+      //var _error = data.match("nested: (.*?);");
+      //return _.isNull(_error) ? data : _error[1];
     };
 
     $scope.init();
