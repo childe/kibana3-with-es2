@@ -32782,11 +32782,7 @@ AngularConnector.prototype.request = function (params, cb) {
     transformRequest: [],
     transformResponse: []
   }).then(function (response) {
-    if(_.isUndefined(response)){
-      cb(null, 'angular http returned undefined response. maybe it results from bad request caused by wrong panel config', null, null);
-    } else {
-      cb(null, response.data, response.status, response.headers());
-    }
+    cb(null, response.data, response.status, response.headers());
   }, function (err) {
     if (err.status) {
       cb(null, err.data, err.status, err.headers());
