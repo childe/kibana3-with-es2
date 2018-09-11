@@ -585,6 +585,10 @@ function (angular, app, _, kbn, moment) {
           $scope.get_data(_segment+1,$scope.query_id);
         }
 
+      },
+      function(results){
+        $scope.panel.error = $scope.parse_error(results.body);
+        $scope.panelMeta.loading = false;
       });
     };
 
