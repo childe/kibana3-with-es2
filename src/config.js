@@ -27,6 +27,15 @@ function (Settings) {
     elasticsearch: "http://" + window.location.host + "/elasticsearch",
 
 
+    clickhouse: {
+      host: "http://" + window.location.host + "/clickhouse/",
+      queryOptions: {
+        database: "elastic"
+      },
+      omitFormat: false
+    },
+
+
     /*
     * logout kibana
     */

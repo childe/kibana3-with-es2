@@ -24,15 +24,15 @@ function (angular, app, _, $, kbn) {
   var module = angular.module('kibana.panels.terms', []);
   app.useModule(module);
 
-  module.controller('terms', function($scope, querySrv, dashboard, filterSrv, fields) {
+  module.controller('terms', function($scope, querySrv, dashboard, filterSrv, fields, clickhouseFilterSrv) {
     $scope.panelMeta = {
       modals : [
-        {
-          description: "Inspect",
-          icon: "icon-info-sign",
-          partial: "app/partials/inspector.html",
-          show: $scope.panel.spyable
-        }
+        //{
+          //description: "Inspect",
+          //icon: "icon-info-sign",
+          //partial: "app/partials/inspector.html",
+          //show: $scope.panel.spyable
+        //}
       ],
       editorTabs : [
         {title:'Queries', src:'app/partials/querySelect.html'}
@@ -158,8 +158,28 @@ function (angular, app, _, $, kbn) {
 
     };
 
+    var test = function() {
+      var stmt = 'select  count(1) as count, ' +$scope.panel.field +' from ' + dashboard.indices.join(' ') + ' group by ' + $scope.panel.field
+      $scope.chclient.query(stmt).then(
+        function(response){
+          $scope.panelMeta.loading = false
+          $scope.results = response.data.trim()
+          $scope.$emit('render')
+        },
+        function(response){
+          $scope.panel.error = $scope.parse_error(response.data);
+          $scope.panelMeta.loading = false;
+        })
+    }
+
     $scope.get_data = function() {
       delete $scope.panel.error;
+      console.log(clickhouseFilterSrv)
+      console.log(clickhouseFilterSrv.ids())
+      console.log(clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids()))
+
+      test();
+      return
 
       // Make sure we have everything for the request to complete
       if(dashboard.indices.length === 0) {
@@ -391,6 +411,14 @@ function (angular, app, _, $, kbn) {
         });
 
         function build_results() {
+          scope.data = []
+          _.each(scope.results.split('\n'), function(v, k){
+            console.log(v)
+            var tuple = v.split('\t')
+            var slice = { label : tuple[1], data : [[k,tuple[0]]], actions: true}
+            scope.data.push(slice)
+          })
+          return
           //forward_compatible_map
           var _fcm = {
             "sum":"sum",
