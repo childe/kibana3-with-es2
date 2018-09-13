@@ -158,17 +158,17 @@ define([
       switch(filter.type)
       {
       case 'time':
-        var from = kbn.parseDate(filter.from).valueOf()
-        var to = kbn.parseDate(filter.to).valueOf()
-        return filter.field + ' >= toDate(toDateTime(' + from + ')) AND ' + filter.field + ' <= toDate(toDateTime(' + to +'))'
+        var from = kbn.parseDate(filter.from).valueOf() / 1000
+        var to = kbn.parseDate(filter.to).valueOf() / 1000
+        return '"' + filter.field + '" >= toDateTime(' + from + ') AND "' + filter.field + '" <= toDateTime(' + to +')'
       case 'range':
-        return filter.field + ' >= ' + filter.from + ' AND ' + filter.field + ' <= '+filter.to
+        return '"' + filter.field + '" >= ' + filter.from + ' AND "' + filter.field + '" <= '+filter.to
       case 'querystring':
         return tihs.convertQuery(filter.query)
       case 'field':
-        return filter.field + ' == ' + filter.query
+        return '"' + filter.field + '" = ' + "'" + filter.query + "'"
       case 'terms':
-        return filter.field + ' == ' + filter.value
+        return '"' + filter.field + '" = ' + "'" + filter.value + "'"
       default:
         return '';
       }
