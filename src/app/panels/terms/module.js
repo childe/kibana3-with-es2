@@ -159,7 +159,8 @@ function (angular, app, _, $, kbn) {
     };
 
     var test = function() {
-      var stmt = 'select  count(1) as count, ' +$scope.panel.field +' from ' + dashboard.indices.join(' ') + ' group by ' + $scope.panel.field
+      var whereClause = clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids())
+      var stmt = 'SELECT  count(1) as count, ' +$scope.panel.field +' FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' GROUP BY ' + $scope.panel.field + ' ORDER BY count DESC LIMIT ' + $scope.panel.size
       $scope.chclient.query(stmt).then(
         function(response){
           $scope.panelMeta.loading = false
@@ -174,9 +175,6 @@ function (angular, app, _, $, kbn) {
 
     $scope.get_data = function() {
       delete $scope.panel.error;
-      console.log(clickhouseFilterSrv)
-      console.log(clickhouseFilterSrv.ids())
-      console.log(clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids()))
 
       test();
       return
@@ -332,7 +330,7 @@ function (angular, app, _, $, kbn) {
         filterSrv.set({type:'script',script:$scope.panel.script + ' == \"' + term.label + '\"',
           mandate:(negate ? 'mustNot':'must')});
       } else if(_.isUndefined(term.meta)) {
-        filterSrv.set({type:'terms',field:$scope.field,value:term.label,
+        filterSrv.set({type:'terms',field:$scope.panel.field,value:term.label,
           mandate:(negate ? 'mustNot':'must')});
       } else if(term.meta === 'missing') {
         filterSrv.set({type:'exists',field:$scope.field,
@@ -413,7 +411,7 @@ function (angular, app, _, $, kbn) {
         function build_results() {
           scope.data = []
           _.each(scope.results.split('\n'), function(v, k){
-            console.log(v)
+            if (v === ''){return}
             var tuple = v.split('\t')
             var slice = { label : tuple[1], data : [[k,tuple[0]]], actions: true}
             scope.data.push(slice)
