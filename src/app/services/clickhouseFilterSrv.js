@@ -125,23 +125,26 @@ define([
     };
 
     this.buildWhereClause = function(ids) {
-      var clause = ''
+      var clauses = [], clauses2 = []
       _.each(ids,function(id) {
         if(dashboard.current.services.filter.list[id].active) {
           switch(dashboard.current.services.filter.list[id].mandate)
           {
           case 'mustNot':
-            clause += '(NOT ' + self.getWhereClause(id) + ')'
+            clauses.push('NOT (' + self.getWhereClause(id) + ')')
             break;
           case 'either':
-            bool.should(self.getWhereClause(id));
             break;
           default:
-            clause += '(AND ' + self.getWhereClause(id) + ')'
+            clauses.push(self.getWhereClause(id))
           }
         }
       });
-      return clause
+
+      _.each(clauses, function(c){
+        clauses2.push('('+c+')')
+      })
+      return clauses2.join(' AND ')
     }
 
     this.getWhereClause = function(id) {
@@ -155,8 +158,9 @@ define([
       switch(filter.type)
       {
       case 'time':
-          console.log(filter.from, typeof(filter.from), kbn.parseDate(filter.from), typeof(kbn.parseDate(filter.from)));
-        return filter.field + ' >= ' + kbn.parseDate(filter.from).valueOf() + ' AND ' + filter.field + ' <= '+ kbn.parseDate(filter.to).valueOf()
+        var from = kbn.parseDate(filter.from).valueOf()
+        var to = kbn.parseDate(filter.to).valueOf()
+        return filter.field + ' >= toDate(toDateTime(' + from + ')) AND ' + filter.field + ' <= toDate(toDateTime(' + to +'))'
       case 'range':
         return filter.field + ' >= ' + filter.from + ' AND ' + filter.field + ' <= '+filter.to
       case 'querystring':
