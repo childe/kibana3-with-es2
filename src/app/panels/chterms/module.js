@@ -117,7 +117,8 @@ function (angular, app, _, $, kbn) {
     };
 
     $scope.get_data = function() {
-      delete $scope.panel.error;
+      delete $scope.panel.error
+      $scope.panelMeta.loading = true
 
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
       var queries = querySrv.getQueryObjs($scope.panel.queries.ids);
