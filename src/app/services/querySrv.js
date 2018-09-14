@@ -130,11 +130,7 @@ function (angular, _, config, kbn) {
 
     self.types = [];
     _.each(self.queryTypes,function(type,name){
-      esVersion.is(type.require).then(function(is) {
-        if(is) {
-          self.types.push(name);
-        }
-      });
+      self.types.push(name);
     });
 
 

@@ -24,6 +24,7 @@ function (angular, _, config) {
     };
 
     var getVersions = function() {
+      return
       if(self.versions.length !== 0) {
         defer.resolve(self.versions);
         return defer.promise;
