@@ -138,6 +138,7 @@ function (Settings) {
       'bettermap',
       'query',
       'terms',
+      'chterms',
       'stats',
       'sparklines',
       'percentiles',
