@@ -425,7 +425,6 @@ function (angular, app, _, kbn, moment) {
 
     $scope.populate_modal = function(request) {
       return
-      $scope.inspector = request.toJSON();
     };
 
     $scope.without_kibana = function (row) {
