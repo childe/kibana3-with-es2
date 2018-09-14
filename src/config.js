@@ -129,6 +129,7 @@ function (Settings) {
       'map',
       'goal',
       'table',
+      'chtable',
       'filtering',
       'timepicker',
       'text',
