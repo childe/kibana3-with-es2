@@ -124,6 +124,17 @@ define([
       return ids;
     };
 
+    this.buildWhereClauseFromQueries = function(queries) {
+      var clauses = [], clauses2 = []
+      _.each(queries,function(q) {
+          clauses.push(q.query)
+      });
+
+      _.each(clauses, function(c){
+        clauses2.push('('+c+')')
+      })
+      return clauses2.join(' OR ')
+    }
     this.buildWhereClause = function(ids) {
       var clauses = [], clauses2 = []
       _.each(ids,function(id) {

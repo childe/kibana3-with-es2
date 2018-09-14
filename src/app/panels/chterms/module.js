@@ -116,25 +116,15 @@ function (angular, app, _, $, kbn) {
 
     };
 
-    var test = function() {
-      var whereClause = clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids())
-      var stmt = 'SELECT  count(1) as count, ' +$scope.panel.field +' FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' GROUP BY ' + $scope.panel.field + ' ORDER BY count DESC LIMIT ' + $scope.panel.size
-      $scope.chclient.query(stmt).then(
-        function(response){
-          $scope.panelMeta.loading = false
-          $scope.results = response.data.trim()
-          $scope.$emit('render')
-        },
-        function(response){
-          $scope.panel.error = $scope.parse_error(response.data);
-          $scope.panelMeta.loading = false;
-        })
-    }
-
     $scope.get_data = function() {
       delete $scope.panel.error;
 
+      $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
+      var queries = querySrv.getQueryObjs($scope.panel.queries.ids);
+      var query = clickhouseFilterSrv.buildWhereClauseFromQueries(queries)
+
       var whereClause = clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids())
+      whereClause += ' AND (' + query + ')'
       var stmt = 'SELECT  count(1) as count, ' +$scope.panel.field +' FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' GROUP BY ' + $scope.panel.field + ' ORDER BY count DESC LIMIT ' + $scope.panel.size
       $scope.chclient.query(stmt).then(
         function(response){
