@@ -1,16 +1,3 @@
-/** @scratch /panels/5
- *
- * include::panels/terms.asciidoc[]
- */
-
-/** @scratch /panels/terms/0
- *
- * == terms
- * Status: *Stable*
- *
- * A table, bar chart or pie chart based on the results of an Elasticsearch terms facet.
- *
- */
 define([
   'angular',
   'app',
@@ -21,10 +8,10 @@ define([
 function (angular, app, _, $, kbn) {
   'use strict';
 
-  var module = angular.module('kibana.panels.terms', []);
+  var module = angular.module('kibana.panels.chterms', []);
   app.useModule(module);
 
-  module.controller('terms', function($scope, querySrv, dashboard, filterSrv, fields, clickhouseFilterSrv) {
+  module.controller('chterms', function($scope, querySrv, dashboard, filterSrv, fields, clickhouseFilterSrv) {
     $scope.panelMeta = {
       modals : [
         //{
@@ -38,18 +25,7 @@ function (angular, app, _, $, kbn) {
         {title:'Queries', src:'app/partials/querySelect.html'}
       ],
       status  : "Stable",
-      description : "Displays the results of an elasticsearch facet as a pie " +
-        "chart, bar chart, or a table.<br>" +
-        "In order to be forward compatible, we reserve the right to display " +
-        "min and order by max/avg/total. So we have to use stats aggregate, " +
-        "But I think single min/max/avg/sum aggregation performs better.<br>" +
-        "And also we remove total_count option in editor.html<br>" +
-        "We do not support missing/other, but i will add them later<br>" +
-        "为了向前兼容, 我们选择了用stats aggregations, " +
-        "但考虑到性能以及可能不会有人按max排序,但展示的是最小值, " +
-        "换用单一的min/max/avg/sum aggregation, 可能会更好.<br>" +
-        "同时aggs里面不再有total_count的返回值,在配置界面中也拿掉了.<br>" +
-        "暂时没有missing/other功能,以后会补上.<br>"
+      description : "数据源为clickhouse"
     };
 
     // Set and populate defaults
@@ -60,20 +36,6 @@ function (angular, app, _, $, kbn) {
        * field:: The field on which to computer the facet
        */
       field   : '_type',
-      /** @scratch /panels/terms/5
-       * exclude:: terms to exclude from the results
-       */
-      exclude : [],
-      /** @scratch /panels/terms/5
-       * missing:: Set to false to disable the display of a counter showing how much results are
-       * missing the field
-       */
-      missing : true,
-      /** @scratch /panels/terms/5
-       * other:: Set to false to disable the display of a counter representing the aggregate of all
-       * values outside of the scope of your +size+ property
-       */
-      other   : true,
       /** @scratch /panels/terms/5
        * size:: Show this many terms
        */
@@ -129,10 +91,6 @@ function (angular, app, _, $, kbn) {
        */
       multiterms  : [],
       /** @scratch /panels/terms/5
-       * fmode:: Field mode: normal or script
-       */
-      fmode       : 'normal',
-      /** @scratch /panels/terms/5
        * tmode:: Facet mode: terms or terms_stats
        */
       tmode       : 'terms',
@@ -176,160 +134,22 @@ function (angular, app, _, $, kbn) {
     $scope.get_data = function() {
       delete $scope.panel.error;
 
-      test();
-      return
-
-      // Make sure we have everything for the request to complete
-      if(dashboard.indices.length === 0) {
-        return;
-      }
-
-      $scope.panelMeta.loading = true;
-      var request,
-        results,
-        boolQuery,
-        queries;
-
-      $scope.field = _.contains(fields.list,$scope.panel.field+'.raw') ?
-        $scope.panel.field+'.raw' : $scope.panel.field;
-
-      request = $scope.ejs.Request();
-
-      $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
-      queries = querySrv.getQueryObjs($scope.panel.queries.ids);
-
-      // This could probably be changed to a BoolFilter
-      boolQuery = $scope.ejs.BoolQuery().minimumShouldMatch(1);
-      _.each(queries,function(q) {
-        boolQuery = boolQuery.should(querySrv.toEjsObj(q));
-      });
-      boolQuery.filter(filterSrv.getBoolFilter(filterSrv.ids()));
-
-      // Terms mode
-      if($scope.panel.tmode === 'terms') {
-        var terms_aggs = $scope.ejs.TermsAggregation('terms')
-          .field($scope.field)
-          .size($scope.panel.size)
-          .exclude($scope.panel.exclude);
-          if($scope.panel.fmode === 'script') {
-            terms_aggs.script($scope.panel.script);
-          }
-          switch($scope.panel.order) {
-            case 'term':
-            terms_aggs.order('_term','asc');
-            break;
-            case 'count':
-            terms_aggs.order('_count');
-            break;
-            case 'reverse_count':
-            terms_aggs.order('_count','asc');
-            break;
-            case 'reverse_term':
-            terms_aggs.order('_term');
-            break;
-            default:
-            terms_aggs.order('_count');
-          }
-        request = request.query(boolQuery).agg(terms_aggs).size(0);
-      }
-      else if($scope.panel.tmode === 'terms_stats') {
-        var terms_aggs = $scope.ejs.TermsAggregation('terms')
-          .field($scope.panel.field)
-          .size($scope.panel.size);
-
-        var all_stats_aggs = $scope.ejs.StatsAggregation('all').field($scope.panel.valuefield);
-
-        var sub_aggs;
-
-          if ($scope.panel.tstat !== 'uniq') {
-              sub_aggs = $scope.ejs.StatsAggregation('subaggs')
-                .field($scope.panel.valuefield);
-          } else {
-              sub_aggs = $scope.ejs.CardinalityAggregation('subaggs')
-                  .field($scope.panel.valuefield);
-          }
-
-          switch($scope.panel.order) {
-            case 'term':
-              terms_aggs.order('_term','asc');
-              break;
-            case 'reverse_term':
-              terms_aggs.order('_term','desc');
-              break;
-            case 'count':
-              terms_aggs.order('_count','desc');
-              break;
-            case 'reverse_count':
-              terms_aggs.order('_count','asc');
-              break;
-            case 'total':
-              terms_aggs.order('subaggs.sum','desc');
-              break;
-            case 'reverse_total':
-              terms_aggs.order('subaggs.sum','asc');
-              break;
-            case 'min':
-              terms_aggs.order('subaggs.min','desc');
-              break;
-            case 'reverse_min':
-              terms_aggs.order('subterms.min','asc');
-              break;
-            case 'max':
-              terms_aggs.order('subaggs.max','desc');
-              break;
-            case 'reverse_max':
-              terms_aggs.order('subaggs.max','asc');
-              break;
-            case 'mean':
-              terms_aggs.order('subaggs.avg','desc');
-              break;
-            case 'reverse_mean':
-              terms_aggs.order('subaggs.avg','asc');
-              break;
-            case 'uniq':
-              terms_aggs.order('subaggs.value','desc');
-              break;
-            case 'reverse_uniq':
-              terms_aggs.order('subaggs.value','asc');
-              break;
-          }
-
-        request = request.query(boolQuery)
-        .agg(all_stats_aggs)
-        .agg(terms_aggs.agg(sub_aggs)).size(0);
-      }
-
-      // Populate the inspector panel
-      $scope.inspector = request.toJSON();
-
-      results = $scope.ejs.doSearch(dashboard.indices, request,
-        0, dashboard.current.index.routing);
-
-      // Populate scope when we have results
-      results.then(
-        function(results) {
-          if(!(_.isUndefined(results.error))) {
-            $scope.panel.error = $scope.parse_error(results.error);
-          }
-          $scope.panelMeta.loading = false;
-          $scope.hits = results.hits.total;
-
-          $scope.results = results;
-
-          $scope.$emit('render');
+      var whereClause = clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids())
+      var stmt = 'SELECT  count(1) as count, ' +$scope.panel.field +' FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' GROUP BY ' + $scope.panel.field + ' ORDER BY count DESC LIMIT ' + $scope.panel.size
+      $scope.chclient.query(stmt).then(
+        function(response){
+          $scope.panelMeta.loading = false
+          $scope.results = response.data.trim()
+          $scope.$emit('render')
         },
-        function(results){
-          $scope.panel.error = $scope.parse_error(results.body);
+        function(response){
+          $scope.panel.error = $scope.parse_error(response.data);
           $scope.panelMeta.loading = false;
-        }
-      );
+        })
     };
 
     $scope.build_search = function(term,negate) {
-      if($scope.panel.fmode === 'script') {
-        filterSrv.set({type:'script',script:$scope.panel.script + ' == \"' + term.label + '\"',
-          mandate:(negate ? 'mustNot':'must')});
-      } else if(_.isUndefined(term.meta)) {
+      if(_.isUndefined(term.meta)) {
         filterSrv.set({type:'terms',field:$scope.panel.field,value:term.label,
           mandate:(negate ? 'mustNot':'must')});
       } else if(term.meta === 'missing') {
@@ -341,10 +161,7 @@ function (angular, app, _, $, kbn) {
     };
 
     var build_multi_search = function(term) {
-      if($scope.panel.fmode === 'script') {
-        return({type:'script',script:$scope.panel.script + ' == \"' + term.label + '\"',
-          mandate:'either', alias: term.label});
-      } else if(_.isUndefined(term.meta)) {
+      if(_.isUndefined(term.meta)) {
         return({type:'terms',field:$scope.field,value:term.label, mandate:'either'});
       } else if(term.meta === 'missing') {
         return({type:'exists',field:$scope.field, mandate:'either'});
@@ -416,62 +233,6 @@ function (angular, app, _, $, kbn) {
             var slice = { label : tuple[1], data : [[k,tuple[0]]], actions: true}
             scope.data.push(slice)
           })
-          return
-          //forward_compatible_map
-          var _fcm = {
-            "sum":"sum",
-            "total":"sum",
-            "mean":"avg",
-            "avg":"avg",
-            "min":"min",
-            "max":"max",
-            "count":"count",
-            "uniq":"value"
-          };
-          var k = 0;
-          scope.data = [];
-          _.each(scope.results.aggregations.terms.buckets, function(v) {
-            var slice;
-            if(scope.panel.tmode === 'terms') {
-              slice = { label : v.key, data : [[k,v.doc_count]], actions: true};
-            }
-            if(scope.panel.tmode === 'terms_stats') {
-              slice = {
-                label : v.key,
-                data : [[k,v['subaggs'][_fcm[scope.panel.tstat]]]],
-                actions: true
-              };
-            }
-            scope.data.push(slice);
-            k = k + 1;
-          });
-
-          // scope.data.push({label:'Missing field',
-          //   data:[[k,scope.results.facets.terms.missing]],meta:"missing",color:'#aaa',opacity:0});
-          //
-           if(scope.panel.tmode === 'terms') {
-             if (!_.isUndefined(scope.results.aggregations.terms.sum_other_doc_count)) {
-               scope.data.push({label:'Other values',
-                 data:[[k+1,scope.results.aggregations.terms.sum_other_doc_count]],meta:"other",color:'#444', actions: false});
-             }
-           } else if(scope.panel.tmode === 'terms_stats') {
-             if (scope.panel.tstat === 'total') {
-               var sumOfTopSumvalue = 0
-               for (var i in scope.data) {
-                 sumOfTopSumvalue += scope.data[i]['data'][0][1]
-               }
-               scope.data.push({label:'Other values',
-                 data:[[k+1,scope.results.aggregations.all.sum - sumOfTopSumvalue]],meta:"other",color:'#444', actions: false});
-             } else if (scope.panel.tstat === 'mean') {
-               var sumOfTopSumvalue = 0
-               for (var i in scope.data) {
-                 sumOfTopSumvalue += scope.data[i]['data'][0][1]
-               }
-               var otherMean = (scope.results.aggregations.all.sum - sumOfTopSumvalue) / scope.results.aggregations.terms.sum_other_doc_count
-               scope.data.push({label:'Other values',
-                 data:[[k+1, otherMean]],meta:"other",color:'#444', actions: false});
-             }
-           }
         }
 
         // Function for rendering panel
