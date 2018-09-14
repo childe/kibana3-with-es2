@@ -174,6 +174,10 @@ define([
       }
     };
 
+    this.convertQuery = function(query) {
+      return query
+    }
+
     this.getByType = function(type,inactive) {
       return _.pick(dashboard.current.services.filter.list,self.idsByType(type,inactive));
     };
