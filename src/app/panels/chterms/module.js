@@ -14,12 +14,12 @@ function (angular, app, _, $, kbn) {
   module.controller('chterms', function($scope, querySrv, dashboard, filterSrv, fields, clickhouseFilterSrv) {
     $scope.panelMeta = {
       modals : [
-        //{
-          //description: "Inspect",
-          //icon: "icon-info-sign",
-          //partial: "app/partials/inspector.html",
-          //show: $scope.panel.spyable
-        //}
+        {
+          description: "Inspect",
+          icon: "icon-info-sign",
+          partial: "app/partials/inspector.html",
+          show: $scope.panel.spyable
+        }
       ],
       editorTabs : [
         {title:'Queries', src:'app/partials/querySelect.html'}
@@ -127,6 +127,7 @@ function (angular, app, _, $, kbn) {
       var whereClause = clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids())
       whereClause += ' AND (' + query + ')'
       var stmt = 'SELECT  count(1) as count, ' +$scope.panel.field +' FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' GROUP BY ' + $scope.panel.field + ' ORDER BY count DESC LIMIT ' + $scope.panel.size
+      $scope.inspector = stmt
       $scope.chclient.query(stmt).then(
         function(response){
           $scope.panelMeta.loading = false
