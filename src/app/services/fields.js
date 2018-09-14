@@ -63,7 +63,6 @@ function (angular, _, config) {
       // Flatten the mapping of each index into dot notated keys.
       return request.then(function(p) {
         var mapping = {};
-        return esVersion.gte('1.0.0.RC1').then(function(version) {
           _.each(p, function(indexMap,index) {
             mapping[index] = {};
             _.each((version ? indexMap.mappings : indexMap), function (typeMap,type) {
@@ -71,7 +70,6 @@ function (angular, _, config) {
             });
           });
           return mapping;
-        });
       }, function(data, status) {
           if(status === 0) {
             alertSrv.set('Error',"Could not contact Elasticsearch at "+ejs.config.host+

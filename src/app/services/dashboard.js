@@ -81,6 +81,8 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       // Clear the current dashboard to prevent reloading
       self.current = {};
       self.indices = [];
+          route();
+      return
       esVersion.isMinimum().then(function(isMinimum) {
         if(_.isUndefined(isMinimum)) {
           return;
