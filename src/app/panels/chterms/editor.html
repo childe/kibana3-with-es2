@@ -9,7 +9,7 @@
         <label class="small">Stats type</label>
         <select class="input-medium" ng-model="panel.tstat" ng-options="f for f in ['count', 'min', 'max', 'total', 'mean', 'uniq']"></select>
       </div>
-      <div class="editor-option" ng-show="panel.fmode == 'normal'">
+      <div class="editor-option">
         <label class="small">Field</label>
         <input type="text" class="input-small" bs-typeahead="fields.list" ng-model="panel.field" ng-change="set_refresh(true)">
       </div>
