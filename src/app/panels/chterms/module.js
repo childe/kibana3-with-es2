@@ -97,7 +97,7 @@ function (angular, app, _, $, kbn) {
       /** @scratch /panels/terms/5
        * tstat:: Terms_stats facet stats field
        */
-      tstat       : 'total',
+      tstat       : 'sum',
       /** @scratch /panels/terms/5
        * valuefield:: Terms_stats facet value field
        */
