@@ -18,16 +18,6 @@ define([
       ids : []
     };
 
-    String.prototype.format = function()
-    {
-        var args = arguments;
-        return this.replace(/\{(\d+)\}/g,
-            function(m,i){
-                return args[i];
-            });
-    }
-
-
     // Save a reference to this
     var self = this;
 
@@ -222,11 +212,11 @@ define([
       if (value.startsWith('>='))
         return `"{0}" {1} {2}`.format(field, '>=', value.substring(2).trim())
       if (value.startsWith('>'))
-        return `"{0}" {1} {2}`.format(field, '>', value.substring(2).trim())
+        return `"{0}" {1} {2}`.format(field, '>', value.substring(1).trim())
       if (value.startsWith('<='))
         return `"{0}" {1} {2}`.format(field, '<=', value.substring(2).trim())
       if (value.startsWith('<'))
-        return `"{0}" {1} {2}`.format(field, '<', value.substring(2).trim())
+        return `"{0}" {1} {2}`.format(field, '<', value.substring(1).trim())
 
       var r = value.match(/^[\[{](.*)\s+TO\s+(.*)[}\]]$/)
       if ( r !== null ) {
@@ -240,10 +230,10 @@ define([
         } else if (value.startsWith('{')) {
           op1 = '>'
         }
-        if (value.startsWith(']')) {
+        if (value.endsWith(']')) {
           op2 = '<='
         }
-        if (value.startsWith('}')) {
+        if (value.endsWith('}')) {
           op2 = '<'
         }
 
