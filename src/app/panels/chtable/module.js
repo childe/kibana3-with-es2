@@ -87,7 +87,7 @@ function (angular, app, _, kbn, moment) {
       /** @scratch /panels/table/5
        * sort:: An array describing the sort order of the table. For example [`@timestamp',`desc']
        */
-      sort    : ['_score','desc'],
+      sort    : ['datetime','desc'],
       /** @scratch /panels/table/5
        * overflow:: The css overflow property. `min-height' (expand) or `auto' (scroll)
        */
@@ -136,7 +136,7 @@ function (angular, app, _, kbn, moment) {
       /** @scratch /panels/table/5
        * timeField:: If localTime is set to true, this field will be adjusted to the browsers local time
        */
-      timeField: '@timestamp',
+      timeField: 'datetime',
       /** @scratch /panels/table/5
        * colorRules:: field, value(RegExp), color
        */
