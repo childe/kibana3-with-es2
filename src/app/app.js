@@ -19,6 +19,7 @@ define([
   'ui-utils',
   'extend-jquery',
   'bindonce',
+  'strings',
 ],
 function (angular, $, _, appLevelRequire) {
 

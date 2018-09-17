@@ -58,7 +58,8 @@ require.config({
     jsonpath:                 '../vendor/jsonpath',
     elasticjs:                '../vendor/elasticjs/elastic-angular-client',
     elasticsearch:            '../vendor/elasticsearch.angular',
-    clickhouse:               '../vendor/clickhouse/client'
+    clickhouse:               '../vendor/clickhouse/client',
+    strings:                  '../vendor/strings'
   },
   shim: {
     angular: {
