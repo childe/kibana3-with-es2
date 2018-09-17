@@ -311,185 +311,11 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
      * @param {number} query_id  The id of the query, generated on the first run and passed back when
      *                            this call is made recursively for more segments
      */
-    $scope.get_data_timeshift = function(data, segment, query_id) {
-      var
-        _shifted_range,
-        _interval,
-        request,
-        queries,
-        results;
 
-      if (_.isUndefined(segment)) {
-        segment = 0;
-        $scope.timeshift = kbn.interval_to_ms($scope.panel.timeshift);
-        $scope.range = filterSrv.timeRange('last');
-        query_id = $scope.query_id_timeshift = new Date().getTime();
-
-        _shifted_range = filterSrv.timeRange('last');
-        $scope.shifted_time = {
-          from : new Date(_shifted_range.from.getTime() - $scope.timeshift),
-          to   : new Date(_shifted_range.to.getTime() - $scope.timeshift)
-        };
-
-        $scope.index = dashboard.indices;
-        kbnIndex.indices(
-          $scope.shifted_time.from,
-          $scope.shifted_time.to,
-          dashboard.current.index.pattern,
-          dashboard.current.index.interval
-        ).then(function (p) {
-          $scope.shifted_index = p;
-          $scope.get_data_timeshift(data,segment,query_id);
-        });
-        return;
-      }
-
-      delete $scope.panel.error;
-
-      // Make sure we have everything for the request to complete
-      if($scope.shifted_index.length === 0) {
-        return;
-      }
-      _interval = $scope.get_interval($scope.shifted_time);
-
-      if ($scope.panel.auto_int) {
-        $scope.panel.interval = kbn.secondsToHms(
-          kbn.calculate_interval($scope.shifted_time.from,$scope.shifted_time.to,$scope.panel.resolution,0)/1000);
-      }
-
-      $scope.panelMeta.loading = true;
-      request = $scope.ejs.Request();
-
-      // Build the query
-      var _ids_without_time = _.difference(filterSrv.ids(),filterSrv.idsByType('time'));
-      var timeField = _.uniq(_.pluck(filterSrv.getByType('time'),'field'));
-      if(timeField.length > 1) {
-        $scope.panel.error = "Time field must be consistent amongst time filters";
-        return;
-      } else if(timeField.length === 0) {
-        $scope.panel.error = "A time filter must exist for this panel to function";
-        return;
-      } else {
-        timeField = timeField[0];
-      }
-
-     var boolQuery = $scope.ejs.BoolQuery().filter(
-        filterSrv.getBoolFilter(_ids_without_time).must(
-          $scope.ejs.RangeFilter(timeField)
-          .from($scope.shifted_time.from.getTime())
-          .to($scope.shifted_time.to.getTime())
-        )
-     );
-
-      request = request.query(boolQuery);
-
-      $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
-
-      queries = querySrv.getQueryObjs($scope.panel.queries.ids);
-
-      _.each(queries, function(q) {
-        var query = querySrv.toEjsObj(q);
-
-        var aggr = buildAggs(q.id);
-
-        request = request.agg(
-            $scope.ejs.FilterAggregation(q.id).filter(query).agg(
-              aggr.interval(_interval)
-          )
-        ).size($scope.panel.annotate.enable ? $scope.panel.annotate.size : 0);
-      });
-
-      // DO NOT need annotate in shifted_time data
-
-      // NOT Populate the inspector panel
-
-      // Then run it
-      results = $scope.ejs.doSearch($scope.shifted_index[segment], request,
-        0, dashboard.current.index.routing
-      );
-
-      // Populate scope when we have results
-      return results.then(function(results) {
-        $scope.panelMeta.loading = false;
-
-        // Check for error and abort if found
-        if(!(_.isUndefined(results.error))) {
-          $scope.panel.error = $scope.parse_error(results.error);
-        }
-        // Make sure we're still on the same query/queries
-        else if($scope.query_id_timeshift === query_id) {
-
-          var i = 0,
-            time_series,
-            hits,
-            counters; // Stores the bucketed hit counts.
-
-          _.each(queries, function(q) {
-            var q = _.clone(q);
-            q.query = q.query+"[-"+$scope.panel.timeshift+"]";
-            q.color = "#abc";
-
-            // we need to initialize the data variable on the first run,
-            // and when we are working on the first segment of the data.
-            if(_.isUndefined(data[queries.length + i]) || segment === 0) {
-              var tsOpts = {
-                interval: _interval,
-                start_date: $scope.range && $scope.range.from,
-                end_date: $scope.range && $scope.range.to,
-                fill_style: $scope.panel.derivative ? 'null' : $scope.panel.zerofill ? 'minimal' : 'no'
-              };
-              time_series = new timeSeries.ZeroFilled(tsOpts);
-              hits = 0;
-              counters = {};
-            } else {
-              time_series = data[queries.length + i].time_series;
-              hits = data[queries.length + i].hits;
-              counters = data[queries.length + i].counters;
-            }
-
-            var query_results = results.aggregations[q.id][q.id];
-            var timeshift;
-            if (_.isUndefined($scope.panel.timeshift) || $scope.panel.timeshift === "") {
-              timeshift = 0;
-            }else{
-              timeshift = kbn.interval_to_ms($scope.panel.timeshift);
-            }
-            hits = buildResult(query_results, hits, time_series, counters, timeshift);
-
-            $scope.legend[queries.length + i] = {query:q,hits:hits};
-
-            data[queries.length + i] = {
-              info: q,
-              time_series: time_series,
-              hits: hits,
-              counters: counters
-            };
-
-            i++;
-          });
-
-          // DO NOT need annotate in shifted_time data
-        }
-
-        // Tell the histogram directive to render.
-        $scope.$emit('render', data);
-
-        // If we still have segments left, get them
-        if(segment < $scope.shifted_index.length-1) {
-          $scope.get_data_timeshift(data,segment+1,query_id);
-        }
-      },
-        function(results){
-          $scope.panel.error = $scope.parse_error(results.body);
-          $scope.panelMeta.loading = false;
-        }
-      );
-    };
-
-
-    $scope.get_data = function(data, segment, query_id) {
+    $scope.get_data = function() {
       delete $scope.panel.error
       $scope.panelMeta.loading = true
+      $scope.inspector = ''
 
       var timeField = _.uniq(_.pluck(filterSrv.getByType('time'),'field'));
       if(timeField.length > 1) {
@@ -502,161 +328,50 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
         timeField = timeField[0];
       }
 
-      _interval = $scope.get_interval(_range)
-      console.log(_interval);
-      var _a = kbn.interval_to_ms(_interval)
-      console.log(_a);
+      var _range = $scope.get_time_range(),
+        _interval = $scope.get_interval(_range),
+        _interval_int = kbn.interval_to_ms(_interval)
 
+      var whereClause = clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids())
 
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
       var queries = querySrv.getQueryObjs($scope.panel.queries.ids);
-      var query = clickhouseFilterSrv.buildWhereClauseFromQueries(queries)
 
-      var whereClause = clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids())
-      if (query !== '') {
-        whereClause += ' AND (' + query + ')'
-      }
-      var stmt = 'SELECT  count(1) as count, (intDiv(toUInt32(' + timeField + ')*1000,' + _a + ')) as t FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' GROUP BY t ORDER BY t FORMAT JSON'
-      $scope.inspector = stmt
-      $scope.chclient.query(stmt).then(
-        function(response){
-          $scope.panelMeta.loading = false
-          $scope.results = response.data.trim()
-          $scope.$emit('render')
+      $scope.legend = []
+      $scope.hits = 0
+      var data = []
+      _.each(queries, function(q, i){
+        var query = clickhouseFilterSrv.convertQuery(q.query)
+
+        var c = ''
+        if (query !== '') {
+          c = '{0} AND ({1})'.format(whereClause,query)
+        }else{
+          c = whereClause
+        }
+        var stmt = 'SELECT {0} as value, (intDiv(toUInt32({1})*1000,{2})) as t FROM {3} WHERE {4} GROUP BY t ORDER BY t FORMAT JSON'.format('count(1)', timeField, _interval_int, dashboard.indices.join(' '), c)
+
+        $scope.inspector += stmt + '\n'
+
+        var tsOpts = {
+          interval: _interval,
+          start_date: _range && _range.from,
+          end_date: _range && _range.to,
+          fill_style: $scope.panel.derivative ? 'null' : $scope.panel.zerofill ? 'minimal' : 'no'
         },
-        function(response){
-          $scope.panel.error = $scope.parse_error(response.data);
-          $scope.panelMeta.loading = false;
-        })
+        time_series = new timeSeries.ZeroFilled(tsOpts),
+        hits = 0,
+        counters = {}
 
-      return
+        $scope.chclient.query(stmt).then(
+          function(response){
+            var query_results = response.data
+            hits = buildResult(query_results.data, hits, time_series, counters, _interval_int);
+            console.log(hits)
+            console.log(time_series)
+            console.log(counters)
 
-      if (_.isUndefined(data)) {
-        data = [];
-      }
-      if (!_.isUndefined($scope.panel.timeshift) && $scope.panel.timeshift != "") {
-        $scope.get_data_timeshift(data);
-      }
-
-      var
-        _range,
-        _interval,
-        request,
-        queries,
-        results;
-
-      if (_.isUndefined(segment)) {
-        segment = 0;
-      }
-      delete $scope.panel.error;
-
-      // Make sure we have everything for the request to complete
-      if(dashboard.indices.length === 0) {
-        return;
-      }
-      _range = $scope.get_time_range();
-      _interval = $scope.get_interval(_range);
-
-      if ($scope.panel.auto_int) {
-        $scope.panel.interval = kbn.secondsToHms(
-          kbn.calculate_interval(_range.from,_range.to,$scope.panel.resolution,0)/1000);
-      }
-
-      $scope.panelMeta.loading = true;
-      request = $scope.ejs.Request();
-
-     var boolQuery = $scope.ejs.BoolQuery()
-        .filter(filterSrv.getBoolFilter(filterSrv.ids()));
-
-      request = request.query(boolQuery);
-
-      $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
-
-      queries = querySrv.getQueryObjs($scope.panel.queries.ids);
-
-      // Build the query
-      _.each(queries, function(q) {
-        var query = querySrv.toEjsObj(q);
-
-        var aggr = buildAggs(q.id);
-
-        request = request.agg(
-          $scope.ejs.FilterAggregation(q.id).filter(query).agg(
-            aggr.interval(_interval)
-          )
-        ).size($scope.panel.annotate.enable ? $scope.panel.annotate.size : 0);
-      });
-
-      if($scope.panel.annotate.enable) {
-        var query = $scope.ejs.FilteredQuery(
-          $scope.ejs.QueryStringQuery($scope.panel.annotate.query || '*'),
-          filterSrv.getBoolFilter(filterSrv.idsByType('time'))
-        );
-        request = request.query(query);
-
-        // This is a hack proposed by @boaz to work around the fact that we can't get
-        // to field data values directly, and we need timestamps as normalized longs
-        request = request.sort([
-          $scope.ejs.Sort($scope.panel.annotate.sort[0]).order($scope.panel.annotate.sort[1]).ignoreUnmapped(true),
-          $scope.ejs.Sort($scope.panel.time_field).desc().ignoreUnmapped(true)
-        ]);
-      }
-
-      // Populate the inspector panel
-      $scope.populate_modal(request);
-
-      // Then run it
-      results = $scope.ejs.doSearch(dashboard.indices[segment], request,
-        $scope.panel.annotate.enable ? $scope.panel.annotate.size : 0,
-        dashboard.current.index.routing
-    );
-
-      // Populate scope when we have results
-      return results.then(function(results) {
-        $scope.panelMeta.loading = false;
-        if(segment === 0) {
-          $scope.legend = [];
-          $scope.hits = 0;
-          //data = [];
-          $scope.annotations = [];
-          query_id = $scope.query_id = new Date().getTime();
-        }
-
-        // Check for error and abort if found
-        if(!(_.isUndefined(results.error))) {
-          $scope.panel.error = $scope.parse_error(results.error);
-        }
-        // Make sure we're still on the same query/queries
-        else if($scope.query_id === query_id) {
-
-          var i = 0,
-            time_series,
-            hits,
-            counters; // Stores the bucketed hit counts.
-
-          _.each(queries, function(q) {
-            // we need to initialize the data variable on the first run,
-            // and when we are working on the first segment of the data.
-            if(_.isUndefined(data[i]) || segment === 0) {
-              var tsOpts = {
-                interval: _interval,
-                start_date: _range && _range.from,
-                end_date: _range && _range.to,
-                fill_style: $scope.panel.derivative ? 'null' : $scope.panel.zerofill ? 'minimal' : 'no'
-              };
-              time_series = new timeSeries.ZeroFilled(tsOpts);
-              hits = 0;
-              counters = {};
-            } else {
-              time_series = data[i].time_series;
-              hits = data[i].hits;
-              counters = data[i].counters;
-            }
-
-            var query_results = results.aggregations[q.id][q.id];
-            hits = buildResult(query_results, hits, time_series, counters);
-
-            $scope.legend[i] = {query:q,hits:hits};
+            $scope.legend[i] = {query:q, hits:hits};
 
             data[i] = {
               info: q,
@@ -664,53 +379,18 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
               hits: hits,
               counters: counters
             };
+            $scope.$emit('render', data)
+          },
+          function(response){
+            $scope.panel.error = $scope.parse_error(response.data);
+          })
+      })
 
-            i++;
-          });
-
-          if($scope.panel.annotate.enable) {
-            $scope.annotations = $scope.annotations.concat(_.map(results.hits.hits, function(hit) {
-              var _p = _.omit(hit,'_source','sort','_score');
-              var _h = _.extend(kbn.flatten_json(hit._source),_p);
-              return  {
-                min: hit.sort[1],
-                max: hit.sort[1],
-                eventType: "annotation",
-                title: null,
-                description: "<small><i class='icon-tag icon-flip-vertical'></i> "+
-                  _h[$scope.panel.annotate.field]+"</small><br>"+
-                  moment(hit.sort[1]).format('YYYY-MM-DD HH:mm:ss'),
-                score: hit.sort[0]
-              };
-            }));
-            // Sort the data
-            $scope.annotations = _.sortBy($scope.annotations, function(v){
-              // Sort in reverse
-              return v.score*($scope.panel.annotate.sort[1] === 'desc' ? -1 : 1);
-            });
-            // And slice to the right size
-            $scope.annotations = $scope.annotations.slice(0,$scope.panel.annotate.size);
-          }
-        }
-
-        // Tell the histogram directive to render.
-      if (_.isUndefined($scope.panel.timeshift) || $scope.panel.timeshift == "") {
-        $scope.$emit('render', data);
-      }
-
-        // If we still have segments left, get them
-        if(segment < dashboard.indices.length-1) {
-          $scope.get_data(data,segment+1,query_id);
-        }
-      },
-        function(results){ //error
-          $scope.panel.error = $scope.parse_error(results.body);
-          $scope.panelMeta.loading = false;
-        }
-      );
+      $scope.panelMeta.loading = false
     };
 
-    function buildResult(query_results, hits, time_series, counters, timeshift){
+    function buildResult(query_results, hits, time_series, counters, _interval_int, timeshift){
+      hits = hits || 0
 
       timeshift = _.isUndefined(timeshift) ? 0 : timeshift;
 
@@ -719,15 +399,16 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
           $scope.panel.mode, $scope.panel.arithmetic,timeshift);
       } else {
         // push each entry into the time series, while incrementing counters
-        _.each(query_results.buckets, function (entry) {
+        _.each(query_results, function (entry) {
           var value;
 
-          hits += entry.doc_count; // The series level hits counter
-          $scope.hits += entry.doc_count; // Entire dataset level hits counter
-          counters[entry.key] = (counters[entry.key] || 0) + entry.doc_count;
+          var hit = parseInt(entry.value)
+          hits += hit // The series level hits counter
+          $scope.hits += hit // Entire dataset level hits counter
+          counters[entry.key] = (counters[_interval_int * entry.t] || 0) + hit
 
           if ($scope.panel.mode === 'count') {
-            value = (time_series._data[entry.key + timeshift] || 0) + entry.doc_count;
+            value = (time_series._data[_interval_int * entry.t + timeshift] || 0) + hit
           } else if ($scope.panel.mode === 'uniq') {
             value = (time_series._data[entry.key + timeshift] || 0) + entry.subaggs.value;
           } else if ($scope.panel.mode === 'mean') {
@@ -735,8 +416,8 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
             // multiplying the existing mean by the existing hits
             // plus the new mean multiplied by the new hits
             // divided by the total hits
-            value = (((time_series._data[entry.key + timeshift] || 0) * (counters[entry.key] - entry.doc_count)) +
-            entry.subaggs.value * entry.doc_count) / (counters[entry.key]);
+            value = (((time_series._data[entry.key + timeshift] || 0) * (counters[entry.key] - entry.value)) +
+            entry.subaggs.value * entry.value) / (counters[entry.key]);
           } else if ($scope.panel.mode === 'min') {
             if (_.isUndefined(time_series._data[entry.key])) {
               value = entry.subaggs.value;
@@ -754,86 +435,12 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
           } else if ($scope.panel.mode === 'total') {
             value = (time_series._data[entry.key + timeshift] || 0) + entry.subaggs.value;
           }
-          time_series.addValue(entry.key + timeshift, value);
+          time_series.addValue(_interval_int * entry.t + timeshift, value);
         });
       }
 
       return hits;
     }
-
-    function buildAggs(query_id){
-        var aggr = $scope.ejs.DateHistogramAggregation(query_id).field($scope.panel.time_field);
-
-        if($scope.panel.mode === 'count') {
-          //pass
-        } else {
-          if(_.isNull($scope.panel.value_field)) {
-            $scope.panel.error = "In " + $scope.panel.mode + " mode a field2 must be specified";
-            return;
-          }
-          var sub_aggs;
-          switch($scope.panel.mode) {
-            case 'uniq':
-            sub_aggs = $scope.ejs.CardinalityAggregation('subaggs')
-            .field($scope.panel.value_field);
-            break;
-            case 'min':
-            sub_aggs = $scope.ejs.MinAggregation('subaggs')
-            .field($scope.panel.value_field);
-            break;
-            case 'max':
-            sub_aggs = $scope.ejs.MaxAggregation('subaggs')
-            .field($scope.panel.value_field);
-            break;
-            case 'total':
-            sub_aggs = $scope.ejs.SumAggregation('subaggs')
-            .field($scope.panel.value_field);
-            break;
-            case 'mean':
-            sub_aggs = $scope.ejs.AvgAggregation('subaggs')
-            .field($scope.panel.value_field);
-            break;
-          }
-          aggr = aggr.agg(sub_aggs);
-        }
-
-        if($scope.panel.arithmetic !== 'none'){
-          if($scope.panel.mode === 'count') {
-            $scope.panel.error = "Could not support Count arithmetic";
-            return;
-          } else {
-            if(_.isNull($scope.panel.value_field2)) {
-              $scope.panel.error = "In " + $scope.panel.mode + " mode a field2 must be specified";
-              return;
-            }
-            var sub_aggs;
-            switch($scope.panel.mode) {
-              case 'uniq':
-              sub_aggs = $scope.ejs.CardinalityAggregation('subaggs2')
-                .field($scope.panel.value_field2);
-              break;
-              case 'min':
-              sub_aggs = $scope.ejs.MinAggregation('subaggs2')
-                .field($scope.panel.value_field2);
-              break;
-              case 'max':
-              sub_aggs = $scope.ejs.MaxAggregation('subaggs2')
-                .field($scope.panel.value_field2);
-              break;
-              case 'total':
-              sub_aggs = $scope.ejs.SumAggregation('subaggs2')
-                .field($scope.panel.value_field2);
-              break;
-              case 'mean':
-              sub_aggs = $scope.ejs.AvgAggregation('subaggs2')
-                .field($scope.panel.value_field2);
-              break;
-            }
-            aggr = aggr.agg(sub_aggs);
-          }
-        }
-        return aggr;
-    };
 
     function doArithmetic(hits, time_series, counters, query_results, mode, arithmetic,timeshift){
       function getValue(a) {
