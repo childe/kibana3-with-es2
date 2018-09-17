@@ -53,6 +53,9 @@ function (angular, _, config, kbn) {
       "regex": {
         query: ".*"
       },
+      "sql": {
+        query: ""
+      },
       "topN": {
         query: "*",
         field: "_type",
@@ -74,6 +77,16 @@ function (angular, _, config, kbn) {
         }
       },
       regex: {
+        require:">=0.90.12",
+        icon: "icon-circle",
+        resolve: function(query) {
+          // Simply returns itself
+          var p = $q.defer();
+          p.resolve(_.extend(query,{parent:query.id}));
+          return p.promise;
+        }
+      },
+      sql: {
         require:">=0.90.12",
         icon: "icon-circle",
         resolve: function(query) {

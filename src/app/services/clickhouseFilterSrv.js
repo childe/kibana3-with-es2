@@ -127,7 +127,12 @@ define([
     this.buildWhereClauseFromQueries = function(queries) {
       var clauses = [], clauses2 = []
       _.each(queries,function(q) {
-        var query = self.convertQuery(q.query)
+        var query
+        if (q.type === 'lucene') {
+          query = self.convertQuery(q.query)
+        }else if (q.type === 'sql'){
+          query = q.query
+        }
         if (query !== '') {
           clauses.push(query)
         }
