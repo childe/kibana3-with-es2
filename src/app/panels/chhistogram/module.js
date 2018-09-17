@@ -346,25 +346,21 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       _.each(queries, function(q, i){
         var query = clickhouseFilterSrv.convertQuery(q.query)
 
-        var c = ''
+        var c
         if (query !== '') {
           c = '{0} AND ({1})'.format(whereClause,query)
         }else{
           c = whereClause
         }
-        var stmt = 'SELECT {0} as value, (intDiv(toUInt32({1})*1000,{2})) as t FROM {3} WHERE {4} GROUP BY t ORDER BY t FORMAT JSON'.format('count(1)', timeField, _interval_int, dashboard.indices.join(' '), c)
+
+        var stmt
+        if ($scope.mode === 'count') {
+          stmt = 'SELECT {0} as count, (intDiv(toUInt32({1})*1000,{2})) as t FROM {3} WHERE {4} GROUP BY t ORDER BY t FORMAT JSON'.format('count(1)', timeField, _interval_int, dashboard.indices.join(' '), c)
+        } else {
+          stmt = 'SELECT {0} as count, {5}({6}) as value, (intDiv(toUInt32({1})*1000,{2})) as t FROM {3} WHERE {4} GROUP BY t ORDER BY t FORMAT JSON'.format('count(1)', timeField, _interval_int, dashboard.indices.join(' '), c, $scope.panel.mode, $scope.panel.value_field)
+        }
 
         $scope.inspector += stmt + '\n'
-
-        var tsOpts = {
-          interval: _interval,
-          start_date: _range && _range.from,
-          end_date: _range && _range.to,
-          fill_style: $scope.panel.derivative ? 'null' : $scope.panel.zerofill ? 'minimal' : 'no'
-        },
-        time_series = new timeSeries.ZeroFilled(tsOpts),
-        hits = 0,
-        counters = {}
 
         query_ids[i] = $scope.query_ids[i] = new Date().getTime();
         $scope.chclient.query(stmt).then(
@@ -375,8 +371,18 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
               $scope.panelMeta.loading = false
             }
 
-            var query_results = response.data
-            hits = buildResult(query_results.data, hits, time_series, counters, _interval_int);
+            var tsOpts = {
+              interval: _interval,
+              start_date: _range && _range.from,
+              end_date: _range && _range.to,
+              fill_style: $scope.panel.derivative ? 'null' : $scope.panel.zerofill ? 'minimal' : 'no'
+            },
+            time_series = new timeSeries.ZeroFilled(tsOpts),
+            counters = {},
+
+            query_results = response.data
+
+            var hits = buildResult(query_results.data, time_series, counters, _interval_int);
 
             $scope.legend[i] = {query:q, hits:hits};
 
@@ -400,108 +406,29 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       })
     };
 
-    function buildResult(query_results, hits, time_series, counters, _interval_int, timeshift){
-      hits = hits || 0
+    function buildResult(query_results, time_series, counters, _interval_int, timeshift){
+      var hits = 0
 
       timeshift = _.isUndefined(timeshift) ? 0 : timeshift;
 
-      if($scope.panel.mode !== 'count' && $scope.panel.arithmetic !== 'none'){
-        hits = doArithmetic(hits, time_series, counters, query_results,
-          $scope.panel.mode, $scope.panel.arithmetic,timeshift);
-      } else {
-        // push each entry into the time series, while incrementing counters
-        _.each(query_results, function (entry) {
-          var value;
+      // push each entry into the time series, while incrementing counters
+      _.each(query_results, function (entry) {
+        var value,
+          count = parseInt(entry.count),
+          _value = parseFloat(entry.value)
 
-          var hit = parseInt(entry.value)
-          hits += hit // The series level hits counter
-          $scope.hits += hit // Entire dataset level hits counter
-          counters[_interval_int * entry.t] = (counters[_interval_int * entry.t] || 0) + hit
+        hits += count // The series level hits counter
+        $scope.hits += count // Entire dataset level hits counter
+        counters[_interval_int * entry.t] = count
 
-          if ($scope.panel.mode === 'count') {
-            value = (time_series._data[_interval_int * entry.t + timeshift] || 0) + hit
-          } else if ($scope.panel.mode === 'uniq') {
-            value = (time_series._data[entry.key + timeshift] || 0) + entry.subaggs.value;
-          } else if ($scope.panel.mode === 'mean') {
-            // Compute the ongoing mean by
-            // multiplying the existing mean by the existing hits
-            // plus the new mean multiplied by the new hits
-            // divided by the total hits
-            value = (((time_series._data[entry.key + timeshift] || 0) * (counters[entry.key] - entry.value)) +
-            entry.subaggs.value * entry.value) / (counters[entry.key]);
-          } else if ($scope.panel.mode === 'min') {
-            if (_.isUndefined(time_series._data[entry.key])) {
-              value = entry.subaggs.value;
-            } else {
-              value = time_series._data[entry.key + timeshift] < entry.subaggs.value
-              ? time_series._data[entry.key + timeshift] : entry.subaggs.value;
-            }
-          } else if ($scope.panel.mode === 'max') {
-            if (_.isUndefined(time_series._data[entry.key])) {
-              value = entry.subaggs.value;
-            } else {
-              value = time_series._data[entry.key + timeshift] > entry.subaggs.value
-              ? time_series._data[entry.key] : entry.subaggs.value;
-            }
-          } else if ($scope.panel.mode === 'total') {
-            value = (time_series._data[entry.key + timeshift] || 0) + entry.subaggs.value;
-          }
-          time_series.addValue(_interval_int * entry.t + timeshift, value);
-        });
-      }
-
-      return hits;
-    }
-
-    function doArithmetic(hits, time_series, counters, query_results, mode, arithmetic,timeshift){
-      function getValue(a) {
-        switch (arithmetic){
-          case 'add':
-            return a.subaggs.value + a.subaggs2.value;
-          case 'subtract':
-            return a.subaggs.value - a.subaggs2.value;
-          case 'multiply':
-            return a.subaggs.value * a.subaggs2.value;
-          case 'divide':
-            return a.subaggs.value / a.subaggs2.value;
+        if ($scope.panel.mode === 'count') {
+          value = count
+        } else {
+          value = _value
         }
-      }
+        time_series.addValue(_interval_int * entry.t + timeshift, value);
+      })
 
-      var Entries = query_results.buckets, i, ln, entry, value;
-      for(i=0,ln=Entries.length; i<ln; ++i){
-        entry = Entries[i];
-
-        hits += entry.doc_count; // The series level hits counter
-        $scope.hits += entry.doc_count; // Entire dataset level hits counter
-        counters[entry.key] = (counters[entry.key] || 0) + entry.doc_count;
-
-        if (mode === 'uniq') {
-          value = getValue(entry);
-        }
-        else if (mode === 'mean') {
-          // Compute the ongoing mean by
-          // multiplying the existing mean by the existing hits
-          // plus the new mean multiplied by the new hits
-          // divided by the total hits
-          value = (((time_series._data[entry.key] || 0) * (counters[entry.key] - entry.doc_count)) +
-          getValue(entry) *  entry.doc_count) / (counters[entry.key]);
-        } else if (mode === 'min') {
-          if (_.isUndefined(time_series._data[entry.key])) {
-            value = getValue(entry);
-          } else {
-            value = time_series._data[entry.key] < getValue(entry) ? time_series._data[entry.key] : getValue(entry);
-          }
-        } else if (mode === 'max') {
-          if (_.isUndefined(time_series._data[entry.time])) {
-            value = getValue(entry);
-          } else {
-            value = time_series._data[entry.key] > getValue(entry) ? time_series._data[entry.key] : getValue(entry);
-          }
-        } else if (mode === 'total') {
-          value = (time_series._data[entry.key] || 0) + getValue(entry);
-        }
-        time_series.addValue(entry.key+timeshift, value);
-      }
       return hits;
     }
 
