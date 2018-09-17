@@ -129,7 +129,22 @@ function (angular, app, _, $, kbn) {
         whereClause += ' AND (' + query + ')'
       }
 
-      var stmt = 'SELECT count(1) as count, {0} FROM {1} WHERE {2} GROUP BY {3} ORDER BY count DESC LIMIT {4}'.format($scope.panel.field, dashboard.indices.join(' '), whereClause, $scope.panel.field, $scope.panel.size)
+      var orderBY = ''
+      switch ($scope.panel.order) {
+        case 'count':
+          orderBY = 'count DESC'
+          break
+        case 'reverse_count':
+          orderBY = 'count'
+          break
+        case 'term':
+          orderBY = 'term DESC'
+          break
+        case 'reverse_term':
+          orderBY = 'term'
+          break
+      }
+      var stmt = 'SELECT count(1) as count, {0} as term FROM {1} WHERE {2} GROUP BY {3} ORDER BY {4} LIMIT {5}'.format($scope.panel.field, dashboard.indices.join(' '), whereClause, $scope.panel.field, orderBY, $scope.panel.size)
 
       $scope.inspector = stmt
 
@@ -227,6 +242,9 @@ function (angular, app, _, $, kbn) {
 
         function build_results() {
           scope.data = []
+        if(_.isUndefined(scope.results)) {
+          return
+        }
           _.each(scope.results.split('\n'), function(v, k){
             if (v === ''){return}
             var tuple = v.split('\t')
