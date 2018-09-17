@@ -108,6 +108,7 @@ function (angular, app, _, $, kbn) {
 
     $scope.init = function () {
       $scope.hits = 0;
+      $scope.refresh = false;
 
       $scope.$on('refresh',function(){
         $scope.get_data();
@@ -144,7 +145,20 @@ function (angular, app, _, $, kbn) {
           orderBY = 'term'
           break
       }
-      var stmt = 'SELECT count(1) as count, {0} as term FROM {1} WHERE {2} GROUP BY {3} ORDER BY {4} LIMIT {5}'.format($scope.panel.field, dashboard.indices.join(' '), whereClause, $scope.panel.field, orderBY, $scope.panel.size)
+      var stmt = ''
+      if ($scope.panel.tmode === 'terms') {
+        stmt = 'SELECT count(1) as count, {0} as term FROM {1} WHERE {2} GROUP BY {3} ORDER BY {4} LIMIT {5}'.format($scope.panel.field, dashboard.indices.join(' '), whereClause, $scope.panel.field, orderBY, $scope.panel.size)
+      } else if ($scope.panel.tmode === 'terms_stats') {
+        switch ($scope.panel.order) {
+          case 'value':
+            orderBY = 'value DESC'
+            break
+          case 'reverse_value':
+            orderBY = 'value'
+            break
+        }
+      stmt = 'SELECT count(1) as count, {0} as term, {6}({7}) as value FROM {1} WHERE {2} GROUP BY {3} ORDER BY {4} LIMIT {5}'.format($scope.panel.field, dashboard.indices.join(' '), whereClause, $scope.panel.field, orderBY, $scope.panel.size, $scope.panel.tstat, $scope.panel.valuefield)
+      }
 
       $scope.inspector = stmt
 
@@ -241,16 +255,28 @@ function (angular, app, _, $, kbn) {
         });
 
         function build_results() {
+          if(_.isUndefined(scope.results)) {
+            return
+          }
+
           scope.data = []
-        if(_.isUndefined(scope.results)) {
-          return
-        }
-          _.each(scope.results.split('\n'), function(v, k){
-            if (v === ''){return}
-            var tuple = v.split('\t')
-            var slice = { label : tuple[1], data : [[k,tuple[0]]], actions: true}
-            scope.data.push(slice)
-          })
+          if (scope.panel.tmode === 'terms') {
+            _.each(scope.results.split('\n'), function(v, k){
+              if (v === '') return
+
+              var tuple = v.split('\t')
+              var slice = { label : tuple[1], data : [[k,tuple[0]]], actions: true}
+              scope.data.push(slice)
+            })
+          } else if (scope.panel.tmode === 'terms_stats') {
+            _.each(scope.results.split('\n'), function(v, k){
+              if (v === '') return
+
+              var tuple = v.split('\t')
+              var slice = { label: tuple[1], data: [[k,tuple[2]]], actions: true, count: tuple[0]}
+              scope.data.push(slice)
+            })
+          }
         }
 
         // Function for rendering panel
