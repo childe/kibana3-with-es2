@@ -18,6 +18,16 @@ define([
       ids : []
     };
 
+    String.prototype.format = function()
+    {
+        var args = arguments;
+        return this.replace(/\{(\d+)\}/g,
+            function(m,i){
+                return args[i];
+            });
+    }
+
+
     // Save a reference to this
     var self = this;
 
@@ -125,9 +135,12 @@ define([
     };
 
     this.buildWhereClauseFromQueries = function(queries) {
-      var clauses = [], clauses2 = []
+      var clauses = [], clauses2 = [], t = this
       _.each(queries,function(q) {
-          clauses.push(q.query)
+        var query = t.convertQuery(q.query)
+        if (query !== '') {
+          clauses.push(query)
+        }
       });
 
       _.each(clauses, function(c){
@@ -135,6 +148,7 @@ define([
       })
       return clauses2.join(' OR ')
     }
+
     this.buildWhereClause = function(ids) {
       var clauses = [], clauses2 = []
       _.each(ids,function(id) {
@@ -186,7 +200,67 @@ define([
     };
 
     this.convertQuery = function(query) {
-      return query
+      return this.convertSingleQuery(query)
+    }
+
+    this.convertSingleQuery = function(query) {
+      query = query.trim()
+
+      if (query === '' || query === '*:*') {
+        return ''
+      }
+
+      if (!query.includes(':')){
+        return query
+      }
+
+      var idx = query.indexOf(':')
+      var
+      field = query.substring(0, idx).trim(),
+      value = query.substring(idx+1).trim()
+
+      if (value.startsWith('>='))
+        return `"{0}" {1} {2}`.format(field, '>=', value.substring(2).trim())
+      if (value.startsWith('>'))
+        return `"{0}" {1} {2}`.format(field, '>', value.substring(2).trim())
+      if (value.startsWith('<='))
+        return `"{0}" {1} {2}`.format(field, '<=', value.substring(2).trim())
+      if (value.startsWith('<'))
+        return `"{0}" {1} {2}`.format(field, '<', value.substring(2).trim())
+
+      var r = value.match(/^[\[{](.*)\s+TO\s+(.*)[}\]]$/)
+      if ( r !== null ) {
+        var
+        from = r[1].trim(),
+        to = r[2].trim(),
+        op1, op2
+
+        if (value.startsWith('[')) {
+          op1 = '>='
+        } else if (value.startsWith('{')) {
+          op1 = '>'
+        }
+        if (value.startsWith(']')) {
+          op2 = '<='
+        }
+        if (value.startsWith('}')) {
+          op2 = '<'
+        }
+
+        if (from === '*') {
+          if (to === '*'){
+            return ''
+          }
+          return `"{0}" {1} {2}`.format(field, op2, to)
+        } else {
+          if (to === '*'){
+            return `"{0}" {1} {2}`.format(field, op1, from)
+          }
+          return `"{0}" {1} {2} AND "{0}" {3} {4}`.format(field, op1, from, op2, to)
+        }
+      }
+
+      return `"{0}" {1} '{2}'`.format(field, '=', value)
     }
 
     this.getByType = function(type,inactive) {
