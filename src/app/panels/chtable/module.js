@@ -399,8 +399,11 @@ function (angular, app, _, kbn, moment) {
       var stmt = 'SELECT * FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' ORDER BY ' + $scope.panel.sort[0] + ' ' + $scope.panel.sort[1] + ' LIMIT ' + $scope.panel.size*$scope.panel.pages + ' FORMAT JSON'
       $scope.inspector = stmt
 
+      var query_id = $scope.query_id = new Date().getTime();
       $scope.chclient.query(stmt).then(
         function(response){
+          if (query_id !== $scope.query_id) return
+
           $scope.panelMeta.loading = false
 
           var results = response.data
@@ -420,6 +423,7 @@ function (angular, app, _, kbn, moment) {
           $scope.hits = results.rows;
         },
         function(response){
+          if (query_id !== $scope.query_id) return
           $scope.panel.error = $scope.parse_error(response.data);
           $scope.panelMeta.loading = false;
         })
