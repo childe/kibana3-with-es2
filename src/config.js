@@ -126,6 +126,7 @@ function (Settings) {
       'filtertable',
       'multiplechoice',
       'histogram',
+      'chhistogram',
       'map',
       'goal',
       'table',
