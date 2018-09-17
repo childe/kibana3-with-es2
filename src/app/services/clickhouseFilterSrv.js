@@ -125,9 +125,9 @@ define([
     };
 
     this.buildWhereClauseFromQueries = function(queries) {
-      var clauses = [], clauses2 = [], t = this
+      var clauses = [], clauses2 = []
       _.each(queries,function(q) {
-        var query = t.convertQuery(q.query)
+        var query = self.convertQuery(q.query)
         if (query !== '') {
           clauses.push(query)
         }
