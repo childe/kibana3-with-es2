@@ -367,9 +367,6 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
           function(response){
             var query_results = response.data
             hits = buildResult(query_results.data, hits, time_series, counters, _interval_int);
-            console.log(hits)
-            console.log(time_series)
-            console.log(counters)
 
             $scope.legend[i] = {query:q, hits:hits};
 
@@ -405,7 +402,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
           var hit = parseInt(entry.value)
           hits += hit // The series level hits counter
           $scope.hits += hit // Entire dataset level hits counter
-          counters[entry.key] = (counters[_interval_int * entry.t] || 0) + hit
+          counters[_interval_int * entry.t] = (counters[_interval_int * entry.t] || 0) + hit
 
           if ($scope.panel.mode === 'count') {
             value = (time_series._data[_interval_int * entry.t + timeshift] || 0) + hit

@@ -129,15 +129,20 @@ function (angular, app, _, $, kbn) {
         whereClause += ' AND (' + query + ')'
       }
 
-      var stmt = 'SELECT  count(1) as count, ' +$scope.panel.field +' FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' GROUP BY ' + $scope.panel.field + ' ORDER BY count DESC LIMIT ' + $scope.panel.size
+      var stmt = 'SELECT count(1) as count, {0} FROM {1} WHERE {2} GROUP BY {3} ORDER BY count DESC LIMIT {4}'.format($scope.panel.field, dashboard.indices.join(' '), whereClause, $scope.panel.field, $scope.panel.size)
+
       $scope.inspector = stmt
+
+      var query_id = $scope.query_id = new Date().getTime();
       $scope.chclient.query(stmt).then(
         function(response){
+          if (query_id !== $scope.query_id) return
           $scope.panelMeta.loading = false
           $scope.results = response.data.trim()
           $scope.$emit('render')
         },
         function(response){
+          if (query_id !== $scope.query_id) return
           $scope.panel.error = $scope.parse_error(response.data);
           $scope.panelMeta.loading = false;
         })
