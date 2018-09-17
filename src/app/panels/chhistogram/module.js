@@ -78,7 +78,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       /** @scratch /panels/histogram/3
        * time_field:: x-axis field. This must be defined as a date type in Elasticsearch.
        */
-      time_field    : '@timestamp',
+      time_field    : 'datetime',
       /** @scratch /panels/histogram/3
        * value_field:: y-axis field if +mode+ is set to mean, max, min or total. Must be numeric.
        */
@@ -340,6 +340,9 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       $scope.legend = []
       $scope.hits = 0
       var data = []
+      var query_ids = []
+      $scope.query_ids = []
+
       _.each(queries, function(q, i){
         var query = clickhouseFilterSrv.convertQuery(q.query)
 
@@ -363,8 +366,15 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
         hits = 0,
         counters = {}
 
+        query_ids[i] = $scope.query_ids[i] = new Date().getTime();
         $scope.chclient.query(stmt).then(
           function(response){
+            if (query_ids[i] !== $scope.query_ids[i]) return
+
+            if ($scope.panel.queries.ids.length == i+1){
+              $scope.panelMeta.loading = false
+            }
+
             var query_results = response.data
             hits = buildResult(query_results.data, hits, time_series, counters, _interval_int);
 
@@ -379,11 +389,15 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
             $scope.$emit('render', data)
           },
           function(response){
+            if (query_ids[i] !== $scope.query_ids[i]) return
+
+            if ($scope.panel.queries.ids.length == i+1){
+              $scope.panelMeta.loading = false
+            }
+
             $scope.panel.error = $scope.parse_error(response.data);
           })
       })
-
-      $scope.panelMeta.loading = false
     };
 
     function buildResult(query_results, hits, time_series, counters, _interval_int, timeshift){
