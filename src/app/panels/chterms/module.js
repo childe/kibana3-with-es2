@@ -125,7 +125,10 @@ function (angular, app, _, $, kbn) {
       var query = clickhouseFilterSrv.buildWhereClauseFromQueries(queries)
 
       var whereClause = clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids())
-      whereClause += ' AND (' + query + ')'
+      if (query !== '') {
+        whereClause += ' AND (' + query + ')'
+      }
+
       var stmt = 'SELECT  count(1) as count, ' +$scope.panel.field +' FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' GROUP BY ' + $scope.panel.field + ' ORDER BY count DESC LIMIT ' + $scope.panel.size
       $scope.inspector = stmt
       $scope.chclient.query(stmt).then(

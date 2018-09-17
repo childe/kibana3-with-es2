@@ -392,7 +392,9 @@ function (angular, app, _, kbn, moment) {
       var query = clickhouseFilterSrv.buildWhereClauseFromQueries(queries)
 
       var whereClause = clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids())
-      whereClause += ' AND (' + query + ')'
+      if (query !== '') {
+        whereClause += ' AND (' + query + ')'
+      }
 
       var stmt = 'SELECT * FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' ORDER BY ' + $scope.panel.sort[0] + ' ' + $scope.panel.sort[1] + ' LIMIT ' + $scope.panel.size*$scope.panel.pages + ' FORMAT JSON'
       $scope.inspector = stmt

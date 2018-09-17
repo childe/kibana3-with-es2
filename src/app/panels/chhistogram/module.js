@@ -513,7 +513,9 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       var query = clickhouseFilterSrv.buildWhereClauseFromQueries(queries)
 
       var whereClause = clickhouseFilterSrv.buildWhereClause(clickhouseFilterSrv.ids())
-      whereClause += ' AND (' + query + ')'
+      if (query !== '') {
+        whereClause += ' AND (' + query + ')'
+      }
       var stmt = 'SELECT  count(1) as count, (intDiv(toUInt32(' + timeField + ')*1000,' + _a + ')) as t FROM ' + dashboard.indices.join(' ')  + ' WHERE ' + whereClause + ' GROUP BY t ORDER BY t FORMAT JSON'
       $scope.inspector = stmt
       $scope.chclient.query(stmt).then(
