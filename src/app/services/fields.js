@@ -65,7 +65,7 @@ function (angular, _, config) {
         var mapping = {};
           _.each(p, function(indexMap,index) {
             mapping[index] = {};
-            _.each((version ? indexMap.mappings : indexMap), function (typeMap,type) {
+            _.each(indexMap.mappings, function (typeMap,type) {
               mapping[index][type] = flatten(typeMap);
             });
           });
