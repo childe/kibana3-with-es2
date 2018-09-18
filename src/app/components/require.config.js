@@ -3,7 +3,7 @@
  */
 require.config({
   baseUrl: 'app',
-  urlArgs: 'r=@REV@',
+  urlArgs: 'r=' + new Date().getTime(),
   //urlArgs: 'bust=' + (new Date().getTime()),
   paths: {
     config:                   '../config',
