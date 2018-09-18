@@ -484,7 +484,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
 
   });
 
-  module.directive('histogramChart', function(dashboard, filterSrv) {
+  module.directive('chhistogramChart', function(dashboard, filterSrv) {
     return {
       restrict: 'A',
       template: '<div></div>',

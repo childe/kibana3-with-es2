@@ -243,7 +243,7 @@ function (angular, app, _, $, kbn) {
 
   });
 
-  module.directive('termsChart', function(querySrv) {
+  module.directive('chtermsChart', function(querySrv) {
     return {
       restrict: 'A',
       link: function(scope, elem) {
