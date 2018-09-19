@@ -172,9 +172,6 @@ function (angular, app, _, $, kbn) {
         boolQuery,
         queries;
 
-      $scope.field = _.contains(fields.list,$scope.panel.field+'.raw') ?
-        $scope.panel.field+'.raw' : $scope.panel.field;
-
       request = $scope.ejs.Request();
 
       $scope.panel.queries.ids = querySrv.idsByMode($scope.panel.queries);
@@ -190,7 +187,7 @@ function (angular, app, _, $, kbn) {
       // Terms mode
       if($scope.panel.tmode === 'terms') {
         var terms_aggs = $scope.ejs.TermsAggregation('terms')
-          .field($scope.field)
+          .field($scope.panel.field)
           .size($scope.panel.size)
           .exclude($scope.panel.exclude);
           if($scope.panel.fmode === 'script') {
@@ -284,12 +281,14 @@ function (angular, app, _, $, kbn) {
       // Populate the inspector panel
       $scope.inspector = request.toJSON();
 
+      var query_id = $scope.query_id = new Date().getTime();
       results = $scope.ejs.doSearch(dashboard.indices, request,
         0, dashboard.current.index.routing);
 
       // Populate scope when we have results
       results.then(
         function(results) {
+          if (query_id !== $scope.query_id) return
           if(!(_.isUndefined(results.error))) {
             $scope.panel.error = $scope.parse_error(results.error);
           }
@@ -301,6 +300,7 @@ function (angular, app, _, $, kbn) {
           $scope.$emit('render');
         },
         function(results){
+          if (query_id !== $scope.query_id) return
           $scope.panel.error = $scope.parse_error(results.body);
           $scope.panelMeta.loading = false;
         }
@@ -312,10 +312,10 @@ function (angular, app, _, $, kbn) {
         filterSrv.set({type:'script',script:$scope.panel.script + ' == \"' + term.label + '\"',
           mandate:(negate ? 'mustNot':'must')});
       } else if(_.isUndefined(term.meta)) {
-        filterSrv.set({type:'terms',field:$scope.field,value:term.label,
+        filterSrv.set({type:'terms',field:$scope.panel.field,value:term.label,
           mandate:(negate ? 'mustNot':'must')});
       } else if(term.meta === 'missing') {
-        filterSrv.set({type:'exists',field:$scope.field,
+        filterSrv.set({type:'exists',field:$scope.panel.field,
           mandate:(negate ? 'must':'mustNot')});
       } else {
         return;
@@ -327,9 +327,9 @@ function (angular, app, _, $, kbn) {
         return({type:'script',script:$scope.panel.script + ' == \"' + term.label + '\"',
           mandate:'either', alias: term.label});
       } else if(_.isUndefined(term.meta)) {
-        return({type:'terms',field:$scope.field,value:term.label, mandate:'either'});
+        return({type:'terms',field:$scope.panel.field,value:term.label, mandate:'either'});
       } else if(term.meta === 'missing') {
-        return({type:'exists',field:$scope.field, mandate:'either'});
+        return({type:'exists',field:$scope.panel.field, mandate:'either'});
       } else {
         return;
       }
