@@ -723,7 +723,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
     }
 
     function buildAggs(query_id){
-        var aggr = $scope.ejs.DateHistogramAggregation(query_id).field($scope.panel.time_field);
+        var aggr = $scope.ejs.DateHistogramAggregation(query_id).field($scope.panel.time_field).minDocCount(1);
 
         if($scope.panel.mode === 'count') {
           //pass
