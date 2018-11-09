@@ -33,6 +33,9 @@
     <div class="editor-option">
       <label class="small">Zero fill <tip>Fills zeros in gaps.</tip></label><input type="checkbox" ng-model="panel.zerofill" ng-checked="panel.zerofill" ng-change="set_refresh(true)">
     </div>
+    <div class="editor-option">
+      <label class="small">Derivative Per Second <tip>Plot the change between NOT-NULL data in the series and scale to second</tip></label><input type="checkbox" ng-model="panel.derivativePerSecond" ng-checked="panel.derivativePerSecond" ng-change="panel.scaleSeconds=false;panel.derivative=false;set_refresh(true)">
+    </div>
   </div>
   <div class="section">
   <h5>Time Options</h5>

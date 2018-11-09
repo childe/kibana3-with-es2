@@ -232,6 +232,10 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
        */
 
       derivative    : false,
+
+      derivativePerSecond : false,
+
+
       /** @scratch /panels/histogram/3
        * tooltip object::
        * tooltip.value_type::: Individual or cumulative controls how tooltips are display on stacked charts
@@ -928,6 +932,28 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
           });
         };
 
+        var derivative_per_second = function(series) {
+          var last_not_null = null
+          return _.map(series, function(p,i) {
+            var _v;
+            if(i === 0 || p[1] === null) {
+              _v = [p[0],null];
+            } else {
+              if (last_not_null === null || p[1] === null) {
+                _v = [p[0],null];
+              } else {
+                _v = [ p[0],(p[1] - series[last_not_null][1]) / (p[0]-series[last_not_null][0]) * 1000 ];
+              }
+            }
+
+            if (p[1] !== null) {
+              last_not_null = i
+            }
+
+            return _v;
+          });
+        };
+
         var derivative = function(series) {
           return _.map(series, function(p,i) {
             var _v;
@@ -1064,6 +1090,9 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
 
             for (var i = 0; i < data.length; i++) {
               var _d = data[i].time_series.getFlotPairs(required_times);
+              if(scope.panel.derivativePerSecond) {
+                _d = derivative_per_second(_d);
+              }
               if(scope.panel.derivative) {
                 _d = derivative(_d);
               }
