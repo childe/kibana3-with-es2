@@ -130,8 +130,12 @@ define([
         var query
         if (q.type === 'lucene') {
           query = self.convertQuery(q.query)
-        }else if (q.type === 'sql'){
-          query = q.query
+        } else if (q.type === 'sql'){
+          if (q.query === '' || q.query === '*:*') {
+            query = ''
+          } else {
+            query = q.query
+          }
         }
         if (query !== '') {
           clauses.push(query)
