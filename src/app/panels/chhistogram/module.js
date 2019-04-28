@@ -344,7 +344,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       $scope.query_ids = []
 
       _.each(queries, function(q, i){
-        var query = clickhouseFilterSrv.convertQuery(q.query)
+        var query = clickhouseFilterSrv.buildWhereClauseFromQueries([q])
 
         var c
         if (query !== '') {
@@ -355,9 +355,9 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
 
         var stmt
         if ($scope.mode === 'count') {
-          stmt = 'SELECT {0} as count, (intDiv(toUInt32({1})*1000,{2})) as t FROM {3} WHERE {4} GROUP BY t ORDER BY t FORMAT JSON'.format('count(1)', timeField, _interval_int, dashboard.indices.join(' '), c)
+          stmt = 'SELECT {0} as __count, (intDiv(toUInt32({1})*1000,{2})) as t FROM {3} WHERE {4} GROUP BY t ORDER BY t FORMAT JSON'.format('count(1)', timeField, _interval_int, dashboard.indices.join(' '), c)
         } else {
-          stmt = 'SELECT {0} as count, {5}({6}) as value, (intDiv(toUInt32({1})*1000,{2})) as t FROM {3} WHERE {4} GROUP BY t ORDER BY t FORMAT JSON'.format('count(1)', timeField, _interval_int, dashboard.indices.join(' '), c, $scope.panel.mode, $scope.panel.value_field)
+          stmt = 'SELECT {0} as __count, {5}({6}) as value, (intDiv(toUInt32({1})*1000,{2})) as t FROM {3} WHERE {4} GROUP BY t ORDER BY t FORMAT JSON'.format('count(1)', timeField, _interval_int, dashboard.indices.join(' '), c, $scope.panel.mode, $scope.panel.value_field)
         }
 
         $scope.inspector += stmt + '\n'
@@ -414,7 +414,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
       // push each entry into the time series, while incrementing counters
       _.each(query_results, function (entry) {
         var value,
-          count = parseInt(entry.count),
+          count = parseInt(entry.__count),
           _value = parseFloat(entry.value)
 
         hits += count // The series level hits counter

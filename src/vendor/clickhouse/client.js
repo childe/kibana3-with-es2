@@ -9,7 +9,6 @@ angular.module('clickhouse.service', [])
     chclient.config = config
 
     chclient.query = function(stmt) {
-      console.log(stmt)
       var url = chclient.config.host
       var params = {query:stmt}
       return $http.get(url, {params:params})
