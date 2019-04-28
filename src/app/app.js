@@ -8,6 +8,7 @@ define([
   'require',
   'elasticsearch',
   'elasticjs',
+  'clickhouse',
   'bootstrap',
   'angular-sanitize',
   'angular-strap',
@@ -18,6 +19,7 @@ define([
   'ui-utils',
   'extend-jquery',
   'bindonce',
+  'strings',
 ],
 function (angular, $, _, appLevelRequire) {
 
@@ -113,6 +115,7 @@ function (angular, $, _, appLevelRequire) {
 
   var apps_deps = [
     'elasticjs.service',
+    'clickhouse.service',
     '$strap.directives',
     'ngSanitize',
     'ngDragDrop',

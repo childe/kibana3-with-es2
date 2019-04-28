@@ -3,7 +3,7 @@
  */
 require.config({
   baseUrl: 'app',
-  urlArgs: 'r=@REV@',
+  urlArgs: 'r=' + new Date().getTime(),
   //urlArgs: 'bust=' + (new Date().getTime()),
   paths: {
     config:                   '../config',
@@ -57,7 +57,9 @@ require.config({
     numeral:                  '../vendor/numeral',
     jsonpath:                 '../vendor/jsonpath',
     elasticjs:                '../vendor/elasticjs/elastic-angular-client',
-    elasticsearch:            '../vendor/elasticsearch.angular'
+    elasticsearch:            '../vendor/elasticsearch.angular',
+    clickhouse:               '../vendor/clickhouse/client',
+    strings:                  '../vendor/strings'
   },
   shim: {
     angular: {
@@ -109,7 +111,8 @@ require.config({
     timepicker:             ['jquery', 'bootstrap'],
     datepicker:             ['jquery', 'bootstrap'],
     elasticsearch:          ['angular'],
-    elasticjs:              ['elasticsearch', '../vendor/elasticjs/elastic']
+    elasticjs:              ['elasticsearch', '../vendor/elasticjs/elastic'],
+    clickhouse:              ['angular']
   },
   waitSeconds: 60,
 });

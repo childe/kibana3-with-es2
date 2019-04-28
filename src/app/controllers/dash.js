@@ -10,7 +10,7 @@ function (angular, config, _) {
   var module = angular.module('kibana.controllers');
 
   module.controller('DashCtrl', function(
-    $scope, $route, ejsResource, fields, dashboard, alertSrv, panelMove, esVersion, kbnVersion) {
+    $scope, $route, ejsResource, chClient, fields, dashboard, alertSrv, panelMove, esVersion, kbnVersion) {
 
     $scope.Math = Math;
 
@@ -46,6 +46,8 @@ function (angular, config, _) {
       $scope.reset_row();
 
       $scope.ejs = ejsResource(config);
+
+      $scope.chclient = chClient(config.clickhouse);
     };
 
     $scope.isPanel = function(obj) {

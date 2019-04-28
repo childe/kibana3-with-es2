@@ -27,6 +27,15 @@ function (Settings) {
     elasticsearch: "http://" + window.location.host + "/elasticsearch",
 
 
+    clickhouse: {
+      host: "http://" + window.location.host + "/clickhouse/",
+      queryOptions: {
+        database: "elastic"
+      },
+      omitFormat: false
+    },
+
+
     /*
     * logout kibana
     */
@@ -117,9 +126,11 @@ function (Settings) {
       'filtertable',
       'multiplechoice',
       'histogram',
+      'chhistogram',
       'map',
       'goal',
       'table',
+      'chtable',
       'filtering',
       'timepicker',
       'text',
@@ -129,6 +140,7 @@ function (Settings) {
       'bettermap',
       'query',
       'terms',
+      'chterms',
       'stats',
       'sparklines',
       'percentiles',
