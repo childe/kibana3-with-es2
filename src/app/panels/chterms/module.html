@@ -32,7 +32,7 @@
     <div class="terms-legend" ng-show="panel.counter_pos == 'above' && (panel.chart == 'bar' || panel.chart == 'pie')" id='{{$id}}-legend'>
       <!-- vertical legend above -->
       <table class="small" ng-show="panel.arrangement == 'vertical'">
-        <tr ng-repeat="term in data">
+        <tr ng-repeat="term in legend">
           <td><i class="icon-circle" ng-style="{color:term.color}"></i></td>
           <td class="terms-legend-term" style="padding-right:10px;padding-left:10px;">{{term.label}}</td>
           <td>{{term.data[0][1]}} {{ panel.tmode == 'terms_stats' ? term.count : 'X' }}</td>
@@ -40,7 +40,7 @@
       </table>
 
       <!-- horizontal legend above -->
-      <span class="small" ng-show="panel.arrangement == 'horizontal'" ng-repeat="term in data" style="float:left;padding-left: 10px;">
+      <span class="small" ng-show="panel.arrangement == 'horizontal'" ng-repeat="term in legend" style="float:left;padding-left: 10px;">
         <span>
           <i class="icon-circle" ng-style="{color:term.color}"></i>
           <span class="terms-legend-term">{{term.label}}</span> ({{term.data[0][1]}} {{ panel.tmode == 'terms_stats' ? term.count : '' }})
@@ -64,7 +64,7 @@
     <div class="terms-legend" ng-show="panel.counter_pos == 'below' && (panel.chart == 'bar' || panel.chart == 'pie')" id='{{$id}}-legend'>
       <!-- vertical legend below -->
       <table class="small" ng-show="panel.arrangement == 'vertical'">
-        <tr ng-repeat="term in data">
+        <tr ng-repeat="term in legend">
           <td><i class="icon-circle" ng-style="{color:term.color}"></i></i></td>
           <td class="terms-legend-term" style="padding-right:10px;padding-left:10px;">{{term.label}}</td>
           <td>{{term.data[0][1]}} {{ panel.tmode == 'terms_stats' ? term.count : '' }}</td>
@@ -72,7 +72,7 @@
       </table>
 
       <!-- horizontal legend below -->
-      <span class="small" ng-show="panel.arrangement == 'horizontal'" ng-repeat="term in data" style="float:left;padding-left: 10px;">
+      <span class="small" ng-show="panel.arrangement == 'horizontal'" ng-repeat="term in legend" style="float:left;padding-left: 10px;">
         <span>
           <i class="icon-circle" ng-style="{color:term.color}"></i>
           <span class="terms-legend-term">{{term.label}}</span> ({{term.data[0][1]}} {{ panel.tmode == 'terms_stats' ? term.count : '' }})
