@@ -176,6 +176,7 @@ define([
     };
 
     this.toWhereClause = function (filter) {
+      var t = this
       if(!filter.active) {
         return '';
       }
@@ -188,7 +189,7 @@ define([
       case 'range':
         return '"' + filter.field + '" >= ' + filter.from + ' AND "' + filter.field + '" <= '+filter.to
       case 'querystring':
-        return tihs.convertQuery(filter.query)
+        return t.convertQuery(filter.query)
       case 'field':
         return '"' + filter.field + '" = ' + "'" + filter.query + "'"
       case 'terms':
