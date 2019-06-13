@@ -157,7 +157,7 @@ define([
           case 'mustNot':
             clauses.push('NOT (' + self.getWhereClause(id) + ')')
             break;
-          case 'either':
+          case 'either': // TODO: either filter
             break;
           default:
             clauses.push(self.getWhereClause(id))
